@@ -15,6 +15,7 @@ export default {
     Sidebar,
     News: () => import("../components/dashboard/News.vue"),
     Users: () => import("../components/dashboard/Users.vue"),
+    Projects: () => import("../components/dashboard/Projects.vue"),
   },
   data() {
     return { currentComponent: null };
@@ -28,7 +29,6 @@ export default {
 </script>
 
 <style>
-
 .dashboard {
   height: 100%;
   display: flex;

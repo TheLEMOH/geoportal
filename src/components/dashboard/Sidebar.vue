@@ -2,13 +2,16 @@
   <div class="sidebar">
     <ul class="nav flex-column">
       <li
-        class="link link-light d-flex align-items-center p-2"
-        :class="[selectedClass == index ? 'linkActive' : '']"
+        class="d-flex flex-column align-items-center p-2"
         v-for="(link, index) in links"
         @click="SelectComponent(link.id, index)"
         :key="index"
       >
-        {{ link.name }}
+        <a
+          class="link link-light w-100"
+          :class="[selectedClass == index ? 'linkActive' : '']"
+          >{{ link.name }}</a
+        >
       </li>
     </ul>
   </div>
@@ -22,7 +25,7 @@ export default {
       links: [
         { name: "Новости", id: "News" },
         { name: "Пользователи", id: "Users" },
-        /*         { name: "Проекты", id: "Projects" }, */
+        { name: "Проекты", id: "Projects" },
       ],
     };
   },

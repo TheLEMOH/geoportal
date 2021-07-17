@@ -60,7 +60,7 @@ export default {
   background-position: 0% 100%;
   background-repeat: no-repeat;
   background-size: 0% 3px;
-  transition: background-size 0.2s;
+  transition: background-size 0.3s;
   margin: 0.5rem;
 }
 
