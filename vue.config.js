@@ -1,6 +1,5 @@
 module.exports = {
-    publicPath: "/",
-
+    publicPath: "/geoportal",
     configureWebpack: {
         devServer: {
             historyApiFallback: true
