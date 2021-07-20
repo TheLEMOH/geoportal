@@ -25,7 +25,8 @@ export default {
       links: [
         { name: "Новости", id: "News" },
         { name: "Пользователи", id: "Users" },
-        { name: "Проекты", id: "Projects" },
+        { name: "Каталоги и проекты", id: "Projects" },
+        { name: "Помощь", id: "Help" },
       ],
     };
   },

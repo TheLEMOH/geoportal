@@ -7,18 +7,14 @@
     >
       <div class="col-2 news-meta reddd m-1">
         <ul class="list-group">
-          <li class="">Дата: 12.07.2021</li>
-          <li class="">Автор: Понасенков</li>
+          <li class="">Дата: {{ news.date }}</li>
         </ul>
       </div>
       <div class="col reddd m-1">
         <ul class="list-group">
-          <li class="">Название: Обновление 2.0</li>
+          <li class="">{{ news.title }}</li>
           <li class="">
-            Всей швали моих критиков Моих завистников: Вы думаете, что с
-            человеком Который вот до такой степени Точно исследует тему, можно
-            спорить Вы думаете, что я вас не переиграю? Что я вас не уничтожу? Я
-            вас уничтожу!
+            {{ news.body }}
           </li>
         </ul>
       </div>
@@ -28,10 +24,10 @@
 
 <script>
 export default {
-  data() {
-    return {
-      news: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    };
+  computed: {
+    news() {
+      return this.$store.getters.getNews;
+    },
   },
 };
 </script>

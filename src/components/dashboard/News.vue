@@ -3,20 +3,15 @@
     <div class="p-2 border-bottom">
       <div class="mb-2">
         <label class="form-label text-white">Название</label>
-        <input
-          type="email"
-          class="form-control"
-          id="exampleFormControlInput1"
-          placeholder="name@example.com"
-        />
+        <input type="text" class="form-control" placeholder="" />
       </div>
       <div class="mb-2">
         <label class="form-label text-white">Текст</label>
-        <textarea
-          class="form-control"
-          id="exampleFormControlTextarea1"
-          rows="3"
-        ></textarea>
+        <textarea class="form-control" rows="3"></textarea>
+      </div>
+      <div class="mb-2">
+        <label class="form-label text-white">Изображение</label>
+        <input type="file" class="form-control" />
       </div>
       <div class="text-end">
         <button class="btn btn-success" type="button" id="button-addon2">
@@ -27,9 +22,8 @@
     <table class="table shadow">
       <thead>
         <tr>
-          <th scope="col">#</th>
+          <th>#</th>
           <th>Дата публикации</th>
-          <th>Автор</th>
           <th>Название</th>
           <th>Текст</th>
           <th></th>
@@ -37,15 +31,28 @@
       </thead>
       <tbody>
         <tr v-for="(news, index) in news" :key="index">
-          <th scope="row">{{ news }}</th>
-          <td>12.07.2021</td>
-          <td>Понасенков</td>
-          <td>Обновление 2.0</td>
+          <th>{{ index }}</th>
           <td>
-            Всей швали моих критиков Моих завистников: Вы думаете, что с
-            человеком Который вот до такой степени Точно исследует тему, можно
-            спорить Вы думаете, что я вас не переиграю? Что я вас не уничтожу? Я
-            вас уничтожу!
+            <input
+              type="text"
+              class="form-control-plaintext text-white"
+              v-model="news.date"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control-plaintext text-white"
+              v-model="news.title"
+            />
+          </td>
+          <td>
+            <textarea
+              type="text"
+              class="form-control-plaintext text-white"
+              style="min-width: 400px; height: 150px"
+              v-model="news.body"
+            />
           </td>
           <td>
             <button class="btn btn-danger">
@@ -60,8 +67,10 @@
 
 <script>
 export default {
-  data() {
-    return { news: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] };
+  computed: {
+    news() {
+      return this.$store.getters.getNews;
+    },
   },
 };
 </script>

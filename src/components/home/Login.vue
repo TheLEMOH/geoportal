@@ -1,18 +1,18 @@
 <template>
-  <div class="mt-2">
+  <div class="w-100 p-0 m-0">
     <a
-      class="link link-light"
+      class="link-light float-end"
       data-bs-toggle="modal"
       data-bs-target="#exampleModal"
       v-if="!isHere"
     >
-      Войти
+      <Person />
     </a>
 
     <!-- Dropbutton -->
-    <div class="dropdown">
+    <div class="dropdown float-end">
       <a
-        class="link link-light dropdown-toggle"
+        class="link link-light dropdown-toggle p-1"
         href="#"
         id="dropdownMenuLink"
         data-bs-toggle="dropdown"
@@ -90,7 +90,9 @@
 </template>
 
 <script>
+import Person from "../icons/Person.vue";
 export default {
+  components: { Person },
   data() {
     return {
       login: null,

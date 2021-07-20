@@ -32,10 +32,16 @@ const routes = [
     path: '/gallery',
     name: 'Gallery',
     component: () => import('../views/Gallery.vue')
+  },
+  {
+    path: '/resources',
+    name: 'Resources',
+    component: () => import('../views/Resources.vue')
   }
 ]
 
 const router = new VueRouter({
+  mode: "history",
   routes
 })
 

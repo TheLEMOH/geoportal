@@ -1,12 +1,16 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <a class="nav-link p-0 m-0" href="/">
-        <h2 class="text-center text-white shadow m-0 p-1 border-bottom">
+    <nav class="navbar border-bottom shadow-lg p-4">
+      <div class="container-fluid justify-content-center">
+        <h2
+          class="text-white position-absolute m-0 p-0"
+          style="text-shadow: 1px 1px 2px black"
+        >
           Картографический веб-портал Енисей плюс
         </h2>
-      </a>
-    </div>
+        <Login />
+      </div>
+    </nav>
     <transition name="fade" mode="out-in">
       <router-view />
     </transition>
@@ -14,7 +18,9 @@
 </template>
 
 <script>
+import Login from "./components/home/Login.vue";
 export default {
+  components: { Login },
   computed: {
     layout() {
       return this.$route.name;
@@ -24,6 +30,7 @@ export default {
 </script>
 <style>
 #app {
+  font-family: Tahoma !important;
   display: flex;
   height: 100vh;
   overflow: hidden;
@@ -60,22 +67,24 @@ export default {
   background-position: 0% 100%;
   background-repeat: no-repeat;
   background-size: 0% 3px;
-  transition: background-size 0.3s;
+  transition: all 0.3s;
   margin: 0.5rem;
 }
 
 .link:hover {
   cursor: pointer;
+  color: #ff8000 !important;
   background-size: 100% 3px;
 }
 
 .linkActive {
+  color: #ff8000 !important;
   background-size: 100% 3px;
 }
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.2s ease;
+  transition: all 0.2s ease;
 }
 .fade-enter,
 .fade-leave-to {
