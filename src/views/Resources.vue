@@ -1,7 +1,7 @@
 <template>
-  <div class="recources d-flex">
+  <div class="recources d-flex justify-content-evenly">
     <div class="card text-white m-2" style="width: 18rem">
-      <img src="../assets/2.jpg" class="card-img-top" alt="..." />
+      <img src="../assets/2.jpg" class="card-img-top" alt="..." height="50%" />
       <div class="card-body" style="background: #6b95c9">
         <h5 class="card-title">Флора и фауна</h5>
         <p class="card-text">
@@ -12,25 +12,60 @@
       </div>
     </div>
     <div class="card text-white m-2" style="width: 18rem">
-      <img src="../assets/2.jpg" class="card-img-top" alt="..." />
+      <img src="../assets/3.jpg" class="card-img-top" alt="..." height="50%" />
       <div class="card-body" style="background: #6b95c9">
         <h5 class="card-title">Флора и фауна</h5>
         <p class="card-text">
           Флора и фауна естественной среды. Например: живая природа,
           растительность, биология, экология, заболоченные территории и т.д.
         </p>
-        <a href="#" class="btn btn-light">Открыть каталог </a>
+        <a href="#" class="btn btn-warning">Открыть каталог </a>
       </div>
     </div>
     <div class="card text-white m-2" style="width: 18rem">
-      <img src="../assets/2.jpg" class="card-img-top" alt="..." />
+      <img src="../assets/5.jpg" class="card-img-top" alt="..." height="50%" />
       <div class="card-body" style="background: #6b95c9">
         <h5 class="card-title">Флора и фауна</h5>
         <p class="card-text">
           Флора и фауна естественной среды. Например: живая природа,
           растительность, биология, экология, заболоченные территории и т.д.
         </p>
-        <a href="#" class="btn btn-light" @click="Click()">Открыть каталог </a>
+        <a href="#" class="btn btn-success">Открыть каталог </a>
+      </div>
+    </div>
+
+    <!--  -->
+    <div class="card text-white m-2" style="width: 18rem">
+      <img src="../assets/2.jpg" class="card-img-top" alt="..." height="50%" />
+      <div class="card-body" style="background: #6b95c9">
+        <h5 class="card-title">Флора и фауна</h5>
+        <p class="card-text">
+          Флора и фауна естественной среды. Например: живая природа,
+          растительность, биология, экология, заболоченные территории и т.д.
+        </p>
+        <a href="#" class="btn btn-outline-light">Открыть каталог </a>
+      </div>
+    </div>
+    <div class="card text-white m-2" style="width: 18rem">
+      <img src="../assets/3.jpg" class="card-img-top" alt="..." height="50%" />
+      <div class="card-body" style="background: #6b95c9">
+        <h5 class="card-title">Флора и фауна</h5>
+        <p class="card-text">
+          Флора и фауна естественной среды. Например: живая природа,
+          растительность, биология, экология, заболоченные территории и т.д.
+        </p>
+        <a href="#" class="btn btn-outline-warning">Открыть каталог </a>
+      </div>
+    </div>
+    <div class="card text-white m-2" style="width: 18rem">
+      <img src="../assets/5.jpg" class="card-img-top" alt="..." height="50%" />
+      <div class="card-body" style="background: #6b95c9">
+        <h5 class="card-title">Флора и фауна</h5>
+        <p class="card-text">
+          Флора и фауна естественной среды. Например: живая природа,
+          растительность, биология, экология, заболоченные территории и т.д.
+        </p>
+        <a href="#" class="btn btn-outline-success">Открыть каталог </a>
       </div>
     </div>
   </div>
@@ -48,4 +83,7 @@ export default {
 </script>
 
 <style>
+.recources {
+  overflow-y: scroll;
+}
 </style>

@@ -41,7 +41,7 @@
       </div>
 
       <div class="text-end">
-        <label class="errors text-danger me-5">{{ errors }}</label>
+        <label class="errors text-warning me-5">{{ errors }}</label>
         <button
           class="btn btn-success"
           type="button"

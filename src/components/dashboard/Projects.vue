@@ -1,6 +1,6 @@
 <template>
   <div class="projects-control text-white m-2">
-    <div class="border-bottom">
+    <!--  <div class="border-bottom">
       <div class="row">
         <div class="col">
           <div class="mb-2">
@@ -15,12 +15,20 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="row mt-2">
-      <div class="col" style="width: 200px">
-        <h4>Каталоги</h4>
+      <div class="col" style="width: 500px">
+        <div class="d-flex mb-2">
+          <h4>Каталоги</h4>
+          <input
+            type="text"
+            class="form-control ms-5"
+            placeholder="Поиск"
+            v-model="searchCatalog"
+          />
+        </div>
         <draggable
-          :list="list"
+          :list="catalogsAfter"
           :group="{ name: 'catalogs', pull: 'shared', put: false }"
           :invertSwap="true"
           class="list-group"
@@ -29,10 +37,10 @@
           <div
             class="list-group-item text-white link border m-0"
             style="background: #6b95c9"
-            v-for="element in list"
+            v-for="element in catalogsAfter"
             :key="element.name"
           >
-            <div @click="Click(element)">{{ element.name }}</div>
+            {{ element.name }}
 
             <draggable
               :list="element.elements"
@@ -53,10 +61,18 @@
           </div>
         </draggable>
       </div>
-      <div class="col" style="width: 200px">
-        <h4>Проекты</h4>
+      <div class="col" style="width: 500px">
+        <div class="d-flex mb-2">
+          <h4>Проекты</h4>
+          <input
+            type="text"
+            class="form-control ms-5"
+            placeholder="Поиск"
+            v-model="searchProject"
+          />
+        </div>
         <draggable
-          :list="list2"
+          :list="projectsAfter"
           :group="'shared'"
           :invertSwap="true"
           class="list-group"
@@ -65,42 +81,47 @@
           <div
             class="list-group-item text-white border link m-0"
             style="background: #6b95c9"
-            v-for="element in list2"
+            v-for="element in projectsAfter"
             :key="element.name"
-            @click="Click(element)"
           >
             {{ element.name }}
           </div>
         </draggable>
       </div>
-      <div class="col" style="width: 500px">
+      <!-- <div class="col" style="width: 500px">
         <Editing :data="selectedEl" />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script>
 import draggable from "vuedraggable";
-import Editing from "./Editing.vue";
+/* import Editing from "./Editing.vue"; */
 export default {
   components: {
     draggable,
-    Editing,
+    /*     Editing, */
   },
   data() {
     return {
       selectedEl: { name: "", body: "" },
-      list: [
+      searchCatalog: "",
+      searchProject: "",
+      catalogs: [
         { name: "Красноярский край", body: "1", id: 0, elements: [] },
         { name: "Челябинск", body: "2", id: 1, elements: [] },
         { name: "Москва и Московская область", body: "3", id: 2, elements: [] },
       ],
-      list2: [
-        { name: "Затопленные районы Красноярского края", body: "4", id: 1 },
-        { name: "Парки Московской области", body: "5", id: 2 },
-        { name: "Больницы Красноярска", body: "6", id: 0 },
-        { name: "Магазины ДНС в Московской области", body: "7", id: 5 },
+      projects: [
+        { name: "Затопленные районы Красноярского края", body: "1", id: 1 },
+        { name: "Парки Московской области", body: "2", id: 2 },
+        { name: "Больницы Красноярска", body: "0", id: 0 },
+        { name: "Магазины ДНС в Московской области", body: "3", id: 3 },
+        { name: "Магазины Командор", body: "4", id: 4 },
+        { name: "Парки и зоны отдыха в городе Челябинск", body: "5", id: 5 },
+        { name: "Больницы Октябрьского района", body: "6", id: 6 },
+        { name: "Пункты вакцинации", body: "7", id: 7 },
       ],
     };
   },
@@ -110,8 +131,24 @@ export default {
       this.selectedEl = el;
     },
   },
+  computed: {
+    catalogsAfter() {
+      return this.catalogs.filter(
+        (item) => item.name.indexOf(this.searchCatalog) !== -1
+      );
+    },
+    projectsAfter() {
+      return this.projects.filter(
+        (item) => item.name.indexOf(this.searchProject) !== -1
+      );
+    },
+  },
 };
 </script>
 
 <style>
+.projects-control {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
 </style>
