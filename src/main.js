@@ -3,10 +3,9 @@ import App from './App.vue'
 import router from './router'
 import VueLayers from "vuelayers";
 import store from './store'
-
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
-
+import "vue2-editor/dist/vue2-editor.css";
 Vue.config.productionTip = false
 Vue.use(VueLayers);
 new Vue({

@@ -5,13 +5,13 @@
         <div class="col">
           <div class="mb-2">
             <label class="form-label text-white">Имя</label>
-            <input class="form-control" v-model="name" />
+            <input class="form-control" v-model="firstName" />
           </div>
         </div>
         <div class="col">
           <div class="mb-2">
             <label class="form-label text-white">Фамилия</label>
-            <input class="form-control" v-model="surname" />
+            <input class="form-control" v-model="lastName" />
           </div>
         </div>
       </div>
@@ -32,21 +32,21 @@
           <div class="mb-2">
             <label class="form-label text-white">Роль</label>
             <select class="form-select" v-model="role">
-              <option>Редактор</option>
-              <option>Пользователь</option>
-              <option>Администратор</option>
+              <option value="1">Пользователь</option>
+              <option value="2">Редактор</option>
+              <option value="3">Администратор</option>
             </select>
           </div>
         </div>
       </div>
 
       <div class="text-end">
-        <label class="errors text-warning me-5">{{ errors }}</label>
+        <label class="errors text-warning me-5">{{ error }}</label>
         <button
           class="btn btn-success"
           type="button"
           id="button-addon2"
-          @click="AddUser()"
+          @click="AddUser({ firstName, lastName, login, password, role })"
         >
           Добавить
         </button>
@@ -56,7 +56,6 @@
     <table class="table text-white m-0">
       <thead>
         <tr>
-          <th>#</th>
           <th>Имя</th>
           <th>Фамилия</th>
           <th>Логин</th>
@@ -67,44 +66,43 @@
       </thead>
       <tbody>
         <tr v-for="(user, index) in users" :key="index">
-          <th scope="row">{{ user }}</th>
           <td>
             <input
               type="text"
               class="form-control-plaintext text-white"
-              value="Швяданько"
+              v-model="user.firstName"
             />
           </td>
           <td>
             <input
               type="text"
               class="form-control-plaintext text-white"
-              value="Оксана"
+              v-model="user.lastName"
             />
           </td>
           <td>
             <input
               type="text"
               class="form-control-plaintext text-white"
-              value="Oksana"
+              v-model="user.login"
             />
           </td>
           <td>
             <input
               type="text"
               class="form-control-plaintext text-white"
-              value="qwerty123"
+              v-model="user.password"
             />
           </td>
           <td>
-            <select class="form-select">
-              <option>Редактор</option>
-              <option>Пользователь</option>
-              <option>Администратор</option>
+            <select class="form-select" v-model="user.role">
+              <option value="1">Пользователь</option>
+              <option value="2">Редактор</option>
+              <option value="3">Администратор</option>
             </select>
           </td>
           <td>
-            <button class="btn btn-danger">
+            <button class="btn btn-danger" @click="DeleteUser(index)">
               <span aria-hidden="true">&times;</span>
             </button>
           </td>
@@ -113,45 +111,29 @@
     </table>
 
     <div class="text-end">
-      <button class="btn btn-secondary m-2" type="button" id="button-addon2">
+      <button class="btn btn-secondary m-2" type="button" @click="CancelUsers">
         Отменить
       </button>
-      <button class="btn btn-success m-2" type="button" id="button-addon2">
-        Сохранить
-      </button>
+      <button class="btn btn-success m-2" type="button">Сохранить</button>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      errors: "",
-      name: "",
-      surname: "",
-      login: "",
-      password: "",
-      role: "",
-      users: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      firstName: null,
+      lastName: null,
+      login: null,
+      password: null,
+      role: null,
     };
   },
-  methods: {
-    AddUser() {
-      if (
-        !this.name ||
-        !this.surname ||
-        !this.login ||
-        !this.password ||
-        !this.role
-      ) {
-        this.errors = "Заполните все поля формы";
-        setTimeout(() => {
-          this.errors = "";
-        }, 3000);
-      }
-    },
-  },
+  computed: mapGetters(["users", "error"]),
+  methods: mapActions(["AddUser", "DeleteUser", "CancelUsers"]),
 };
 </script>
 

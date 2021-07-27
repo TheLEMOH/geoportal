@@ -21,7 +21,22 @@ const routes = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: () => import('../views/Dashboard.vue')
+    component: () => import('../views/Dashboard.vue'),
+    beforeEnter: (to, from, next) => {
+      const user = JSON.parse(localStorage.getItem("YENISEI_AUTH"));
+      if (!user) {
+        next({ name: 'Home' })
+      }
+      else {
+        const role = Number(user.role)
+        if (role == 2 || role == 3) {
+          next()
+        }
+        else {
+          next({ name: 'Home' })
+        }
+      }
+    }
   },
   {
     path: '/news',

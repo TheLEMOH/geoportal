@@ -4,29 +4,31 @@
       class="link-light float-end"
       data-bs-toggle="modal"
       data-bs-target="#exampleModal"
-      v-if="!isHere"
+      v-if="!user"
     >
       <Person />
     </a>
 
     <!-- Dropbutton -->
-    <div class="dropdown float-end">
+    <div class="dropdown float-end" v-if="user">
       <a
         class="link link-light dropdown-toggle p-1"
-        href="#"
         id="dropdownMenuLink"
         data-bs-toggle="dropdown"
         aria-expanded="false"
-        v-if="isHere"
       >
-        Администратор
+        {{ user.name }}
       </a>
 
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      <ul
+        class="dropdown-menu dropdown-menu-end"
+        aria-labelledby="dropdownMenuLink"
+      >
         <li>
           <a class="dropdown-item" href="/dashboard"
             >Редактирование материалов</a
           >
+          <a class="dropdown-item" href="/" @click="Logout">Выйти</a>
         </li>
       </ul>
     </div>
@@ -55,17 +57,19 @@
           <div class="modal-body">
             <div class="form-floating mb-3">
               <input
+                type="text"
                 class="form-control"
-                placeholder="name@example.com"
                 v-model="login"
+                @keypress="isLetter($event)"
               />
               <label for="floatingInput">Имя пользователя</label>
             </div>
             <div class="form-floating">
               <input
+                type="text"
                 class="form-control"
-                placeholder="Password"
                 v-model="password"
+                @keypress="isLetter($event)"
               />
               <label for="floatingPassword">Пароль</label>
             </div>
@@ -91,25 +95,40 @@
 
 <script>
 import Person from "../icons/Person.vue";
+import { mapGetters } from "vuex";
 export default {
   components: { Person },
   data() {
     return {
       login: null,
       password: null,
-      isHere: false,
     };
   },
+  computed: mapGetters(["user"]),
+  mounted() {
+    this.$store.dispatch("CheckUser");
+  },
   methods: {
+    Logout() {
+      this.$store.dispatch("Logout");
+    },
     Valid() {
-      if (this.login == "1" && this.password == "1") {
-        console.log("УСПЕХ");
-        this.isHere = true;
+      if (this.login && this.password) {
+        this.$store.dispatch("Login", {
+          login: this.login,
+          password: this.password,
+        });
+
         this.$refs.Modal.classList.toggle("show");
         document
           .getElementsByClassName("modal-backdrop")[0]
           .classList.toggle("show");
       }
+    },
+    isLetter(e) {
+      let char = String.fromCharCode(e.keyCode);
+      if (/^[A-Za-z-0-9]+$/.test(char)) return true;
+      else e.preventDefault();
     },
   },
 };

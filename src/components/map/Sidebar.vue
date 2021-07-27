@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar">
+  <div class="sidebar additional text-white">
     <ul class="nav flex-column">
       <li
         class="d-flex flex-column align-items-center p-2"
@@ -14,11 +14,11 @@
           role="button"
           aria-expanded="false"
           :aria-controls="'#collapseExample' + index"
-          >Раздел {{ index }}</a
+          >Каталог {{ index }}</a
         >
 
         <div class="collapse" :id="'collapseExample' + index">
-          Здесь находятся проекты для раздела {{ index }}
+          Здесь находятся проекты для каталога {{ index }}
         </div>
       </li>
     </ul>
@@ -44,9 +44,7 @@ export default {
 <style>
 .sidebar {
   width: 200px;
-  background: #12355f;
   flex-shrink: 0;
   z-index: 1;
-  color: white;
 }
 </style>

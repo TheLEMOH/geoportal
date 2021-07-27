@@ -1,8 +1,11 @@
 module.exports = {
-    publicPath: "./",
-   /*  configureWebpack: {
-        devServer: {
-            historyApiFallback: true
-        }
+    publicPath: "/",
+   /*  devServer: {
+        proxy: 'http://enplus.petyaogurkin.keenetic.pro/api/',
     } */
+    /*  configureWebpack: {
+         devServer: {
+             historyApiFallback: true
+         }
+     } */
 }

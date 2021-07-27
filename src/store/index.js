@@ -2,6 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import map from './modules/map'
 import news from './modules/news'
+import users from './modules/users'
+import login from './modules/login'
+import about from './modules/about'
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -11,6 +14,9 @@ export default new Vuex.Store({
     getters: {},
     modules: {
         map,
-        news
+        news,
+        users,
+        login,
+        about
     }
 })

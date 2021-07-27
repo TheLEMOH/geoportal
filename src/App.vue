@@ -1,11 +1,8 @@
 <template>
-  <div id="app">
-    <nav class="navbar border-bottom shadow-lg p-4">
+  <div id="app" class="background">
+    <nav class="navbar main p-4">
       <div class="container-fluid justify-content-center">
-        <h2
-          class="text-white position-absolute m-0 p-0"
-          style="text-shadow: 1px 1px 2px black"
-        >
+        <h2 class="text-white position-absolute m-0 p-0">
           Картографический веб-портал Енисей плюс
         </h2>
         <Login />
@@ -30,12 +27,11 @@ export default {
 </script>
 <style>
 #app {
-  font-family: Tahoma !important;
   display: flex;
   height: 100vh;
   overflow: hidden;
   flex-direction: column;
-  background: #376092;
+  font-family: "Formular", "Arial", sans-serif !important;
 }
 
 ::-webkit-scrollbar {
@@ -44,11 +40,11 @@ export default {
 
 ::-webkit-scrollbar-track {
   -webkit-box-shadow: 5px 5px 5px -5px rgba(45, 69, 87, 0.5) inset;
-  background-color: #376092;
+  background-color: #7cbdc9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #6b95c9;
+  background-color: #40817a;
   background-image: -webkit-linear-gradient(
     45deg,
     rgba(255, 255, 255, 0.5) 25%,
@@ -73,12 +69,13 @@ export default {
 
 .link:hover {
   cursor: pointer;
-  color: #ff8000 !important;
+  color: #dfe7f2 !important;
   background-size: 100% 3px;
 }
 
 .linkActive {
-  color: #ff8000 !important;
+  /*   color: #ff8000 !important; */
+  transition: all 0.3s;
   background-size: 100% 3px;
 }
 
@@ -89,5 +86,17 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.main {
+  background:#003b32;
+}
+
+.additional {
+  background: #40817a;
+}
+
+.background {
+  background: #7cbdc9;
 }
 </style>

@@ -1,34 +1,25 @@
 <template>
-  <div class="container news">
-    <div
-      class="row justify-content-md-center mt-2"
-      v-for="(news, index) in news"
-      :key="index"
-    >
-      <div class="col-2 news-meta reddd m-1">
-        <ul class="list-group">
-          <li class="">Дата: {{ news.date }}</li>
-        </ul>
-      </div>
-      <div class="col reddd m-1">
-        <ul class="list-group">
-          <li class="">{{ news.title }}</li>
-          <li class="">
-            {{ news.body }}
-          </li>
-        </ul>
-      </div>
+  <div class="news container-lg">
+    <Loading v-if="newsLength == 0" />
+    <div class="d-flex flex-column justify-content-evenly">
+      <Card v-for="(news, index) in news" :key="index" :data="news" />
     </div>
   </div>
 </template>
 
 <script>
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.bubble.css";
+import "quill/dist/quill.snow.css";
+import Card from "../components/news/Card.vue";
+import Loading from "./Loading.vue";
+import { mapGetters } from "vuex";
 export default {
-  computed: {
-    news() {
-      return this.$store.getters.getNews;
-    },
+  components: { Card, Loading },
+  mounted() {
+    this.$store.dispatch("FetchNews");
   },
+  computed: mapGetters(["news", "newsLength"]),
 };
 </script>
 
@@ -39,14 +30,9 @@ export default {
 
 .news {
   overflow-y: scroll;
-  color: white;
 }
 
 li {
   list-style-type: none;
-}
-
-.news-meta {
-  max-height: 75px !important;
 }
 </style>

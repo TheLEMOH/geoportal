@@ -15,10 +15,18 @@ export default {
     Sidebar,
     News: () => import("../components/dashboard/News.vue"),
     Users: () => import("../components/dashboard/Users.vue"),
+    Catalogs: () => import("../components/dashboard/Catalogs.vue"),
     Projects: () => import("../components/dashboard/Projects.vue"),
+    About: () => import("../components/dashboard/About.vue"),
+    Help: () => import("../components/dashboard/Help.vue"),
   },
   data() {
-    return { currentComponent: null };
+    return { currentComponent: "" };
+  },
+  mounted() {
+    this.$store.dispatch("FetchNews");
+    this.$store.dispatch("FetchUsers");
+    this.$store.dispatch("FetchAbout");
   },
   methods: {
     SelectComponent(id) {

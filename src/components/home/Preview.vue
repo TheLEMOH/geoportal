@@ -1,7 +1,6 @@
 <template>
   <div class="container d-flex justify-content-center align-items-stretch mt-4">
-    <div class="spine"></div>
-    <div class="page"></div>
+   <!--  <div class="spine"></div>
     <div
       id="carouselExampleControls"
       class="carousel slide"
@@ -36,7 +35,7 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -46,19 +45,19 @@ export default {
     return {
       img: [
         {
-          src: require("../../assets/1.jpg"),
+          src: require("../../assets/about.jpg"),
         },
         {
-          src: require("../../assets/2.jpg"),
+          src: require("../../assets/about.jpg"),
         },
         {
-          src: require("../../assets/3.jpg"),
+          src: require("../../assets/about.jpg"),
         },
         {
-          src: require("../../assets/4.jpg"),
+          src: require("../../assets/about.jpg"),
         },
         {
-          src: require("../../assets/5.jpg"),
+          src: require("../../assets/about.jpg"),
         },
       ],
     };
@@ -81,7 +80,7 @@ export default {
 
 .spine {
   width: 20px;
-  background-color: #6b95c9;
+  background-color: #c7cedf;
   background-image: -webkit-linear-gradient(
     45deg,
     rgba(255, 255, 255, 0.5) 10%,

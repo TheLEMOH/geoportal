@@ -1,16 +1,16 @@
 <template>
-  <div class="sidebar">
+  <div class="sidebar additional">
     <ul class="nav flex-column">
       <li
         class="d-flex flex-column align-items-center p-2"
-        v-for="(link, index) in links"
-        @click="SelectComponent(link.id, index)"
+        v-for="(component, index) in readyComponents"
+        @click="SelectComponent(component.id, index)"
         :key="index"
       >
         <a
           class="link link-light w-100"
           :class="[selectedClass == index ? 'linkActive' : '']"
-          >{{ link.name }}</a
+          >{{ component.name }}</a
         >
       </li>
     </ul>
@@ -22,11 +22,13 @@ export default {
   data() {
     return {
       selectedClass: null,
-      links: [
-        { name: "Новости", id: "News" },
-        { name: "Пользователи", id: "Users" },
-        { name: "Каталоги и проекты", id: "Projects" },
-        { name: "Помощь", id: "Help" },
+      components: [
+        { name: "Новости", id: "News", access: [2, 3] },
+        { name: "Пользователи", id: "Users", access: [3] },
+        { name: "Каталоги", id: "Catalogs", access: [2, 3] },
+        { name: "Проекты", id: "Projects", access: [2, 3] },
+        { name: "О проекте", id: "About", access: [2, 3] },
+        { name: "Помощь", id: "Help", access: [1, 2, 3] },
       ],
     };
   },
@@ -36,13 +38,19 @@ export default {
       this.$emit("select-component", id);
     },
   },
+  computed: {
+    readyComponents() {
+      const auth = JSON.parse(localStorage.getItem("YENISEI_AUTH"));
+      const role = Number(auth.role);
+      return this.components.filter((c) => c.access.indexOf(role) != -1);
+    },
+  },
 };
 </script>
 
 <style>
 .sidebar {
   width: 200px;
-  background: #12355f;
   flex-shrink: 0;
 }
 </style>

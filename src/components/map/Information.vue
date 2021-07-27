@@ -1,6 +1,6 @@
 <template>
   <transition name="fade" mode="out-in">
-    <div class="information" v-if="show == true">
+    <div class="information additional text-white" v-if="show == true">
       <div class="w-100 text-end p-1">
         <button
           type="button"
@@ -14,7 +14,7 @@
 
       <div class="p-2" v-for="(info, index) in information" :key="index">
         <h4>{{ info.name }}</h4>
-        <p align="justify" style="text-shadow: 1px 1px 2px black">
+        <p align="justify">
           {{ info.text }}
         </p>
       </div>
@@ -69,7 +69,5 @@ export default {
   flex-shrink: 0;
   z-index: 1;
   width: 350px;
-  background: #12355f;
-  color: white;
 }
 </style>
