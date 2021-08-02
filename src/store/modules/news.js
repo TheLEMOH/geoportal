@@ -1,4 +1,4 @@
-import { Get, Add, Edit, Delete } from "./news/server-procedure"
+import { Get, Add, Edit, Delete } from "./news/serverProcedure"
 export default {
     state: {
         originalNews: '[]',
@@ -12,6 +12,7 @@ export default {
             console.log(files)
             ctx.commit('updateFiles', files)
         },
+
         AddNews(ctx) {
             const news = {
                 title: '',
@@ -34,10 +35,12 @@ export default {
             ctx.commit('updateSelectedNews', null);
             ctx.commit('cancel')
         },
+
         async FetchNews(ctx) {
             const receivedNews = await Get();
             ctx.commit('updateNews', receivedNews);
         },
+
         async SaveNews(ctx) {
             const user = JSON.parse(localStorage.getItem("YENISEI_AUTH"));
             const news = ctx.state.news
@@ -70,6 +73,7 @@ export default {
                 this.dispatch('FetchNews');
             }
         },
+        
         SelectNews(ctx, index) {
             ctx.commit('updateSelectedNews', index);
         }
@@ -107,6 +111,7 @@ export default {
             files.forEach(f => {
                 state.news[index].img.push(f)
             })
+            console.log(state.news)
         }
     },
     getters: {

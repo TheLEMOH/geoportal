@@ -29,9 +29,11 @@ export default {
 #app {
   display: flex;
   height: 100vh;
+  width: 100vw;
   overflow: hidden;
   flex-direction: column;
   font-family: "Formular", "Arial", sans-serif !important;
+  z-index: 0;
 }
 
 ::-webkit-scrollbar {
@@ -39,12 +41,12 @@ export default {
 }
 
 ::-webkit-scrollbar-track {
-  -webkit-box-shadow: 5px 5px 5px -5px rgba(45, 69, 87, 0.5) inset;
-  background-color: #7cbdc9;
+  -webkit-box-shadow: 5px 5px 5px -5px rgba(45, 69, 87, 0.1) inset;
+  background-color: #8094b3;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #40817a;
+  background-color: #8094b3;
   background-image: -webkit-linear-gradient(
     45deg,
     rgba(255, 255, 255, 0.5) 25%,
@@ -69,12 +71,12 @@ export default {
 
 .link:hover {
   cursor: pointer;
-  color: #dfe7f2 !important;
+  color: #ff8000 !important;
   background-size: 100% 3px;
 }
 
 .linkActive {
-  /*   color: #ff8000 !important; */
+  color: #ff8000 !important;
   transition: all 0.3s;
   background-size: 100% 3px;
 }
@@ -89,14 +91,23 @@ export default {
 }
 
 .main {
-  background:#003b32;
+  background: #161d2b;
 }
 
 .additional {
-  background: #40817a;
+  background: #1d2b43 !important;
+}
+
+.selected-news {
+  background: #1d2b43;
+  transition: all 0.3s;
 }
 
 .background {
-  background: #7cbdc9;
+  background: #8094b3;
+}
+
+.text-shadow {
+  text-shadow: 1px 1px 2px black;
 }
 </style>

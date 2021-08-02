@@ -1,17 +1,14 @@
 <template>
-  <div class="news-control container-fluid">
-    <div class="row">
-      <div class="col-lg-3" style="min-width: 400px">
-        <!-- Кнопки управления -->
-        <ControlPanel />
-        <!-- Отображение списка новостей -->
+  <div class="news-control w-100">
+    <ControlPanel />
+    <div class="row m-1">
+      <div class="col-md-auto" style="min-width: 400px">
         <TableNews />
       </div>
-      <!-- Редактирование новостей -->
-      <div class="col-md mt-2 text-white" v-if="selectedNews != null">
+      <div class="col-md text-white" v-if="selectedNews != null">
         <EditingNews />
       </div>
-      <div class="col-md mt-2 text-white" v-else>
+      <div class="col-md text-white" v-else>
         <label>Выберите новость</label>
       </div>
     </div>
@@ -39,17 +36,13 @@ export default {
 
 <style>
 .news-control {
-  height: 100%;
+  height: 90vh;
+  overflow-x: hidden;
   overflow-y: auto;
 }
 
 td {
   word-wrap: break-word;
-}
-
-.selected-news {
-  background: #40817a;
-  transition: all 0.3s;
 }
 
 .wrong-news {

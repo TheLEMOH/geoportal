@@ -39,25 +39,8 @@
         multiple
         @change="fileChange"
       />
-      <table class="table" style="width: 400px">
-        <thead>
-          <tr>
-            <th>Название</th>
-            <th>&times;</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(img, index) in news[selectedNews].img" :key="index">
-            <td>{{ img }}</td>
-            <td>
-              <button class="btn btn-danger" style="z-index: 5">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
+    <TableImage />
   </div>
 </template>
 
@@ -65,8 +48,9 @@
 import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
+import TableImage from "./TableImage.vue";
 export default {
-  components: { VueEditor },
+  components: { VueEditor, TableImage },
   computed: mapGetters(["news", "newsLength", "selectedNews"]),
   methods: mapActions(["fileChange"]),
   data() {
@@ -89,4 +73,9 @@ export default {
 </script>
 
 <style>
+.editing-news {
+  height: auto;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
 </style>

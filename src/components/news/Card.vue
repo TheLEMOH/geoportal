@@ -6,12 +6,16 @@
       </div>
       <div class="col">
         <div class="card text-white m-2">
-          <div class="card-body additional ql-editor" style="height: auto">
+          <div class="card-body additional ql-editor" >
             <h5 class="card-title">{{ data.title }}</h5>
             <div class="card-text mt-2 mb-2" v-html="data.body"></div>
             <div class="card-img-bottom">
-              <div class="row row-cols-3 justify-content-center">
-                <div class="col" v-for="(img, index) in data.img" :key="index">
+              <div class="row row-cols-1 row-cols-md-3 justify-content-center">
+                <div
+                  class="col col-md mb-2"
+                  v-for="(img, index) in data.img"
+                  :key="index"
+                >
                   <img
                     :src="
                       'http://enplus.petyaogurkin.keenetic.pro/api/images/' +

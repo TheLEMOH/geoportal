@@ -1,19 +1,46 @@
 <template>
-  <div class="container d-flex justify-content-center align-items-stretch mt-4">
-   <!--  <div class="spine"></div>
+  <div class="container d-flex justify-content-center mt-4 text-shadow">
+    <div class="spine"></div>
     <div
       id="carouselExampleControls"
       class="carousel slide"
       data-bs-ride="carousel"
     >
-      <div class="carousel-inner" style="height: 500px; width: 1000px">
+      <div
+        class="carousel-inner carousel-wrap text-white"
+        style="height: 400px; width: 900px"
+      >
         <div
-          class="carousel-item"
+          class="carousel-item position-relative"
           v-bind:class="[index == 0 ? 'active' : '']"
           v-for="(i, index) in img"
           :key="index"
         >
-          <img :src="i.src" style="height: 500px; width: 100%" />
+          <p
+            class="
+              image-title
+              position-absolute
+              top-50
+              start-50
+              translate-middle
+            "
+          >
+            Флора и фауна
+          </p>
+          <p
+            class="
+              image-text
+              position-absolute
+              top-50
+              start-50
+              translate-middle
+              p-2
+            "
+          >
+            Флора и фауна естественной среды. Например: живая природа,
+            растительность, биология, экология, заболоченные территории и т.д.
+          </p>
+          <img :src="i.src" style="height: 400px; width: 100%" />
         </div>
       </div>
 
@@ -22,6 +49,7 @@
         type="button"
         data-bs-target="#carouselExampleControls"
         data-bs-slide="prev"
+        style="z-index: 1000"
       >
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
@@ -31,11 +59,12 @@
         type="button"
         data-bs-target="#carouselExampleControls"
         data-bs-slide="next"
+        style="z-index: 1000"
       >
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
-    </div> -->
+    </div>
   </div>
 </template>
 

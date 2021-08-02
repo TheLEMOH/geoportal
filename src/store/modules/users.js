@@ -1,14 +1,31 @@
-
 const URL_GET = 'http://enplus.petyaogurkin.keenetic.pro/api/users/'
-/* const URL_ADD = 'http://enplus.petyaogurkin.keenetic.pro/api/users/add/'
+const URL_ADD = 'http://enplus.petyaogurkin.keenetic.pro/api/users/add/'
 const URL_EDIT = 'http://enplus.petyaogurkin.keenetic.pro/api/users/edit/'
-const URL_DELETE = 'http://enplus.petyaogurkin.keenetic.pro/api/users/remove/' */
+const URL_DELETE = 'http://enplus.petyaogurkin.keenetic.pro/api/users/remove/'
 
+
+async function Add(user, token) {
+    const body = JSON.stringify(user);
+    const res = await fetch(URL_ADD, { body: body, headers: { 'Authorization': `Bearer ${token}` } })
+    console.log(res);
+}
+
+
+async function Edit(user, token) {
+    const res = await fetch(URL_EDIT + `${user._id}`, { headers: { 'Authorization': `Bearer ${token}` } })
+    console.log(res)
+}
+
+async function Delete(user, token) {
+    const res = await fetch(URL_DELETE + `${user._id}`, { headers: { 'Authorization': `Bearer ${token}` } })
+    console.log(res)
+}
 
 export default {
     state: {
         error: "",
         users: [],
+        delUsers: [],
         originalUsers: '[]',
         user: null
     },
@@ -29,9 +46,35 @@ export default {
 
         async FetchUsers(ctx) {
             const user = JSON.parse(localStorage.getItem("YENISEI_AUTH"));
-            const res = await fetch(URL_GET, { headers: { 'Authorization': `Bearer ${user.accessToken}` } })
-            const receivedUsers = await res.json()
-            ctx.commit('updateUsers', receivedUsers)
+            if (user.role == 3) {
+                const res = await fetch(URL_GET, { headers: { 'Authorization': `Bearer ${user.accessToken}` } })
+                const receivedUsers = await res.json()
+                receivedUsers.forEach(user => {
+                    user.password = null;
+                    user.changePassword = false;
+                });
+                ctx.commit('updateUsers', receivedUsers)
+            }
+        },
+
+        async SaveUsers(ctx) {
+            const client = JSON.parse(localStorage.getItem("YENISEI_AUTH"));
+            if (client.role == 3) {
+                const users = ctx.state.users;
+                const delUsers = ctx.state.delUsers;
+                users.forEach(user => {
+                    if (user.action == "add") {
+                        Add(user, client.accessToken)
+                    }
+                    if (user.action == "edit") {
+                        Edit(user, client.accessToken)
+                    }
+
+                });
+                delUsers.forEach(user => {
+                    Delete(user, client.accessToken)
+                })
+            }
         },
 
         async CancelUsers(ctx) {

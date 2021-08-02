@@ -19,6 +19,7 @@ export default {
     Projects: () => import("../components/dashboard/Projects.vue"),
     About: () => import("../components/dashboard/About.vue"),
     Help: () => import("../components/dashboard/Help.vue"),
+    Styles: () => import("../components/dashboard/Styles.vue"),
   },
   data() {
     return { currentComponent: "" };
@@ -27,6 +28,7 @@ export default {
     this.$store.dispatch("FetchNews");
     this.$store.dispatch("FetchUsers");
     this.$store.dispatch("FetchAbout");
+    this.$store.dispatch("FetchStyles");
   },
   methods: {
     SelectComponent(id) {

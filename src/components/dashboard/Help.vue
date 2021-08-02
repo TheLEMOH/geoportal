@@ -1,5 +1,5 @@
 <template>
-  <div class="m-2 text-white">
+  <div class="m-2 text-white text-shadow">
     <h3>Добро пожаловать!</h3>
     <p>
       В данном разделе описаны шаги по добавлению новостей, проектов, каталогов

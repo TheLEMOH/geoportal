@@ -1,5 +1,6 @@
 <template>
   <div class="about">
+    <Loading v-if="!about" class="position-absolute" />
     <div
       class="
         ql-container
@@ -13,8 +14,8 @@
     >
       <div
         class="ql-editor text-white rounded"
-        v-if="about"
         style="text-shadow: 1px 1px 2px black"
+        v-if="about"
         v-html="about[0].body"
       ></div>
     </div>
@@ -27,11 +28,13 @@
 </template>
 
 <script>
+import Loading from "./Loading.vue";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.bubble.css";
 import "quill/dist/quill.snow.css";
 import { mapGetters } from "vuex";
 export default {
+  components: { Loading },
   computed: mapGetters(["about"]),
   mounted() {
     this.$store.dispatch("FetchAbout");

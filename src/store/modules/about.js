@@ -26,7 +26,6 @@ export default {
     },
     getters: {
         about(state) {
-            console.log(state.about)
             return state.about
         },
     },

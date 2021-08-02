@@ -27,6 +27,7 @@ export default {
         { name: "Пользователи", id: "Users", access: [3] },
         { name: "Каталоги", id: "Catalogs", access: [2, 3] },
         { name: "Проекты", id: "Projects", access: [2, 3] },
+        { name: "Стили", id: "Styles", access: [2, 3] },
         { name: "О проекте", id: "About", access: [2, 3] },
         { name: "Помощь", id: "Help", access: [1, 2, 3] },
       ],

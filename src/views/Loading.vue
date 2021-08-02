@@ -12,5 +12,6 @@ export default {};
 .loading {
   width: 300px;
   height: 300px;
+  z-index: 1000;
 }
 </style>

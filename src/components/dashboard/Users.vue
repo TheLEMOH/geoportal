@@ -1,5 +1,5 @@
 <template>
-  <div class="users-control shadow">
+  <div class="users-control w-100 text-shadow">
     <div class="p-2 border-bottom">
       <div class="row">
         <div class="col">
@@ -60,6 +60,7 @@
           <th>Фамилия</th>
           <th>Логин</th>
           <th>Пароль</th>
+          <th>Сменить пароль</th>
           <th>Роль</th>
           <th><span aria-hidden="true">&times;</span></th>
         </tr>
@@ -69,32 +70,40 @@
           <td>
             <input
               type="text"
-              class="form-control-plaintext text-white"
+              class="form-control-plaintext text-white text-shadow"
               v-model="user.firstName"
             />
           </td>
           <td>
             <input
               type="text"
-              class="form-control-plaintext text-white"
+              class="form-control-plaintext text-white text-shadow"
               v-model="user.lastName"
             />
           </td>
           <td>
             <input
               type="text"
-              class="form-control-plaintext text-white"
+              class="form-control-plaintext text-white text-shadow"
               v-model="user.login"
             />
           </td>
           <td>
             <input
               type="text"
-              class="form-control-plaintext text-white"
+              class="form-control-plaintext text-white text-shadow"
               v-model="user.password"
+              :disabled="!user.changePassword"
             />
           </td>
           <td>
+            <input
+              type="checkbox"
+              class="form-check-input"
+              v-model="user.changePassword"
+            />
+          </td>
+          <td style="min-width: 190px">
             <select class="form-select" v-model="user.role">
               <option value="1">Пользователь</option>
               <option value="2">Редактор</option>

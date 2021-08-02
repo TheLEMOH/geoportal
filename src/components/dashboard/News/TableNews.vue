@@ -1,5 +1,5 @@
 <template>
-  <div class="table-news">
+  <div class="table-news text-shadow">
     <table class="table border">
       <thead>
         <tr class="text-center">

@@ -35,8 +35,7 @@
           style="min-height: 150px"
         >
           <div
-            class="list-group-item text-white link border m-0"
-            style="background: #6b95c9"
+            class="list-group-item text-white link border additional m-0"
             v-for="element in catalogsAfter"
             :key="element.name"
           >
@@ -49,8 +48,7 @@
               class="list-group"
             >
               <div
-                class="list-group-item text-white border link m-0"
-                style="background: #6b95c9"
+                class="list-group-item text-white border additional link m-0"
                 v-for="el in element.elements"
                 :key="el.name"
                 @click="Click(el)"
@@ -79,8 +77,7 @@
           style="min-height: 150px"
         >
           <div
-            class="list-group-item text-white border link m-0"
-            style="background: #6b95c9"
+            class="list-group-item text-white border additional link m-0"
             v-for="element in projectsAfter"
             :key="element.name"
           >

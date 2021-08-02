@@ -1,5 +1,5 @@
 <template>
-  <div class="mapBox d-flex h-100 position-relative">
+  <div class="mapBox d-flex h-100 position-relative text-shadow">
     <Sidebar /><Information /><Map /><Legend />
   </div>
 </template>
