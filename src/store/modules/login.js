@@ -1,4 +1,5 @@
 import jwt_decode from "jwt-decode";
+import { InputValidation } from "./valid/valid"
 
 const URL_LOGIN = 'http://enplus.petyaogurkin.keenetic.pro/api/auth/login/'
 const URL_LOGOUT = 'http://enplus.petyaogurkin.keenetic.pro/api/auth/logout/'
@@ -8,36 +9,43 @@ export default {
     state: {
         users: [],
         originalUsers: '[]',
-        user: null
+        user: null,
+        login: null,
+        password: null,
     },
     actions: {
-        async Login(ctx, data) {
-            const body = data
-            const res = await fetch(URL_LOGIN, {
-                method: 'POST', headers: {
-                    'Content-Type': 'application/json'
-                }, body: JSON.stringify(body)
-            })
+        async Login(ctx) {
+            const login = ctx.state.login
+            const password = ctx.state.password
 
-            if (res.status == 403) {
-                alert('Неверный логин или пароль')
-            }
+            if (login && password) {
+                const body = { login, password }
+                const res = await fetch(URL_LOGIN, {
+                    method: 'POST', headers: {
+                        'Content-Type': 'application/json'
+                    }, body: JSON.stringify(body)
+                })
 
-            if (res.status == 200) {
-                const tokens = await res.json()
-                const decoded = jwt_decode(
-                    tokens.accessToken
-                );
-                const user = {
-                    id: decoded.id,
-                    role: decoded.role,
-                    name: data.login,
-                    accessToken: tokens.accessToken,
-                    refreshToken: tokens.refreshToken
+                if (res.status == 403) {
+                    alert('Неверный логин или пароль')
                 }
 
-                localStorage.setItem("YENISEI_AUTH", JSON.stringify(user));
-                ctx.commit('updateUser', user)
+                if (res.status == 200) {
+                    const tokens = await res.json()
+                    const decoded = jwt_decode(
+                        tokens.accessToken
+                    );
+                    const user = {
+                        id: decoded.id,
+                        role: decoded.role,
+                        name: login,
+                        accessToken: tokens.accessToken,
+                        refreshToken: tokens.refreshToken
+                    }
+
+                    localStorage.setItem("YENISEI_AUTH", JSON.stringify(user));
+                    ctx.commit('updateUser', user)
+                }
             }
         },
 
@@ -74,15 +82,25 @@ export default {
         },
     },
     mutations: {
-
+        updateLogin(state, e) {
+            state.login = InputValidation(e, "latin")
+        },
+        updatePassword(state, e) {
+            state.password = InputValidation(e, "pass")
+        },
         updateUser(state, user) {
             state.user = user
         },
-
     },
     getters: {
         user(state) {
             return state.user
+        },
+        login(state) {
+            return state.login
+        },
+        password(state) {
+            return state.password
         }
     },
 }

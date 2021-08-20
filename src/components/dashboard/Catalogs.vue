@@ -1,21 +1,5 @@
 <template>
   <div class="catalogs-control text-white m-2">
-    <!--  <div class="border-bottom">
-      <div class="row">
-        <div class="col">
-          <div class="mb-2">
-            <label class="form-label text-white">Название</label>
-            <input class="form-control" />
-          </div>
-        </div>
-        <div class="col">
-          <div class="mb-2">
-            <label class="form-label text-white">Описание</label>
-            <input class="form-control" />
-          </div>
-        </div>
-      </div>
-    </div> -->
     <div class="row mt-2">
       <div class="col" style="width: 500px">
         <div class="d-flex mb-2">
@@ -85,20 +69,15 @@
           </div>
         </draggable>
       </div>
-      <!-- <div class="col" style="width: 500px">
-        <Editing :data="selectedEl" />
-      </div> -->
     </div>
   </div>
 </template>
 
 <script>
 import draggable from "vuedraggable";
-/* import Editing from "./Editing.vue"; */
 export default {
   components: {
     draggable,
-    /*     Editing, */
   },
   data() {
     return {

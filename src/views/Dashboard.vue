@@ -9,7 +9,7 @@
 
 <script>
 import Sidebar from "../components/dashboard/Sidebar.vue";
-
+import { mapActions } from "vuex";
 export default {
   components: {
     Sidebar,
@@ -19,18 +19,17 @@ export default {
     Projects: () => import("../components/dashboard/Projects.vue"),
     About: () => import("../components/dashboard/About.vue"),
     Help: () => import("../components/dashboard/Help.vue"),
-    Styles: () => import("../components/dashboard/Styles.vue"),
   },
   data() {
     return { currentComponent: "" };
   },
   mounted() {
-    this.$store.dispatch("FetchNews");
-    this.$store.dispatch("FetchUsers");
-    this.$store.dispatch("FetchAbout");
-    this.$store.dispatch("FetchStyles");
+  /*   this.FetchNews();
+    this.FetchUsers();
+    this.FetchAbout(); */
   },
   methods: {
+    ...mapActions(["FetchNews", "FetchUsers", "FetchAbout"]),
     SelectComponent(id) {
       this.currentComponent = id;
     },

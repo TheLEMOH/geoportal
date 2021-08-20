@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex additional p-1 mb-2">
+  <div class="additional p-1 mb-2">
     <button type="button" class="btn btn-success me-2">
       <AddIcon />
     </button>
@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import SaveIcon from "../SaveIcon.vue";
-import CancelIcon from "../CancelIcon.vue";
-import AddIcon from "../AddIcon.vue";
+import SaveIcon from "../../icons/SaveIcon.vue";
+import CancelIcon from "../../icons/CancelIcon.vue";
+import AddIcon from "../../icons/AddIcon.vue";
 import { mapActions } from "vuex";
 export default {
   data() {

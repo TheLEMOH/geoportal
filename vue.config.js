@@ -1,11 +1,13 @@
+
+const webpack = require("webpack");
 module.exports = {
     publicPath: "/",
-   /*  devServer: {
-        proxy: 'http://enplus.petyaogurkin.keenetic.pro/api/',
-    } */
-    /*  configureWebpack: {
-         devServer: {
-             historyApiFallback: true
-         }
-     } */
+    configureWebpack: {
+        plugins: [
+            new webpack.ProvidePlugin({
+                'window.Quill': 'quill/dist/quill.js',
+                Quill: 'quill/dist/quill.js'
+            })
+        ]
+    }
 }

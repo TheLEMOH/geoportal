@@ -57,6 +57,9 @@ export default {
             }
 
             if (!wrongNews) {
+
+                this.dispatch('DisplayMessageEver', "Сохранение новостей...");
+
                 news.forEach(n => {
                     if (n.action == "add") {
                         Add(n, user.accessToken);
@@ -67,13 +70,15 @@ export default {
                         n.action = "done"
                     }
                 })
+
                 delNews.forEach(n => {
                     Delete(n, user.accessToken)
                 })
-                this.dispatch('FetchNews');
+
+                setTimeout(() => { this.dispatch('FetchNews'); this.dispatch('DisplayMessage', "Новости сохранены!"); }, 3000);
             }
         },
-        
+
         SelectNews(ctx, index) {
             ctx.commit('updateSelectedNews', index);
         }
@@ -96,7 +101,6 @@ export default {
             state.news = news
         },
         cancel(state) {
-            console.log(state.news)
             state.delNews = [];
             state.news = JSON.parse(state.originalNews)
         },

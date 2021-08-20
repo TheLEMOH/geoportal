@@ -3,7 +3,7 @@
     <ul class="nav flex-column">
       <li
         class="d-flex flex-column align-items-center p-2"
-        v-for="(component, index) in readyComponents"
+        v-for="(component, index) in availableComponents"
         @click="SelectComponent(component.id, index)"
         :key="index"
       >
@@ -27,7 +27,6 @@ export default {
         { name: "Пользователи", id: "Users", access: [3] },
         { name: "Каталоги", id: "Catalogs", access: [2, 3] },
         { name: "Проекты", id: "Projects", access: [2, 3] },
-        { name: "Стили", id: "Styles", access: [2, 3] },
         { name: "О проекте", id: "About", access: [2, 3] },
         { name: "Помощь", id: "Help", access: [1, 2, 3] },
       ],
@@ -40,7 +39,7 @@ export default {
     },
   },
   computed: {
-    readyComponents() {
+    availableComponents() {
       const auth = JSON.parse(localStorage.getItem("YENISEI_AUTH"));
       const role = Number(auth.role);
       return this.components.filter((c) => c.access.indexOf(role) != -1);

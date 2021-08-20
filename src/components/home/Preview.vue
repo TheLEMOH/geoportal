@@ -8,7 +8,7 @@
     >
       <div
         class="carousel-inner carousel-wrap text-white"
-        style="height: 400px; width: 900px"
+        style="height: 500px; width: 1100px"
       >
         <div
           class="carousel-item position-relative"
@@ -20,27 +20,22 @@
             class="
               image-title
               position-absolute
-              top-50
-              start-50
-              translate-middle
+              w-100
+              text-center
+              position-absolute
+              bottom-0
+              p-3
             "
           >
             Флора и фауна
           </p>
           <p
-            class="
-              image-text
-              position-absolute
-              top-50
-              start-50
-              translate-middle
-              p-2
-            "
+            class="image-text w-100 text-center position-absolute bottom-0 p-3"
           >
             Флора и фауна естественной среды. Например: живая природа,
             растительность, биология, экология, заболоченные территории и т.д.
           </p>
-          <img :src="i.src" style="height: 400px; width: 100%" />
+          <img :src="i.src" style="height: 500px; width: 100%" />
         </div>
       </div>
 

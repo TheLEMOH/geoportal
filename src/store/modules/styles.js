@@ -1,6 +1,6 @@
 const URL_GET = 'http://enplus.petyaogurkin.keenetic.pro/api/styles/'
 const URL_ADD = 'http://enplus.petyaogurkin.keenetic.pro/api/styles/add/'
-
+const URL_DELETE = 'http://enplus.petyaogurkin.keenetic.pro/api/styles/remove/'
 
 async function Get() {
     const res = await fetch(URL_GET);
@@ -8,22 +8,15 @@ async function Get() {
     return receivedStyles
 }
 
-
 async function Add(style, token) {
 
-    const formData = new FormData();
+    const body = JSON.stringify(style)
+    const send = await fetch(URL_ADD, { method: 'POST', body: body, headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } })
+    console.log(send)
+}
 
-    formData.append("title", style.title);
-    formData.append("svg", style.svg);
-    formData.append("stroke", style.stroke);
-    formData.append("strokeType", style.strokeType);
-    formData.append("strokeWidth", style.strokeWidth);
-    formData.append("strokeOpacity", style.strokeOpacity);
-    formData.append("fill", style.fill);
-    formData.append("fillOpacity", style.fillOpacity);
-
-
-    const send = await fetch(URL_ADD, { method: 'POST', body: formData, headers: { 'Authorization': `Bearer ${token}` } })
+async function Delete(style, token) {
+    const send = fetch(URL_DELETE + `${style._id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } })
     console.log(send)
 }
 
@@ -53,7 +46,7 @@ export default {
             })
             delStyles.forEach(s => {
                 console.log(s);
-                /*   Delete(n, user.accessToken) */
+                Delete(s, user.accessToken)
             })
         },
 
@@ -68,13 +61,13 @@ export default {
 
         AddStyle(ctx) {
             const style = {
-                name: null,
+                title: "Новый стиль",
                 fill: "#000000",
-                fillOpacity: null,
+                fillOpacity: 1,
                 stroke: "#000000",
                 strokeType: "solid",
-                strokeWidth: null,
-                strokeOpacity: null,
+                strokeWidth: 1,
+                strokeOpacity: 1,
                 action: "add"
             }
             ctx.commit("addStyle", style)
@@ -105,7 +98,13 @@ export default {
         },
 
         deleteStyle(state, index) {
-            state.styles.splice(index, 1);
+            if (state.styles[index].action == "add") {
+                state.styles.splice(index, 1);
+            }
+            else {
+                state.delStyles.push(state.styles[index]);
+                state.styles.splice(index, 1);
+            }
         },
 
         cancelStyles(state) {

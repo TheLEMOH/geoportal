@@ -44,23 +44,25 @@
     >
       <div class="modal-dialog" ref="Modalr">
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header text-white additional">
             <h5 class="modal-title" id="exampleModalLabel">Вход</h5>
             <button
               type="button"
-              class="btn-close"
+              class="btn btn-danger"
               data-bs-dismiss="modal"
               aria-label="Close"
-            ></button>
+            >
+              &times;
+            </button>
           </div>
 
-          <div class="modal-body">
+          <div class="modal-body background">
             <div class="form-floating mb-3">
               <input
                 type="text"
                 class="form-control"
-                v-model="login"
-                @keypress="isLetter($event)"
+                :value="login"
+                @input="updateLogin"
               />
               <label for="floatingInput">Имя пользователя</label>
             </div>
@@ -68,14 +70,14 @@
               <input
                 type="text"
                 class="form-control"
-                v-model="password"
-                @keypress="isLetter($event)"
+                :value="password"
+                @input="updatePassword"
               />
               <label for="floatingPassword">Пароль</label>
             </div>
           </div>
 
-          <div class="modal-footer">
+          <div class="modal-footer additional">
             <button
               type="button"
               class="btn btn-secondary"
@@ -83,7 +85,11 @@
             >
               Закрыть
             </button>
-            <button type="button" class="btn btn-primary" @click="Valid">
+            <button
+              type="button"
+              class="btn background text-white"
+              @click="Login"
+            >
               Войти
             </button>
           </div>
@@ -96,40 +102,17 @@
 <script>
 import Person from "../icons/Person.vue";
 import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
+import { mapMutations } from "vuex";
 export default {
   components: { Person },
-  data() {
-    return {
-      login: null,
-      password: null,
-    };
-  },
-  computed: mapGetters(["user"]),
-  mounted() {
-    this.$store.dispatch("CheckUser");
-  },
+  computed: mapGetters(["user", "login", "password"]),
   methods: {
-    Logout() {
-      this.$store.dispatch("Logout");
-    },
-    Valid() {
-      if (this.login && this.password) {
-        this.$store.dispatch("Login", {
-          login: this.login,
-          password: this.password,
-        });
-
-        this.$refs.Modal.classList.toggle("show");
-        document
-          .getElementsByClassName("modal-backdrop")[0]
-          .classList.toggle("show");
-      }
-    },
-    isLetter(e) {
-      let char = String.fromCharCode(e.keyCode);
-      if (/^[A-Za-z-0-9]+$/.test(char)) return true;
-      else e.preventDefault();
-    },
+    ...mapActions(["CheckUser", "Login", "Logout"]),
+    ...mapMutations(["updateLogin", "updatePassword"]),
+  },
+  mounted() {
+    this.CheckUser();
   },
 };
 </script>

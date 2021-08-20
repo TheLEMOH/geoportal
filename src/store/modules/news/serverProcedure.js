@@ -4,7 +4,7 @@ const URL_EDIT = 'http://enplus.petyaogurkin.keenetic.pro/api/news/edit/'
 const URL_DELETE = 'http://enplus.petyaogurkin.keenetic.pro/api/news/remove/'
 
 function Done() {
-    alert("Успешно!")
+    console.log("УСПЕХ")
 }
 
 /* Работа с сервером */
@@ -26,11 +26,9 @@ async function Add(news, token) {
     if (send.status == 201) {
         Done()
     }
-    console.log(send)
 }
 
 async function Edit(news, token) {
-    console.log(news)
     const formData = new FormData();
     formData.append("title", news.title);
     formData.append("body", news.body);
@@ -42,7 +40,6 @@ async function Edit(news, token) {
     if (send.status == 200) {
         Done()
     }
-    console.log(send)
 }
 
 async function Delete(news, token) {

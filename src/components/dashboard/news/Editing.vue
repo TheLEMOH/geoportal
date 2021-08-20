@@ -1,5 +1,5 @@
 <template>
-  <div class="editing-news">
+  <div class="editing-news text-black mt-2">
     <div class="mb-2">
       <div class="row">
         <div class="col-2" style="min-width: 160px">
@@ -26,8 +26,8 @@
       <label class="form-label">Текст</label>
       <VueEditor
         class="bg-light text-dark"
+        :editorOptions="editorSettings"
         v-model="news[selectedNews].body"
-        :editorToolbar="toolbar"
       />
     </div>
     <div class="mb-2">
@@ -45,16 +45,23 @@
 </template>
 
 <script>
-import { VueEditor } from "vue2-editor";
+import { VueEditor, Quill } from "vue2-editor";
+import ImageResize from "quill-image-resize-module";
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
-import TableImage from "./TableImage.vue";
+import TableImage from "./Image.vue";
+Quill.register("modules/imageResize", ImageResize);
 export default {
   components: { VueEditor, TableImage },
   computed: mapGetters(["news", "newsLength", "selectedNews"]),
   methods: mapActions(["fileChange"]),
   data() {
     return {
+      editorSettings: {
+        modules: {
+          imageResize: {},
+        },
+      },
       toolbar: [
         [{ header: [false, 1, 2, 3, 4, 5, 6] }],
         ["bold", "italic", "underline"],
@@ -74,7 +81,7 @@ export default {
 
 <style>
 .editing-news {
-  height: auto;
+  height: 82vh;
   overflow-x: hidden;
   overflow-y: scroll;
 }

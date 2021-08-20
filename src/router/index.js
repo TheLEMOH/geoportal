@@ -52,6 +52,16 @@ const routes = [
     path: '/resources',
     name: 'Resources',
     component: () => import('../views/Resources.vue')
+  },
+  {
+    path: '/second',
+    name: "second",
+    component: () => import('../views/SecondMenu.vue')
+  },
+  {
+    path: '*',
+    name: "404",
+    component: () => import('../views/404.vue')
   }
 ]
 

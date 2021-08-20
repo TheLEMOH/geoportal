@@ -1,6 +1,6 @@
 <template>
   <div class="table-news text-shadow">
-    <table class="table border">
+    <table class="table table-striped border">
       <thead>
         <tr class="text-center">
           <th>Дата публикации</th>
@@ -13,7 +13,7 @@
         <tr
           class=""
           v-for="(news, index) in news"
-          :class="[selectedNews == index ? 'selected-news' : '']"
+          :class="[selectedNews == index ? 'selected' : '']"
           :key="index"
           :id="news._id"
         >
@@ -22,7 +22,7 @@
           <td>
             <button
               class="btn btn-warning"
-              style="z-index: 5"
+              style="z-index: 1"
               @click="SelectNews(index)"
             >
               <EditIcon />
@@ -31,7 +31,7 @@
           <td>
             <button
               class="btn btn-danger"
-              style="z-index: 5"
+              style="z-index: 1"
               @click="DeleteNews(index)"
             >
               <span aria-hidden="true">&times;</span>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import EditIcon from "../EditIcon.vue";
+import EditIcon from "../../icons/EditIcon.vue";
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 export default {
@@ -55,15 +55,23 @@ export default {
 </script>
 
 <style>
+thead th {
+  min-width: auto;
+}
+
+tbody td {
+  min-width: 60px;
+  max-width: 130px;
+}
+
 .table-news {
-  max-height: 80vh;
-  min-width: 330px;
+  height: 82vh;
+  width: 450px;
   overflow-x: hidden;
   overflow-y: scroll;
 }
 
 .table-news button {
-  width: 40px;
-  margin: 0;
+  width: 45px;
 }
 </style>

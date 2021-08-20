@@ -1,37 +1,47 @@
 <template>
   <div class="users-control w-100 text-shadow">
-    <div class="p-2 border-bottom">
-      <div class="row">
-        <div class="col">
-          <div class="mb-2">
-            <label class="form-label text-white">Имя</label>
-            <input class="form-control" v-model="firstName" />
+    <div class="p-2 border-bottom border-dark">
+      <div class="mb-2">
+        <div class="row">
+          <div class="col">
+            <label class="form-label">Имя</label>
+            <input
+              class="form-control"
+              :value="firstname"
+              @input="updateFirstname"
+            />
           </div>
-        </div>
-        <div class="col">
-          <div class="mb-2">
-            <label class="form-label text-white">Фамилия</label>
-            <input class="form-control" v-model="lastName" />
+          <div class="col">
+            <label class="form-label">Фамилия</label>
+            <input
+              class="form-control"
+              :value="lastname"
+              @input="updateLastname"
+            />
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col">
-          <div class="mb-2">
-            <label class="form-label text-white">Логин</label>
-            <input class="form-control" v-model="password" />
+      <div class="mb-2">
+        <div class="row">
+          <div class="col">
+            <label class="form-label">Логин</label>
+            <input
+              class="form-control"
+              :value="newLogin"
+              @input="updateNewLogin"
+            />
           </div>
-        </div>
-        <div class="col">
-          <div class="mb-2">
-            <label class="form-label text-white">Пароль</label>
-            <input class="form-control" v-model="login" />
+          <div class="col">
+            <label class="form-label">Пароль</label>
+            <input
+              class="form-control"
+              :value="newPassword"
+              @input="updateNewPassword"
+            />
           </div>
-        </div>
-        <div class="col">
-          <div class="mb-2">
-            <label class="form-label text-white">Роль</label>
-            <select class="form-select" v-model="role">
+          <div class="col">
+            <label class="form-label">Роль</label>
+            <select class="form-select" :value="role" @input="updateRole">
               <option value="1">Пользователь</option>
               <option value="2">Редактор</option>
               <option value="3">Администратор</option>
@@ -39,21 +49,22 @@
           </div>
         </div>
       </div>
-
-      <div class="text-end">
-        <label class="errors text-warning me-5">{{ error }}</label>
-        <button
-          class="btn btn-success"
-          type="button"
-          id="button-addon2"
-          @click="AddUser({ firstName, lastName, login, password, role })"
-        >
-          Добавить
-        </button>
+      <div class="mb-2">
+        <div class="text-end">
+          <label class="errors text-warning me-2">{{ error }}</label>
+          <button
+            class="btn btn-success"
+            type="button"
+            id="button-addon2"
+            @click="AddUser"
+          >
+            Добавить
+          </button>
+        </div>
       </div>
     </div>
 
-    <table class="table text-white m-0">
+    <table class="table m-0">
       <thead>
         <tr>
           <th>Имя</th>
@@ -70,28 +81,28 @@
           <td>
             <input
               type="text"
-              class="form-control-plaintext text-white text-shadow"
+              class="form-control-plaintext text-shadow"
               v-model="user.firstName"
             />
           </td>
           <td>
             <input
               type="text"
-              class="form-control-plaintext text-white text-shadow"
+              class="form-control-plaintext text-shadow"
               v-model="user.lastName"
             />
           </td>
           <td>
             <input
               type="text"
-              class="form-control-plaintext text-white text-shadow"
+              class="form-control-plaintext text-shadow"
               v-model="user.login"
             />
           </td>
           <td>
             <input
               type="text"
-              class="form-control-plaintext text-white text-shadow"
+              class="form-control-plaintext text-shadow"
               v-model="user.password"
               :disabled="!user.changePassword"
             />
@@ -131,18 +142,27 @@
 <script>
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
+import { mapMutations } from "vuex";
 export default {
-  data() {
-    return {
-      firstName: null,
-      lastName: null,
-      login: null,
-      password: null,
-      role: null,
-    };
+  computed: mapGetters([
+    "users",
+    "error",
+    "firstname",
+    "lastname",
+    "role",
+    "newPassword",
+    "newLogin",
+  ]),
+  methods: {
+    ...mapActions(["AddUser", "DeleteUser", "CancelUsers"]),
+    ...mapMutations([
+      "updateFirstname",
+      "updateLastname",
+      "updateNewLogin",
+      "updateNewPassword",
+      "updateRole",
+    ]),
   },
-  computed: mapGetters(["users", "error"]),
-  methods: mapActions(["AddUser", "DeleteUser", "CancelUsers"]),
 };
 </script>
 

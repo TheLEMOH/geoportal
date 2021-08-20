@@ -6,7 +6,7 @@ import users from './modules/users'
 import login from './modules/login'
 import about from './modules/about'
 import projects from './modules/projects'
-import styles from './modules/styles'
+import message from './modules/message'
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -21,6 +21,6 @@ export default new Vuex.Store({
         login,
         about,
         projects,
-        styles
+        message
     }
 })

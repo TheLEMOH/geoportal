@@ -1,6 +1,6 @@
 <template>
-  <div class="mapBox d-flex h-100 position-relative text-shadow">
-    <Sidebar /><Information /><Map /><Legend />
+  <div class="mapBox d-flex position-relative w-100 text-shadow">
+    <Sidebar /><Information /><Map />
   </div>
 </template>
 
@@ -8,9 +8,10 @@
 import Sidebar from "../components/map/Sidebar.vue";
 import Information from "../components/map/Information.vue";
 import Map from "../components/map/Map.vue";
-import Legend from "../components/map/Legend.vue";
-export default { components: { Sidebar, Information, Map, Legend } };
+export default { components: { Sidebar, Information, Map } };
 </script>
-
 <style>
+.mapBox {
+  flex: 1 0 auto;
+}
 </style>

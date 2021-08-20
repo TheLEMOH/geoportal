@@ -1,15 +1,15 @@
+import { InputValidation } from "./valid/valid"
+
 const URL_GET = 'http://enplus.petyaogurkin.keenetic.pro/api/users/'
 const URL_ADD = 'http://enplus.petyaogurkin.keenetic.pro/api/users/add/'
 const URL_EDIT = 'http://enplus.petyaogurkin.keenetic.pro/api/users/edit/'
 const URL_DELETE = 'http://enplus.petyaogurkin.keenetic.pro/api/users/remove/'
-
 
 async function Add(user, token) {
     const body = JSON.stringify(user);
     const res = await fetch(URL_ADD, { body: body, headers: { 'Authorization': `Bearer ${token}` } })
     console.log(res);
 }
-
 
 async function Edit(user, token) {
     const res = await fetch(URL_EDIT + `${user._id}`, { headers: { 'Authorization': `Bearer ${token}` } })
@@ -27,23 +27,40 @@ export default {
         users: [],
         delUsers: [],
         originalUsers: '[]',
-        user: null
+        user: null,
+        firstname: null,
+        lastname: null,
+        newLogin: null,
+        newPassword: null,
+        role: null,
     },
     actions: {
-        async AddUser(ctx, user) {
-            if (!user.firstName || !user.lastName || !user.password || !user.role) {
+        async AddUser(ctx) {
+            const firstname = ctx.state.firstname;
+            const lastName = ctx.state.lastName;
+            const password = ctx.state.newPassword;
+            const login = ctx.state.newLogin;
+            const role = ctx.state.role;
+
+            console.log(firstname,lastName,password,login,role)
+            if (!firstname || !lastName || !password || !role || !login) {
                 ctx.commit('updateErrors', "Заполните все поля у пользователя")
                 setTimeout(() => { ctx.commit('updateErrors', "") }, 3000);
             }
             else {
+                const user = {
+                    firstname,
+                    lastName,
+                    password,
+                    login,
+                    role,
+                }
                 ctx.commit('addUser', user)
             }
         },
-
         async DeleteUser(ctx, index) {
             ctx.commit('deleteUser', index)
         },
-
         async FetchUsers(ctx) {
             const user = JSON.parse(localStorage.getItem("YENISEI_AUTH"));
             if (user.role == 3) {
@@ -56,7 +73,6 @@ export default {
                 ctx.commit('updateUsers', receivedUsers)
             }
         },
-
         async SaveUsers(ctx) {
             const client = JSON.parse(localStorage.getItem("YENISEI_AUTH"));
             if (client.role == 3) {
@@ -76,7 +92,6 @@ export default {
                 })
             }
         },
-
         async CancelUsers(ctx) {
             ctx.commit('cancelUsers');
         }
@@ -97,7 +112,22 @@ export default {
         },
         cancelUsers(state) {
             state.users = JSON.parse(state.originalUsers)
-        }
+        },
+        updateFirstname(state, e) {
+            state.firstname = InputValidation(e, "cyr");
+        },
+        updateLastname(state, e) {
+            state.lastname = InputValidation(e, "cyr");
+        },
+        updateNewLogin(state, e) {
+            state.newLogin = InputValidation(e, "latin");
+        },
+        updateNewPassword(state, e) {
+            state.newPassword = InputValidation(e, "pass");
+        },
+        updateRole(state, e) {
+            state.role = e.target.value
+        },
     },
     getters: {
         users(state) {
@@ -106,20 +136,20 @@ export default {
         error(state) {
             return state.error
         },
+        firstname(state) {
+            return state.firstname
+        },
+        lastname(state) {
+            return state.lastname
+        },
+        newPassword(state) {
+            return state.newPassword
+        },
+        newLogin(state) {
+            return state.newLogin
+        },
+        role(state) {
+            return state.role
+        }
     },
 }
-
-/* AddUser() {
-    if (
-      !this.name ||
-      !this.surname ||
-      !this.login ||
-      !this.password ||
-      !this.role
-    ) {
-      this.errors = "Заполните все поля формы";
-      setTimeout(() => {
-        this.errors = "";
-      }, 3000);
-    }
-  }, */

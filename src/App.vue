@@ -1,6 +1,6 @@
 <template>
-  <div id="app" class="background">
-    <nav class="navbar main p-4">
+  <div id="app" class="background d-flex flex-column align-items-stretch">
+    <nav class="navbar main p-4 border">
       <div class="container-fluid justify-content-center">
         <h2 class="text-white position-absolute m-0 p-0">
           Картографический веб-портал Енисей плюс
@@ -27,11 +27,9 @@ export default {
 </script>
 <style>
 #app {
-  display: flex;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  flex-direction: column;
   font-family: "Formular", "Arial", sans-serif !important;
   z-index: 0;
 }
@@ -41,12 +39,11 @@ export default {
 }
 
 ::-webkit-scrollbar-track {
-  -webkit-box-shadow: 5px 5px 5px -5px rgba(45, 69, 87, 0.1) inset;
-  background-color: #8094b3;
+  background-color: #ccdef7;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #8094b3;
+  background-color: #ccdef7;
   background-image: -webkit-linear-gradient(
     45deg,
     rgba(255, 255, 255, 0.5) 25%,
@@ -85,29 +82,34 @@ export default {
 .fade-leave-active {
   transition: all 0.2s ease;
 }
+
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
 }
 
 .main {
-  background: #161d2b;
+  background: #012e67;
 }
 
 .additional {
-  background: #1d2b43 !important;
+  background: #012e67 !important;
 }
 
-.selected-news {
-  background: #1d2b43;
+.selected {
+  color: white !important;
+  background: #012e67;
   transition: all 0.3s;
 }
 
 .background {
-  background: #8094b3;
+  background: #ccdef7 !important;
 }
 
 .text-shadow {
-  text-shadow: 1px 1px 2px black;
+}
+
+.text-black {
+  color: black !important;
 }
 </style>

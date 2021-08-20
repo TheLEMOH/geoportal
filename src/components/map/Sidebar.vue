@@ -1,49 +1,26 @@
 <template>
   <div class="sidebar additional text-white">
-    <ul class="nav flex-column">
-      <li
-        class="d-flex flex-column align-items-center p-2"
-        v-for="(link, index) in links"
-        :key="index"
-      >
-        <a
-          class="link link-light w-100"
-          :class="[selectedClass == index ? 'linkActive' : '']"
-          data-bs-toggle="collapse"
-          :href="'#collapseExample' + index"
-          role="button"
-          aria-expanded="false"
-          :aria-controls="'#collapseExample' + index"
-          >Каталог {{ index }}</a
-        >
-
-        <div class="collapse" :id="'collapseExample' + index">
-          Здесь находятся проекты для каталога {{ index }}
-        </div>
-      </li>
-    </ul>
+    <Panel />
+    <component :is="currentPanel"></component>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import Panel from "./Panel";
+import Catalogs from "./Catalogs";
+import Legend from "./Legend";
+import BaseMap from "./BaseMap";
 export default {
-  data() {
-    return {
-      selectedClass: null,
-      links: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    };
-  },
-  methods: {
-    SelectComponent(index) {
-      this.selectedClass = index;
-    },
-  },
+  components: { Panel, Catalogs, Legend, BaseMap },
+  computed: mapGetters(["currentPanel"]),
+  methods: {},
 };
 </script>
 
 <style>
 .sidebar {
-  width: 200px;
+  width: 300px;
   flex-shrink: 0;
   z-index: 1;
 }
