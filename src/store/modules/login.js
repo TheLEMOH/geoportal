@@ -21,9 +21,11 @@ export default {
             if (login && password) {
                 const body = { login, password }
                 const res = await fetch(URL_LOGIN, {
-                    method: 'POST', headers: {
+                    method: 'POST',
+                    headers: {
                         'Content-Type': 'application/json'
-                    }, body: JSON.stringify(body)
+                    },
+                    body: JSON.stringify(body)
                 })
 
                 if (res.status == 403) {

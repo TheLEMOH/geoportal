@@ -6,7 +6,9 @@
         v-for="n in 6"
         :key="n"
       >
-        <div class="image-text w-100 text-center position-absolute bottom-0 p-3">
+        <div
+          class="image-text w-100 text-center position-absolute bottom-0 p-3"
+        >
           <div>Флора и фауна</div>
         </div>
         <img src="../../assets/about.jpg" style="height: 100%; width: 100%" />

@@ -2,13 +2,13 @@
   <div class="news-control w-100">
     <ControlPanel />
     <div class="row">
-      <div class="col-md-auto" style="min-width: 400px">
+      <div class="col-lg-auto">
         <TableNews />
       </div>
-      <div class="col-md text-white" v-if="selectedNews != null">
+      <div class="col-lg" v-if="selectedNews != null">
         <EditingNews />
       </div>
-      <div class="col-md text-white" v-else>
+      <div class="col-lg text-white" v-else>
         <label>Выберите новость</label>
       </div>
     </div>
@@ -16,28 +16,18 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import { mapActions } from "vuex";
 import TableNews from "./news/News.vue";
 import ControlPanel from "./news/Panel.vue";
 import EditingNews from "./news/Editing.vue";
 export default {
   components: { TableNews, ControlPanel, EditingNews },
-  computed: mapGetters(["news", "newsLength", "selectedNews"]),
-  methods: mapActions([
-    "AddNews",
-    "SelectNews",
-    "SaveNews",
-    "DeleteNews",
-    "Cancel",
-    "fileChange",
-  ]),
+  computed: mapGetters(["selectedNews"]),
 };
 </script>
 
 <style>
 .news-control {
   color: black !important;
-  height: 90vh;
   overflow-x: hidden;
   overflow-y: auto;
 }

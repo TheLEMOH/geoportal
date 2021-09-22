@@ -10,10 +10,6 @@
   >
     <vl-view :zoom="zoom" :center="center"></vl-view>
 
-    <!-- <vl-layer-tile id="osm">
-      <vl-source-osm></vl-source-osm>
-    </vl-layer-tile> -->
-
     <vl-layer-tile>
       <vl-source-xyz
         :url="baseMaps[currentBaseMap].url"
@@ -22,15 +18,19 @@
       ></vl-source-xyz>
     </vl-layer-tile>
 
-    <vl-layer-vector>
-      <vl-source-vector :features.sync="object"></vl-source-vector>
-      <vl-style-box>
-        <vl-style-circle :radius="10">
-          <vl-style-fill color="white"></vl-style-fill>
-          <vl-style-stroke color="red"></vl-style-stroke>
-        </vl-style-circle>
-      </vl-style-box>
-    </vl-layer-vector>
+    <vl-layer-image
+      v-for="(project, index) in projectsToDisplay"
+      :key="index"
+      :id="project.map"
+      :visible="project.visible"
+    >
+      <vl-source-image-wms
+        v-if="capabilities[project._id]"
+        :layers="capabilities[project._id].layers"
+        :url="`http://enplus.petyaogurkin.keenetic.pro/qgisserver/${project.map}`"
+        :crossOrigin="'anonymous'"
+      ></vl-source-image-wms>
+    </vl-layer-image>
 
     <vl-overlay
       projection="EPSG:3857"
@@ -39,10 +39,31 @@
       v-if="currentPosition"
     >
       <template>
-        <div class="overlay_videoclip additional">
-          <img src="../../assets/sosna.png" class="w-100" />
-          {{ text }}
-          <a class="link link-light" @click="OpenInfo"> Подробнее... </a>
+        <div class="overlay-videoclip position-absolute bg-white m-0 p-0">
+          <button
+            class="btn btn-danger position-absolute top-0 end-0"
+            @click="ClosePopup"
+          >
+            &times;
+          </button>
+          <ul class="list-group list-group-flush">
+            <li
+              class="list-group-item m-0 p-1"
+              v-for="(prop, index) in information.features.properties"
+              :key="index"
+            >
+              <div class="me-auto">
+                <div class="fw-bold">{{ index }}</div>
+                <label v-if="index != 'img'">{{ prop }}</label>
+
+                <img
+                  class="w-100"
+                  v-if="index == 'img' && prop"
+                  :src="`http://enplus.petyaogurkin.keenetic.pro/api/map_images/${information.id}/${prop}`"
+                />
+              </div>
+            </li>
+          </ul>
         </div>
       </template>
     </vl-overlay>
@@ -51,45 +72,68 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { mapMutations } from "vuex";
+import { mapActions } from "vuex";
 export default {
-  data() {
-    return {
-      currentPosition: undefined,
-      zoom: 4,
-      center: [10200000, 7350000],
-      object: [
-        {
-          type: "Feature",
-          properties: {
-            name: "Сосна обыкновенная",
-            text: "Сосна обыкновенная (лат. Pinus silvestris), семейство сосновые (лат. Pinaceae), распространена на всей территории Красноярского края. Сосны является одними из самых распространенных деревьев на планете. Растут только в Северном полушарии, по крайней мере, в дикой природе. Образует как чистые насаждения, так и растёт вместе с елью, берёзой, осиной; малотребовательная к почвенно-грунтовым условиям, занимает часто непригодные для других видов площади: пески, болота. Приспособлена к различным температурным условиям. Отличается светолюбием, хорошо возобновляется на лесосеках и пожарищах, как основной лесообразователь широко используется в лесокультурной практике во всех климатических зонах. На севере ареала поднимается на высоту до 1000 м над уровнем моря, на юге до 1200-2500 м над уровнем моря.На латыни сосна называется pinus – скала. Считается, что это имя дерево получило из-за своей живучести. Сосна способна выжить и расти практически на голых камнях.Сосна - одно из самых древних растений Земли. По длительности жизни не на много уступает дубу, имеются деревья возрастом около 600 лет. Самым старшим представителем всех существующих на планете сосен считают дерево под названием Метузела, и возраст его насчитывает 4 тысячи 842 года.Эти настоящие живые ископаемые заселили на Земле огромные пространства в Северном полушарии, а самое древнее в мире дерево, существующее до сих пор, и которое известно ученым, - тоже сосна. Ученые Университета Умеа обнаружили в Швеции самое старое дерево в мире. Это сосна, возраст которой, по данным радиоуглеродного анализа, составляет почти 10 тыс. лет. Легенды, мифы, поверьяСвоеобразие внешнего облика сосен, их удивительная способность при поврежденииствола выделять ароматную смолу, возможность разнообразного использованияполучаемых от неё продуктов для жизнедеятельности людей издавна делали их объектоммифов и легенд.Сосна довольно часто упоминается в древнегреческой мифологии. Существует легенда,объясняющая название. Нимфа утренней зари белокурая Питис (в некоторых вариантахПитида или Пития) очень сильно полюбила веселого и озорного бога Пана, сына Гермесаи дочери Дриопа, который считался богом-проводником, покровителем рыбаков иохотников. Но ревность другого бога, Борея, повелителя холодного северного ветра,оказалась сильнее, и он превратил нимфу в сосну, высокое вечнозеленое дерево, которое иполучило название Pinus. Известны изображения бога Пана с сосновым венком на голове.С сосной связаны интересные древние поверья. В старину верили, что сосна способнаизбавить от тяжёлого чувства вины, снять порчу. Сосновые ветки, спрятанные поддверью, отгоняли злую энергию, а зашитые в подушку – избавляли от болезней.Считалось, что сильный оберег можно получить, если повесить золотую цепочку на веткуживой сосны на несколько часов.У славян сосна, наравне с другими почитаемыми деревьями, выступала в роли Древажизни. Люди делили его на три части и строили на нём целую систему мира. В его ветвяхобитали Солнце и Луна, находили приют птицы. Со стволом были связаны пчёлы, а вкорнях жили змеи и бобры. Оно часто присутствовало в сказах, символизируя жизнь исмерть. Сосна была атрибутом Велеса – бога лесов, богатств, дикой природы, науки имудрости. Место поклонения Велесу выбирали в самой глуши хвойного леса, где рядом смуравейником росло три могучих сосны. Из сосны же делались обереги, посохи, идолы,обладающие связью с богом леса.Янтарь – это окаменевшая ископаемая смола (затвердевшая живица) древнейших хвойныхдеревьев, в том числе и древних сосен, способен привлекать богатство. Перебирание янтарных чёток и представление будущего богатства сулило исполнение материальных желаний.",
-          },
-          geometry: {
-            type: "Point",
-            coordinates: [10200000, 7350000],
-          },
-        },
-      ],
-    };
+  computed: {
+    ...mapGetters([
+      "zoom",
+      "center",
+      "currentPosition",
+      "baseMaps",
+      "currentBaseMap",
+      "projectsToDisplay",
+      "capabilities",
+      "information",
+    ]),
   },
-  computed: { ...mapGetters(["baseMaps", "currentBaseMap"]) },
   methods: {
+    ...mapMutations(["changeCurrentPosition"]),
+    ...mapActions(["ChangeInformation"]),
     OpenInfo() {
       this.$store.dispatch("Open");
     },
     Click(e) {
       const map = this.$refs.map;
-      const feature = map.forEachFeatureAtPixel(e.pixel, (feature) => feature);
-      if (feature) {
-        const name = feature.values_.text;
-        this.text = feature.values_.name;
-        const coordinate = feature.getGeometry().getCoordinates();
-        this.currentPosition = coordinate;
+      const coordinates = map.getCoordinateFromPixel(e.pixel);
+      const viewResolution = map.getView().getResolution();
+      const viewProjection = map.getView().getProjection();
 
-        this.$store.dispatch("ChangeTextPopup", name);
-      } else {
-        this.currentPosition = undefined;
-      }
+      map.forEachLayerAtPixel(e.pixel, (layer) => {
+        if (layer.type == "IMAGE") {
+          const tmpurl = layer
+            .getSource()
+            .getGetFeatureInfoUrl(coordinates, viewResolution, viewProjection, {
+              INFO_FORMAT: "application/json",
+            });
+          const id = layer.get("id");
+          const url2 = tmpurl.split("BBOX");
+          const bbox = url2[1].split("%2C");
+
+          const rate = 70000000 / Math.pow(2, map.getView().getZoom());
+
+          bbox[0] = +bbox[0].slice(1) - rate;
+          bbox[1] = +bbox[1] - rate;
+          bbox[2] = +bbox[2] + rate;
+          bbox[3] = +bbox[3] + rate;
+
+          const url = url2[0] + "BBOX=" + bbox.join(",");
+
+          fetch(url)
+            .then((e) => {
+              return e.json();
+            })
+            .then((e) => {
+              this.changeCurrentPosition(coordinates);
+              this.ChangeInformation({ features: e.features[0], id });
+            });
+        } else {
+          this.changeCurrentPosition(undefined);
+        }
+      });
+    },
+    ClosePopup() {
+      this.changeCurrentPosition(undefined);
     },
   },
 };
@@ -97,20 +141,22 @@ export default {
 
 <style>
 .map {
-  position: fixed;
   width: 100%;
   height: 100%;
 }
 
-.overlay_videoclip {
+.overlay-videoclip {
   opacity: 1;
   padding: 5px;
-  position: absolute;
-  color: white;
-  text-align: center;
   border-radius: 6px;
-  transform: translate(-50%, -110%);
+  transform: translate(-50%, -100%);
   width: 300px;
+  max-height: 350px;
   word-break: break-all;
+  overflow-y: scroll;
+}
+
+.overlay-videoclip button {
+  z-index: 10;
 }
 </style>

@@ -3,7 +3,7 @@
     <div class="p-2 border-bottom border-dark">
       <div class="mb-2">
         <div class="row">
-          <div class="col">
+          <div class="col-md">
             <label class="form-label">Имя</label>
             <input
               class="form-control"
@@ -11,7 +11,7 @@
               @input="updateFirstname"
             />
           </div>
-          <div class="col">
+          <div class="col-md">
             <label class="form-label">Фамилия</label>
             <input
               class="form-control"
@@ -23,7 +23,7 @@
       </div>
       <div class="mb-2">
         <div class="row">
-          <div class="col">
+          <div class="col-md">
             <label class="form-label">Логин</label>
             <input
               class="form-control"
@@ -31,7 +31,7 @@
               @input="updateNewLogin"
             />
           </div>
-          <div class="col">
+          <div class="col-md">
             <label class="form-label">Пароль</label>
             <input
               class="form-control"
@@ -39,7 +39,7 @@
               @input="updateNewPassword"
             />
           </div>
-          <div class="col">
+          <div class="col-md">
             <label class="form-label">Роль</label>
             <select class="form-select" :value="role" @input="updateRole">
               <option value="1">Пользователь</option>
@@ -51,7 +51,6 @@
       </div>
       <div class="mb-2">
         <div class="text-end">
-          <label class="errors text-warning me-2">{{ error }}</label>
           <button
             class="btn btn-success"
             type="button"
@@ -82,14 +81,14 @@
             <input
               type="text"
               class="form-control-plaintext text-shadow"
-              v-model="user.firstName"
+              v-model="user.firstname"
             />
           </td>
           <td>
             <input
               type="text"
               class="form-control-plaintext text-shadow"
-              v-model="user.lastName"
+              v-model="user.lastname"
             />
           </td>
           <td>
@@ -146,7 +145,6 @@ import { mapMutations } from "vuex";
 export default {
   computed: mapGetters([
     "users",
-    "error",
     "firstname",
     "lastname",
     "role",

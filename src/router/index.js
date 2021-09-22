@@ -49,14 +49,19 @@ const routes = [
     component: () => import('../views/Gallery.vue')
   },
   {
-    path: '/resources',
-    name: 'Resources',
-    component: () => import('../views/Resources.vue')
+    path: '/catalogs',
+    name: 'Catalogs',
+    component: () => import('../views/Catalogs.vue')
   },
   {
     path: '/second',
     name: "second",
     component: () => import('../views/SecondMenu.vue')
+  },
+  {
+    path: '/test',
+    name: "test",
+    component: () => import('../views/Test.vue')
   },
   {
     path: '*',

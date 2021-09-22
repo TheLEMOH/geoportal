@@ -1,5 +1,5 @@
 <template>
-  <div class="mapBox d-flex position-relative w-100 text-shadow">
+  <div class="mapBox w-100 d-flex text-shadow">
     <Sidebar /><Information /><Map />
   </div>
 </template>
@@ -8,10 +8,21 @@
 import Sidebar from "../components/map/Sidebar.vue";
 import Information from "../components/map/Information.vue";
 import Map from "../components/map/Map.vue";
-export default { components: { Sidebar, Information, Map } };
+import { mapActions } from "vuex";
+export default {
+  components: { Sidebar, Information, Map },
+  mounted() {
+    this.FetchCatalogs();
+    this.FetchProjects();
+  },
+  methods: {
+    ...mapActions(["FetchCatalogs", "FetchProjects", "Capabilities"]),
+  },
+};
 </script>
 <style>
 .mapBox {
-  flex: 1 0 auto;
+  height: 100%;
+  overflow: hidden;
 }
 </style>

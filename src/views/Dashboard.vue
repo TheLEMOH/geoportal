@@ -10,26 +10,47 @@
 <script>
 import Sidebar from "../components/dashboard/Sidebar.vue";
 import { mapActions } from "vuex";
+import News from "../components/dashboard/News.vue";
+import Users from "../components/dashboard/Users.vue";
+import Catalogs from "../components/dashboard/Catalogs.vue";
+import Projects from "../components/dashboard/Projects.vue";
+import About from "../components/dashboard/About.vue";
+import Help from "../components/dashboard/Help.vue";
+import Gallery from "../components/dashboard/Gallery.vue";
+
 export default {
   components: {
     Sidebar,
-    News: () => import("../components/dashboard/News.vue"),
-    Users: () => import("../components/dashboard/Users.vue"),
-    Catalogs: () => import("../components/dashboard/Catalogs.vue"),
-    Projects: () => import("../components/dashboard/Projects.vue"),
-    About: () => import("../components/dashboard/About.vue"),
-    Help: () => import("../components/dashboard/Help.vue"),
+    News,
+    Users,
+    Catalogs,
+    Projects,
+    About,
+    Help,
+    Gallery,
   },
   data() {
-    return { currentComponent: "" };
+    return { currentComponent: null };
   },
   mounted() {
-  /*   this.FetchNews();
+    this.FetchNews();
     this.FetchUsers();
-    this.FetchAbout(); */
+    this.FetchAbout();
+    this.FetchMaps();
+    this.FetchProjects();
+    this.FetchCatalogs();
+    this.FetchGallery();
   },
   methods: {
-    ...mapActions(["FetchNews", "FetchUsers", "FetchAbout"]),
+    ...mapActions([
+      "FetchNews",
+      "FetchUsers",
+      "FetchAbout",
+      "FetchCatalogs",
+      "FetchMaps",
+      "FetchProjects",
+      "FetchGallery",
+    ]),
     SelectComponent(id) {
       this.currentComponent = id;
     },
@@ -39,7 +60,11 @@ export default {
 
 <style>
 .dashboard {
-  height: 100%;
+  height: 87vh;
   display: flex;
+}
+
+table {
+  min-width: 400px;
 }
 </style>

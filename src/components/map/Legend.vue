@@ -1,9 +1,16 @@
 <template>
-  <div class="legend">Здесь будет легенда</div>
+  <div class="legend-map">
+    <img v-for="(c, index) in capabilities" :key="index" :src="c.legend" />
+  </div>
 </template>
 
 <script>
-export default {};
+import { mapGetters } from "vuex";
+export default {
+  computed: {
+    ...mapGetters(["capabilities"]),
+  },
+};
 </script>
 
 <style>

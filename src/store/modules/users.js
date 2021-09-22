@@ -1,29 +1,8 @@
-import { InputValidation } from "./valid/valid"
-
-const URL_GET = 'http://enplus.petyaogurkin.keenetic.pro/api/users/'
-const URL_ADD = 'http://enplus.petyaogurkin.keenetic.pro/api/users/add/'
-const URL_EDIT = 'http://enplus.petyaogurkin.keenetic.pro/api/users/edit/'
-const URL_DELETE = 'http://enplus.petyaogurkin.keenetic.pro/api/users/remove/'
-
-async function Add(user, token) {
-    const body = JSON.stringify(user);
-    const res = await fetch(URL_ADD, { body: body, headers: { 'Authorization': `Bearer ${token}` } })
-    console.log(res);
-}
-
-async function Edit(user, token) {
-    const res = await fetch(URL_EDIT + `${user._id}`, { headers: { 'Authorization': `Bearer ${token}` } })
-    console.log(res)
-}
-
-async function Delete(user, token) {
-    const res = await fetch(URL_DELETE + `${user._id}`, { headers: { 'Authorization': `Bearer ${token}` } })
-    console.log(res)
-}
+import { InputValidation, Filled } from "./valid/valid"
+import { Add, Edit, Delete, Get } from "./serverProcedure//users"
 
 export default {
     state: {
-        error: "",
         users: [],
         delUsers: [],
         originalUsers: '[]',
@@ -36,43 +15,39 @@ export default {
     },
     actions: {
         async AddUser(ctx) {
-            const firstname = ctx.state.firstname;
-            const lastName = ctx.state.lastName;
-            const password = ctx.state.newPassword;
-            const login = ctx.state.newLogin;
-            const role = ctx.state.role;
+            const user = {
+                firstname: ctx.state.firstname,
+                lastname: ctx.state.lastname,
+                password: ctx.state.newPassword,
+                login: ctx.state.newLogin,
+                role: ctx.state.role,
+            }
+            const filled = Filled(user);
+            if (filled) {
+                ctx.commit('addUser', user)
 
-            console.log(firstname,lastName,password,login,role)
-            if (!firstname || !lastName || !password || !role || !login) {
-                ctx.commit('updateErrors', "Заполните все поля у пользователя")
-                setTimeout(() => { ctx.commit('updateErrors', "") }, 3000);
+                ctx.commit('updateFirstname', 'Макс');
+                ctx.commit('updateLastname', 'Макс');
+                ctx.commit('updateNewLogin', 'Max');
+                ctx.commit('updateNewPassword', 'max');
+                ctx.commit('updateRole', '1');
             }
             else {
-                const user = {
-                    firstname,
-                    lastName,
-                    password,
-                    login,
-                    role,
-                }
-                ctx.commit('addUser', user)
+                this.dispatch('DisplayMessage', 'Заполните все поля у пользователя!')
             }
         },
+
         async DeleteUser(ctx, index) {
             ctx.commit('deleteUser', index)
         },
+
         async FetchUsers(ctx) {
             const user = JSON.parse(localStorage.getItem("YENISEI_AUTH"));
-            if (user.role == 3) {
-                const res = await fetch(URL_GET, { headers: { 'Authorization': `Bearer ${user.accessToken}` } })
-                const receivedUsers = await res.json()
-                receivedUsers.forEach(user => {
-                    user.password = null;
-                    user.changePassword = false;
-                });
+            Get(user).then((receivedUsers) => {
                 ctx.commit('updateUsers', receivedUsers)
-            }
+            });
         },
+
         async SaveUsers(ctx) {
             const client = JSON.parse(localStorage.getItem("YENISEI_AUTH"));
             if (client.role == 3) {
@@ -92,6 +67,7 @@ export default {
                 })
             }
         },
+
         async CancelUsers(ctx) {
             ctx.commit('cancelUsers');
         }
@@ -106,9 +82,6 @@ export default {
         updateUsers(state, users) {
             state.originalUsers = JSON.stringify(users)
             state.users = users
-        },
-        updateErrors(state, error) {
-            state.error = error
         },
         cancelUsers(state) {
             state.users = JSON.parse(state.originalUsers)
@@ -132,9 +105,6 @@ export default {
     getters: {
         users(state) {
             return state.users
-        },
-        error(state) {
-            return state.error
         },
         firstname(state) {
             return state.firstname

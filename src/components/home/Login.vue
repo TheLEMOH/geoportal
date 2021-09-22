@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100 p-0 m-0">
+  <div class="flex-fill p-0 m-0">
     <a
       class="link-light float-end"
       data-bs-toggle="modal"
@@ -8,7 +8,6 @@
     >
       <Person />
     </a>
-
     <!-- Dropbutton -->
     <div class="dropdown float-end" v-if="user">
       <a
@@ -25,10 +24,16 @@
         aria-labelledby="dropdownMenuLink"
       >
         <li>
-          <a class="dropdown-item" href="/dashboard"
-            >Редактирование материалов</a
+          <router-link class="dropdown-item" :to="{ name: 'Dashboard' }"
+            >Редактирование материалов</router-link
           >
           <a class="dropdown-item" href="/" @click="Logout">Выйти</a>
+          <button
+            class="dropdown-item"
+            @click="DisplayMessage('Тест сообщения')"
+          >
+            Тест сообщения
+          </button>
         </li>
       </ul>
     </div>
@@ -106,9 +111,9 @@ import { mapActions } from "vuex";
 import { mapMutations } from "vuex";
 export default {
   components: { Person },
-  computed: mapGetters(["user", "login", "password"]),
+  computed: mapGetters(["user", "login", "password", "showMessage"]),
   methods: {
-    ...mapActions(["CheckUser", "Login", "Logout"]),
+    ...mapActions(["CheckUser", "Login", "Logout", "DisplayMessage"]),
     ...mapMutations(["updateLogin", "updatePassword"]),
   },
   mounted() {

@@ -1,13 +1,16 @@
 <template>
-  <div id="app" class="background d-flex flex-column align-items-stretch">
-    <nav class="navbar main p-4 border">
-      <div class="container-fluid justify-content-center">
-        <h2 class="text-white position-absolute m-0 p-0">
+  <div id="app">
+    <nav class="navbar main p-2 border">
+      <div class="container-fluid justify-content-start">
+        <img src="./assets/logo.png" class="me-4" height="60px" width="60px" />
+        <h2 class="text-white m-0 p-0">
           Картографический веб-портал Енисей плюс
         </h2>
         <Login />
       </div>
     </nav>
+    <Message />
+    <Nav />
     <transition name="fade" mode="out-in">
       <router-view />
     </transition>
@@ -16,8 +19,10 @@
 
 <script>
 import Login from "./components/home/Login.vue";
+import Nav from "./components/home/NavSecond.vue";
+import Message from "./components/message/Message.vue";
 export default {
-  components: { Login },
+  components: { Login, Nav, Message },
   computed: {
     layout() {
       return this.$route.name;
@@ -26,12 +31,18 @@ export default {
 };
 </script>
 <style>
+
+.home {
+  z-index: 1;
+}
+
 #app {
+  z-index: 1;
   height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-  font-family: "Formular", "Arial", sans-serif !important;
-  z-index: 0;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-y: hidden;
 }
 
 ::-webkit-scrollbar {
@@ -80,7 +91,7 @@ export default {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: all 0.2s ease;
+  transition: all 0.2s linear;
 }
 
 .fade-enter,
@@ -98,7 +109,7 @@ export default {
 
 .selected {
   color: white !important;
-  background: #012e67;
+  background: #012e67 !important;
   transition: all 0.3s;
 }
 

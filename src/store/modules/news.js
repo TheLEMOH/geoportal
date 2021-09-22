@@ -1,9 +1,12 @@
-import { Get, Add, Edit, Delete } from "./news/serverProcedure"
+import { Get, Add, Edit, Delete } from "./serverProcedure/news"
+import { FilledArray } from './valid/valid';
+/* import { GetStatusText } from "./message/answers" */
 export default {
     state: {
         originalNews: '[]',
         news: [],
         delNews: [],
+        newsLoaded: false,
         selectedNews: null,
     },
     actions: {
@@ -37,45 +40,60 @@ export default {
         },
 
         async FetchNews(ctx) {
-            const receivedNews = await Get();
-            ctx.commit('updateNews', receivedNews);
+            if (!ctx.state.newsLoaded) {
+                Get().then((receivedNews) => {
+                    ctx.commit('updateNewsLoaded', true);
+                    ctx.commit('updateNews', receivedNews);
+                })
+            }
+
         },
 
         async SaveNews(ctx) {
             const user = JSON.parse(localStorage.getItem("YENISEI_AUTH"));
             const news = ctx.state.news
             const delNews = ctx.state.delNews
-            let wrongNews = false;
-            news.forEach((n) => {
-                if ((!n.title || !n.body) && n.action != "delete") {
-                    wrongNews = true;
-                }
-            });
-
-            if (wrongNews) {
-                alert("Заполните название и текст новостей перед отправкой");
-            }
-
-            if (!wrongNews) {
-
-                this.dispatch('DisplayMessageEver', "Сохранение новостей...");
-
+            const filled = FilledArray(news);
+            const promises = [];
+            if (filled) {
+                ctx.commit('updateSelectedNews', null);
+                ctx.commit("updateNewsLoaded", false);
+                this.dispatch('DisplayMessage', "Сохранение новостей...");
                 news.forEach(n => {
                     if (n.action == "add") {
-                        Add(n, user.accessToken);
-                        n.action = "done";
+                        n.action = "loading"
+                        promises.push(
+                            Add(n, user.accessToken).then(res => {
+                                n.action = "done";
+                                return res
+                            })
+                        );
                     }
                     if (n.action == "edit") {
-                        Edit(n, user.accessToken);
-                        n.action = "done"
+                        n.action = "loading"
+                        promises.push(
+                            Edit(n, user.accessToken).then(res => {
+                                n.action = "done";
+                                return res;
+                            })
+                        );
                     }
                 })
 
-                delNews.forEach(n => {
-                    Delete(n, user.accessToken)
+                if (delNews.length != 0) {
+                    delNews.forEach(n => {
+                        promises.push(Delete(n, user.accessToken))
+                    })
+                }
+
+                Promise.all(promises).then(() => {
+                    this.dispatch('DisplayMessage', "Готово!");
+                    setTimeout(() => this.dispatch('FetchNews'), 1000);
                 })
 
-                setTimeout(() => { this.dispatch('FetchNews'); this.dispatch('DisplayMessage', "Новости сохранены!"); }, 3000);
+            }
+            else {
+                this.dispatch('DisplayMessage', "Заполните новости перед отправкой");
             }
         },
 
@@ -116,6 +134,9 @@ export default {
                 state.news[index].img.push(f)
             })
             console.log(state.news)
+        },
+        updateNewsLoaded(state, loaded) {
+            state.newsLoaded = loaded;
         }
     },
     getters: {
@@ -128,5 +149,8 @@ export default {
         selectedNews(state) {
             return state.selectedNews
         },
+        newsLoaded(state) {
+            return state.newsLoaded
+        }
     },
 }

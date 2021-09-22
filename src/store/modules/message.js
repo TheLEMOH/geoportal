@@ -1,11 +1,14 @@
 export default {
     state: {
-        message: null,
+        messages: [],
+        showMessage: [],
+        displayTime: 2500
     },
     actions: {
         async DisplayMessage(ctx, message) {
-            ctx.commit('updateMessage', message);
-            setTimeout(() => { ctx.commit('updateMessage', "") }, 5000);
+            const length = ctx.getters.lengthMessages
+            ctx.commit('updateMessage', { text: message, id: length });
+            setTimeout(() => { ctx.commit('closeMessage', length); }, ctx.state.displayTime);
         },
 
         async DisplayMessageEver(ctx, message) {
@@ -14,12 +17,25 @@ export default {
     },
     mutations: {
         updateMessage(state, message) {
-            state.message = message
+            state.messages.push(message)
+        },
+
+        closeMessage(state, id) {
+            const exists = state.messages.findIndex(m => m.id == id)
+            if (exists != -1) {
+                state.messages.splice(exists, 1);
+            }
         }
     },
     getters: {
-        message(state) {
-            return state.message
+        lengthMessages(state) {
+            return state.messages.length
+        },
+        messages(state) {
+            return state.messages
+        },
+        showMessage(state) {
+            return state.showMessage
         }
     },
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="table-news text-shadow">
+  <div class="table text-shadow">
     <table class="table table-striped border">
       <thead>
         <tr class="text-center">
@@ -18,21 +18,28 @@
           :id="news._id"
         >
           <td>{{ news.date }}</td>
-          <td>{{ news.title }}</td>
           <td>
+            <label class="td-label" v-if="news.action == 'loading'"
+              >Сохранение...</label
+            >
+            <label class="td-label" v-else>{{ news.title }}</label>
+          </td>
+          <td class="text-center">
             <button
               class="btn btn-warning"
               style="z-index: 1"
               @click="SelectNews(index)"
+              :disabled="news.action == 'loading' ? true : false"
             >
               <EditIcon />
             </button>
           </td>
-          <td>
+          <td class="text-center">
             <button
               class="btn btn-danger"
               style="z-index: 1"
               @click="DeleteNews(index)"
+              :disabled="news.action == 'loading' ? true : false"
             >
               <span aria-hidden="true">&times;</span>
             </button>
@@ -55,23 +62,14 @@ export default {
 </script>
 
 <style>
-thead th {
-  min-width: auto;
-}
-
 tbody td {
-  min-width: 60px;
+  min-width: 50px;
   max-width: 130px;
 }
 
 .table-news {
   height: 82vh;
-  width: 450px;
   overflow-x: hidden;
   overflow-y: scroll;
-}
-
-.table-news button {
-  width: 45px;
 }
 </style>

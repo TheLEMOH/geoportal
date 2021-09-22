@@ -1,8 +1,10 @@
 <template>
-  <div class="news container-lg">
-    <Loading v-if="newsLength == 0" />
-    <div class="d-flex flex-column justify-content-evenly text-shadow">
-      <Card v-for="(news, index) in news" :key="index" :data="news" />
+  <div class="news">
+    <div class="container mt-2">
+      <Loading v-if="newsLength == 0" />
+      <div class="d-flex flex-column">
+        <Card v-for="(news, index) in news" :key="index" :data="news" />
+      </div>
     </div>
   </div>
 </template>
@@ -29,7 +31,7 @@ export default {
 } */
 
 .news {
-
+  overflow-x: hidden;
   overflow-y: scroll;
 }
 

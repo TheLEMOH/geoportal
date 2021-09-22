@@ -8,13 +8,15 @@
 
  -->
 
-  <div class="shadow">
-    <img src="../../assets/1.jpg" style="height: 100%; width: 100%" />
+  <div class="gallery-card-image rounded">
+    <img :src="`http://enplus.petyaogurkin.keenetic.pro/api/gallery/${data}`" />
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  props: ["data"],
+};
 </script>
 
 <style>

@@ -1,5 +1,9 @@
 <template>
-  <div class="btn-group w-100" role="group" aria-label="Basic example">
+  <div
+    class="panel-map btn-group w-100"
+    role="group"
+    aria-label="Basic example"
+  >
     <button
       type="button"
       class="btn btn-outline-light rounded-0"

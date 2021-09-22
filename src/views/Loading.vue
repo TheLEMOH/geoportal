@@ -1,6 +1,6 @@
 <template>
-  <div class="container text-center p-5">
-    <div class="spinner-border text-light loading m-5" role="status"></div>
+  <div class="container text-center p-3">
+    <div class="spinner-border loading m-3" role="status"></div>
   </div>
 </template>
 
@@ -10,8 +10,8 @@ export default {};
 
 <style>
 .loading {
-  width: 300px;
-  height: 300px;
+  width: 250px;
+  height: 250px;
   z-index: 1000;
 }
 </style>

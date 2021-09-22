@@ -7,6 +7,8 @@ import login from './modules/login'
 import about from './modules/about'
 import projects from './modules/projects'
 import message from './modules/message'
+import catalogs from './modules/catalogs'
+import gallery from './modules/gallery'
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -21,6 +23,8 @@ export default new Vuex.Store({
         login,
         about,
         projects,
-        message
+        message,
+        catalogs,
+        gallery
     }
 })

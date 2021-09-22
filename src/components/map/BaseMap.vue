@@ -1,13 +1,9 @@
 <template>
-  <div class="base-maps">
-    <ul class="nav flex-column">
-      <li
-        class="d-flex flex-column align-items-center p-2"
-        v-for="(baseMap, index) in baseMaps"
-        :key="index"
-      >
+  <div class="base-map">
+    <ul class="list-group">
+      <li class="p-2" v-for="(baseMap, index) in baseMaps" :key="index">
         <a
-          class="link link-light w-100"
+          class="link link-light fs-5"
           :class="[currentBaseMap == index ? 'linkActive' : '']"
           @click="changeBaseMap(index)"
         >
