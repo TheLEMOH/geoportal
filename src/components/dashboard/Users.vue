@@ -56,6 +56,7 @@
             type="button"
             id="button-addon2"
             @click="AddUser"
+            :disabled="!usersLoaded"
           >
             Добавить
           </button>
@@ -80,48 +81,97 @@
           <td>
             <input
               type="text"
-              class="form-control-plaintext text-shadow"
-              v-model="user.firstname"
+              class="form-control"
+              :value="user.firstName"
+              @input="
+                UpdateField({
+                  event: $event,
+                  index,
+                  field: 'firstName',
+                })
+              "
             />
           </td>
           <td>
             <input
               type="text"
-              class="form-control-plaintext text-shadow"
-              v-model="user.lastname"
+              class="form-control"
+              :value="user.lastName"
+              @input="
+                UpdateField({
+                  event: $event,
+                  index,
+                  field: 'lastName',
+                })
+              "
             />
           </td>
           <td>
             <input
               type="text"
-              class="form-control-plaintext text-shadow"
-              v-model="user.login"
+              class="form-control"
+              :value="user.login"
+              @input="
+                UpdateField({
+                  event: $event,
+                  index,
+                  field: 'login',
+                })
+              "
             />
           </td>
           <td>
             <input
               type="text"
-              class="form-control-plaintext text-shadow"
-              v-model="user.password"
+              class="form-control"
+              :value="user.password"
               :disabled="!user.changePassword"
+              @input="
+                UpdateField({
+                  event: $event,
+                  index,
+                  field: 'password',
+                })
+              "
             />
           </td>
           <td>
             <input
               type="checkbox"
               class="form-check-input"
-              v-model="user.changePassword"
+              :value="user.changePassword"
+              @change="
+                UpdateField({
+                  event: $event,
+                  index,
+                  field: 'changePassword',
+                })
+              "
             />
           </td>
           <td style="min-width: 190px">
-            <select class="form-select" v-model="user.role">
+            <select
+              class="form-select"
+              :value="user.role"
+              @change="
+                UpdateField({
+                  event: $event,
+                  index,
+                  field: 'role',
+                })
+              "
+            >
               <option value="1">Пользователь</option>
               <option value="2">Редактор</option>
               <option value="3">Администратор</option>
             </select>
           </td>
           <td>
-            <button class="btn btn-danger" @click="DeleteUser(index)">
+            <button
+              class="btn btn-danger"
+              @click="DeleteUser(index)"
+              :disabled="!usersLoaded"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </td>
@@ -130,10 +180,22 @@
     </table>
 
     <div class="text-end">
-      <button class="btn btn-secondary m-2" type="button" @click="CancelUsers">
+      <button
+        class="btn btn-secondary m-2"
+        type="button"
+        @click="CancelUsers"
+        :disabled="!usersLoaded"
+      >
         Отменить
       </button>
-      <button class="btn btn-success m-2" type="button">Сохранить</button>
+      <button
+        class="btn btn-success m-2"
+        type="button"
+        @click="SaveUsers"
+        :disabled="!usersLoaded"
+      >
+        Сохранить
+      </button>
     </div>
   </div>
 </template>
@@ -150,9 +212,16 @@ export default {
     "role",
     "newPassword",
     "newLogin",
+    "usersLoaded",
   ]),
   methods: {
-    ...mapActions(["AddUser", "DeleteUser", "CancelUsers"]),
+    ...mapActions([
+      "AddUser",
+      "DeleteUser",
+      "CancelUsers",
+      "SaveUsers",
+      "UpdateField",
+    ]),
     ...mapMutations([
       "updateFirstname",
       "updateLastname",

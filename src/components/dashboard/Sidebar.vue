@@ -26,6 +26,7 @@ export default {
         { name: "Новости", id: "News", access: [2, 3] },
         { name: "Каталоги", id: "Catalogs", access: [2, 3] },
         { name: "Проекты", id: "Projects", access: [2, 3] },
+        { name: "Статьи", id: "Articles", access: [2, 3] },
         { name: "Пользователи", id: "Users", access: [3] },
         { name: "Фотогалерея", id: "Gallery", access: [2, 3] },
         { name: "О проекте", id: "About", access: [2, 3] },

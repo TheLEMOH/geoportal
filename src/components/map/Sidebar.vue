@@ -3,7 +3,7 @@
     <ul class="nav nav-pills" id="pills-tab" role="tablist">
       <li class="nav-item flex-fill" role="presentation">
         <button
-          class="nav-link rounded-0 w-100 active"
+          class="nav-link rounded-0 w-100 active text-white"
           id="pills-home-tab"
           data-bs-toggle="pill"
           data-bs-target="#pills-home"
@@ -17,7 +17,7 @@
       </li>
       <li class="nav-item flex-fill" role="presentation">
         <button
-          class="nav-link rounded-0 w-100"
+          class="nav-link rounded-0 w-100 text-white"
           id="pills-profile-tab"
           data-bs-toggle="pill"
           data-bs-target="#pills-profile"
@@ -31,7 +31,7 @@
       </li>
       <li class="nav-item flex-fill" role="presentation">
         <button
-          class="nav-link rounded-0 w-100"
+          class="nav-link rounded-0 w-100 text-white"
           id="pills-contact-tab"
           data-bs-toggle="pill"
           data-bs-target="#pills-contact"
@@ -87,7 +87,7 @@ export default {
 
 <style>
 .nav-pills .nav-link.active {
-  color: black;
+  color: black !important;
   background-color: #ffffff !important;
 }
 

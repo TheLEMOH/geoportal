@@ -1,7 +1,11 @@
 <template>
   <div class="gallery-control w-100">
     <Modal />
-    <Panel />
+    <ControlPanel
+      :Add="OpenModalAddImage"
+      :Save="SaveGallery"
+      :loaded="imagesLoaded"
+    />
     <div class="container-fluid">
       <div class="row row-cols-md-3 row-cols-lg-5">
         <div
@@ -17,13 +21,15 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
 import Picture from "./gallery/Picture.vue";
-import Panel from "./gallery/Panel.vue";
+import ControlPanel from "./patterns/Panel.vue";
 import Modal from "./gallery/Modal.vue";
 export default {
-  components: { Picture, Panel, Modal },
-  computed: { ...mapGetters(["images"]) },
+  components: { Picture, ControlPanel, Modal },
+  computed: { ...mapGetters(["images", "projectsLoaded", "imagesLoaded"]) },
+  methods: mapActions(["OpenModalAddImage", "SaveGallery"]),
 };
 </script>
 

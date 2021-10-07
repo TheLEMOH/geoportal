@@ -21,7 +21,7 @@
     <div class="mb-2">
       <label class="form-label">Карта</label>
       <select class="form-select" v-model="projects[selectedProject].map">
-        <option v-for="(m, index) in existingMaps" :key="index" :value="m">
+        <option v-for="(m, index) in maps" :key="index" :value="m">
           {{ m }}
         </option>
       </select>
@@ -40,12 +40,27 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  computed: mapGetters([
-    "projects",
-    "selectedProject",
-    "existingMaps",
-    "catalogs",
-  ]),
+  data() {
+    return {
+      maps: null,
+    };
+  },
+  mounted() {
+    this.maps = this.CreateMapList();
+  },
+  computed: {
+    ...mapGetters(["projects", "selectedProject", "existingMaps", "catalogs"]),
+  },
+  methods: {
+    CreateMapList() {
+      const maps = [...this.existingMaps];
+      const used = this.projects[this.selectedProject].map;
+      if (used) {
+        maps.unshift(used);
+      }
+      return maps;
+    },
+  },
 };
 </script>
 

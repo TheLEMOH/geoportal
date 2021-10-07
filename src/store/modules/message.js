@@ -2,13 +2,13 @@ export default {
     state: {
         messages: [],
         showMessage: [],
-        displayTime: 2500
+        displayTime: 2500,
     },
     actions: {
         async DisplayMessage(ctx, message) {
-            const length = ctx.getters.lengthMessages
-            ctx.commit('updateMessage', { text: message, id: length });
-            setTimeout(() => { ctx.commit('closeMessage', length); }, ctx.state.displayTime);
+            const id = new Date().getTime();
+            ctx.commit('updateMessage', { text: message, id: id });
+            setTimeout(() => { ctx.commit('closeMessage', id); }, ctx.state.displayTime);
         },
 
         async DisplayMessageEver(ctx, message) {

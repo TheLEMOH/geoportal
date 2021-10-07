@@ -1,10 +1,17 @@
 <template>
-  <div class="news">
-    <div class="container mt-2">
-      <Loading v-if="newsLength == 0" />
+  <div class="news h-100">
+    <div class="container mt-2" v-if="newsLoaded">
       <div class="d-flex flex-column">
         <Card v-for="(news, index) in news" :key="index" :data="news" />
       </div>
+    </div>
+
+    <div class="container mt-2" v-else>
+      <Loading />
+    </div>
+
+    <div class="container mt-2" v-if="newsLength == 0 && newsLoaded">
+      <h1>Новостей нет</h1>
     </div>
   </div>
 </template>
@@ -21,15 +28,11 @@ export default {
   mounted() {
     this.$store.dispatch("FetchNews");
   },
-  computed: mapGetters(["news", "newsLength"]),
+  computed: mapGetters(["news", "newsLength", "newsLoaded"]),
 };
 </script>
 
 <style>
-/* .reddd {
-  background: red;
-} */
-
 .news {
   overflow-x: hidden;
   overflow-y: scroll;

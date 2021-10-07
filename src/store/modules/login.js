@@ -1,53 +1,49 @@
 import jwt_decode from "jwt-decode";
 import { InputValidation } from "./valid/valid"
+import { RefreshToken, Login } from "./serverProcedure/jwt"
+import { Filled } from "./valid/valid"
 
-const URL_LOGIN = 'http://enplus.petyaogurkin.keenetic.pro/api/auth/login/'
+
 const URL_LOGOUT = 'http://enplus.petyaogurkin.keenetic.pro/api/auth/logout/'
-const URL_REFRESH = 'http://enplus.petyaogurkin.keenetic.pro/api/auth/refresh/'
+
 
 export default {
     state: {
-        users: [],
-        originalUsers: '[]',
         user: null,
         login: null,
         password: null,
+        showLoginModal: false
     },
     actions: {
+
         async Login(ctx) {
-            const login = ctx.state.login
-            const password = ctx.state.password
-
-            if (login && password) {
-                const body = { login, password }
-                const res = await fetch(URL_LOGIN, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(body)
-                })
-
-                if (res.status == 403) {
-                    alert('Неверный логин или пароль')
-                }
-
-                if (res.status == 200) {
-                    const tokens = await res.json()
-                    const decoded = jwt_decode(
-                        tokens.accessToken
-                    );
-                    const user = {
-                        id: decoded.id,
-                        role: decoded.role,
-                        name: login,
-                        accessToken: tokens.accessToken,
-                        refreshToken: tokens.refreshToken
+            const pair = {
+                login: ctx.state.login,
+                password: ctx.state.password
+            }
+            const filled = Filled(pair)
+            if (filled) {
+                Login(pair).then((res) => {
+                    if (res.error != true) {
+                        const decoded = jwt_decode(
+                            res.accessToken
+                        );
+                        const user = {
+                            id: decoded.id,
+                            role: decoded.role,
+                            name: pair.login,
+                            accessToken: res.accessToken,
+                            refreshToken: res.refreshToken
+                        }
+                        this.dispatch("DisplayMessage", "Успешно!")
+                        this.dispatch('UpdateShowLoginModal', false)
+                        localStorage.setItem("YENISEI_AUTH", JSON.stringify(user));
+                        ctx.commit('updateUser', user)
                     }
-
-                    localStorage.setItem("YENISEI_AUTH", JSON.stringify(user));
-                    ctx.commit('updateUser', user)
-                }
+                    else {
+                        this.dispatch("DisplayMessage", res.text)
+                    }
+                })
             }
         },
 
@@ -62,26 +58,17 @@ export default {
         },
 
         async CheckUser(ctx) {
-            const user = JSON.parse(localStorage.getItem("YENISEI_AUTH"));
-            ctx.commit('updateUser', user)
+            RefreshToken(ctx)
         },
 
         async RefreshUser(ctx) {
-            const tokens = JSON.parse(localStorage.getItem("YENISEI_AUTH"));
-            const res = await fetch(URL_REFRESH, { body: tokens.refreshToken })
-            const receivedTokens = await res.json()
-            const decoded = jwt_decode(
-                receivedTokens.accessToken
-            );
-            const user = {
-                id: decoded.id,
-                role: decoded.role,
-                accessToken: receivedTokens.accessToken,
-                refreshToken: receivedTokens.refreshToken
-            }
-            localStorage.setItem("YENISEI_AUTH", JSON.stringify(user));
-            ctx.commit('updateUser', user)
+            RefreshToken(ctx);
         },
+
+        UpdateShowLoginModal(ctx, show) {
+            ctx.commit('updateShowLoginModal', show)
+        }
+
     },
     mutations: {
         updateLogin(state, e) {
@@ -93,6 +80,9 @@ export default {
         updateUser(state, user) {
             state.user = user
         },
+        updateShowLoginModal(state, show) {
+            state.showLoginModal = show;
+        }
     },
     getters: {
         user(state) {
@@ -103,6 +93,9 @@ export default {
         },
         password(state) {
             return state.password
+        },
+        showLoginModal(state) {
+            return state.showLoginModal
         }
     },
 }

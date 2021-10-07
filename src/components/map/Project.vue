@@ -5,26 +5,38 @@
         class="form-check-input"
         type="checkbox"
         :id="`input-project${data._id}`"
+        :checked="data.visible"
         @change="UpdateProjectsToDisplay(data)"
       />
-      <label class="form-check-label" :for="`input-project${data._id}`">{{
-        data.title
-      }}</label>
+      <label
+        class="form-check-label link-main-nav"
+        :for="`input-project${data._id}`"
+        >{{ data.title }}</label
+      >
+      <button
+        class="btn ms-3 p-0 text-white"
+        data-bs-toggle="tooltip"
+        :title="data._id"
+        @click="UpdateCenter(data.center)"
+        :disabled="data.center ? false : true"
+      >
+        <SearchIcon class="link-main-nav" />
+      </button>
     </div>
   </div>
 </template>
 
 <script>
-/* import EyeOpen from "../icons/Eye.vue"; */
+import SearchIcon from "../icons/SearchIcon.vue";
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 
 export default {
-  props: ["data"],
+  props: ["data", "index"],
+  components: { SearchIcon },
   computed: { ...mapGetters(["projectsToDisplay"]) },
   methods: {
-    ...mapActions(["UpdateProjectsToDisplay"]),
- 
+    ...mapActions(["UpdateProjectsToDisplay", "UpdateCenter"]),
   },
   /*   components: {
     EyeOpen,

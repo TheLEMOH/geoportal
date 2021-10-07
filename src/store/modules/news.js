@@ -1,6 +1,6 @@
-import { Get, Add, Edit, Delete } from "./serverProcedure/news"
-import { FilledArray } from './valid/valid';
-/* import { GetStatusText } from "./message/answers" */
+import { getBase64 } from "./base64/code"
+import { SaveObjects, FetchObjects } from "./serverProcedure/general"
+import Vue from 'vue'
 export default {
     state: {
         originalNews: '[]',
@@ -10,19 +10,52 @@ export default {
         selectedNews: null,
     },
     actions: {
-        fileChange(ctx, e) {
+        async FetchNews(ctx) {
+            const settings = {
+                loaded: ctx.state.newsLoaded,
+                type: 'news',
+                funcClearDel: 'clearDelNews',
+                funcLoaded: 'updateNewsLoaded',
+                funcUpdate: 'updateNews',
+            }
+            FetchObjects(ctx, settings);
+        },
+
+        async SaveNews(ctx) {
+            const settings = {
+                type: "news",
+                forSave: ctx.state.news,
+                forDelete: ctx.state.delNews,
+                updateSelected: 'updateSelectedNews',
+                updateLoaded: 'updateNewsLoaded',
+                fetch: 'FetchNews',
+                save: 'SaveNews',
+                nonFilled: 'Заполните все поля у новости!'
+            }
+            SaveObjects(ctx, settings)
+        },
+
+        async TestImgNews(ctx, e) {
             const files = e.target.files
-            console.log(files)
-            ctx.commit('updateFiles', files)
+            files.forEach(file => {
+                const promise = getBase64(file);
+                promise.then((result) => {
+                    ctx.commit("addImageNews", result);
+                })
+            });
+        },
+
+        DeleteImageFromNews(ctx, object) {
+            ctx.commit("deleteImageFromNews", object);
         },
 
         AddNews(ctx) {
             const news = {
-                title: '',
-                body: '',
-                date: '',
-                img: [],
-                action: 'add'
+                title: null,
+                body: null,
+                date: null,
+                imgBase: [],
+                action: 'add',
             }
             const length = ctx.getters.newsLength;
             ctx.commit('addNews', news);
@@ -39,73 +72,40 @@ export default {
             ctx.commit('cancel')
         },
 
-        async FetchNews(ctx) {
-            if (!ctx.state.newsLoaded) {
-                Get().then((receivedNews) => {
-                    ctx.commit('updateNewsLoaded', true);
-                    ctx.commit('updateNews', receivedNews);
-                })
-            }
-
-        },
-
-        async SaveNews(ctx) {
-            const user = JSON.parse(localStorage.getItem("YENISEI_AUTH"));
-            const news = ctx.state.news
-            const delNews = ctx.state.delNews
-            const filled = FilledArray(news);
-            const promises = [];
-            if (filled) {
-                ctx.commit('updateSelectedNews', null);
-                ctx.commit("updateNewsLoaded", false);
-                this.dispatch('DisplayMessage', "Сохранение новостей...");
-                news.forEach(n => {
-                    if (n.action == "add") {
-                        n.action = "loading"
-                        promises.push(
-                            Add(n, user.accessToken).then(res => {
-                                n.action = "done";
-                                return res
-                            })
-                        );
-                    }
-                    if (n.action == "edit") {
-                        n.action = "loading"
-                        promises.push(
-                            Edit(n, user.accessToken).then(res => {
-                                n.action = "done";
-                                return res;
-                            })
-                        );
-                    }
-                })
-
-                if (delNews.length != 0) {
-                    delNews.forEach(n => {
-                        promises.push(Delete(n, user.accessToken))
-                    })
-                }
-
-                Promise.all(promises).then(() => {
-                    this.dispatch('DisplayMessage', "Готово!");
-                    setTimeout(() => this.dispatch('FetchNews'), 1000);
-                })
-
-            }
-            else {
-                this.dispatch('DisplayMessage', "Заполните новости перед отправкой");
-            }
-        },
 
         SelectNews(ctx, index) {
             ctx.commit('updateSelectedNews', index);
         }
     },
     mutations: {
+        deleteImageFromNews(state, object) {
+            const selectedNews = state.selectedNews;
+            const index = object.index;
+            const array = object.array;
+            if (!state.news[selectedNews].imgOld)
+                state.news[selectedNews].imgOld = [];
+            if (state.news[selectedNews].img && array != "base") {
+                state.news[selectedNews].imgOld.push(state.news[selectedNews].img[index]);
+                state.news[selectedNews].img.splice(index, 1);
+            }
+            if (array == "base") {
+                state.news[selectedNews].imgBase.splice(index, 1);
+            }
+        },
+
+        addImageNews(state, image) {
+            if (!state.news[state.selectedNews].imgBase) {
+                Vue.set(state.news[state.selectedNews], 'imgBase', [])
+            }
+            state.news[state.selectedNews].imgBase.push(image);
+        },
+
         addNews(state, news) {
             state.news.push(news)
         },
+
         deleteNews(state, index) {
+
             if (state.news[index].action == "add") {
                 state.news.splice(index, 1);
             }
@@ -114,31 +114,33 @@ export default {
                 state.news.splice(index, 1);
             }
         },
+
         updateNews(state, news) {
             state.originalNews = JSON.stringify(news)
             state.news = news
         },
+
+        clearDelNews(state) {
+            state.delNews = []
+        },
+
         cancel(state) {
             state.delNews = [];
             state.news = JSON.parse(state.originalNews)
         },
+
         updateSelectedNews(state, index) {
             if (index != null && state.news[index].action != "add") {
                 state.news[index].action = "edit";
             }
             state.selectedNews = index
         },
-        updateFiles(state, files) {
-            const index = state.selectedNews;
-            files.forEach(f => {
-                state.news[index].img.push(f)
-            })
-            console.log(state.news)
-        },
+
         updateNewsLoaded(state, loaded) {
             state.newsLoaded = loaded;
         }
     },
+
     getters: {
         news(state) {
             return state.news

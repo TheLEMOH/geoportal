@@ -54,19 +54,19 @@ const routes = [
     component: () => import('../views/Catalogs.vue')
   },
   {
-    path: '/second',
-    name: "second",
-    component: () => import('../views/SecondMenu.vue')
-  },
-  {
-    path: '/test',
-    name: "test",
-    component: () => import('../views/Test.vue')
+    path: '/catalogs/:id',
+    name: 'CatalogsChildren',
+    component: () => import('../views/CatalogsChildren.vue')
   },
   {
     path: '*',
     name: "404",
     component: () => import('../views/404.vue')
+  },
+  {
+    path: '/article/:id',
+    name: "Article",
+    component: () => import('../views/Article.vue')
   }
 ]
 

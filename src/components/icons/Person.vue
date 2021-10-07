@@ -1,8 +1,8 @@
 <template>
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="20"
-    height="20"
+    width="32"
+    height="32"
     fill="currentColor"
     class="bi bi-person m-0 p-0"
     viewBox="0 0 16 16"
@@ -13,9 +13,3 @@
   </svg>
 </template>
 
-<script>
-export default {};
-</script>
-
-<style>
-</style>

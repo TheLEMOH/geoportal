@@ -1,7 +1,7 @@
 <template>
   <div class="card text-white">
     <img
-      :src="`http://enplus.petyaogurkin.keenetic.pro/api/images/${data.img}`"
+      :src="`http://enplus.petyaogurkin.keenetic.pro/api/images/sections/${data.img}`"
       class="card-img-top additional"
       alt="..."
     />
@@ -11,25 +11,27 @@
     </div>
     <div class="card-footer additional border-top">
       <router-link
-        class="btn btn-outline-light me-2"
-        :to="{ name: 'Map', query: { catalogs: index } }"
+        class="btn btn-outline-light m-1"
+        :to="{ name: 'Map' }"
+        @click.native="UpdateOpenedCatalogs(data._id)"
         >Открыть карту</router-link
       >
-      <a
+      <router-link
         href="#"
-        class="btn btn-outline-light"
-        @click="FecthProjectsFromCatalogs(data._id)"
-        >Подробнее
-      </a>
+        class="btn btn-outline-light m-1"
+        :to="{ name: 'CatalogsChildren', params: { id: data._id } }"
+        >Проекты
+      </router-link>
     </div>
   </div>
 </template>
+
 
 <script>
 import { mapActions } from "vuex";
 export default {
   props: ["data", "index"],
-  methods: { ...mapActions(["FecthProjectsFromCatalogs"]) },
+  methods: { ...mapActions(["UpdateOpenedCatalogs"]) },
 };
 </script>
 

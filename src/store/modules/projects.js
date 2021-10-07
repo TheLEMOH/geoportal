@@ -1,8 +1,22 @@
 import WMSCapabilities from 'ol/format/WMSCapabilities';
-import { FilledArray } from './valid/valid';
-/* import { GetStatusText } from "./message/answers" */
-import { GetMaps, Add, Get, Delete, Edit } from "./serverProcedure/projects"
+import { SaveObjects, FetchObjects } from "./serverProcedure/general"
 import Vue from 'vue'
+const PARAMS_LEGEND = {
+    SERVICE: 'WMS',
+    VERSION: '1.3.0',
+    REQUEST: 'GetLegendGraphic',
+    FORMAT: 'image/png',
+    SYMBOLWIDTH: 10,
+    SYMBOLHEIGHT: 5,
+    LAYERSPACE: 1,
+    LAYERTITLESPACE: 1,
+    ICONLABELSPACE: 1,
+    LAYERTITLE: false,
+    RULELABEL: true,
+    TRANSPARENT: true,
+    ITEMFONTCOLOR: 'white',
+    ITEMFONTSIZE: '12'
+}
 
 async function RequestCapabilities(map) {
     const parser = new WMSCapabilities();
@@ -21,6 +35,17 @@ function GetLayers(data) {
     return layers
 }
 
+function GetBox(data) {
+    return data.Capability.Layer.EX_GeographicBoundingBox
+}
+
+function CalculateCenter(data) {
+    const x = (data[0] + data[2]) / 2
+    const y = (data[1] + data[3]) / 2
+    return [x, y]
+}
+
+
 export default {
     state: {
         originalProjects: '[]',
@@ -31,47 +56,73 @@ export default {
         projectsLoaded: false,
         mapsLoaded: false,
         projectsToDisplay: [],
+        openedProject: null,
         capabilities: {},
         legend: [],
     },
 
     actions: {
+        async FetchProjects(ctx) {
+            const setting = {
+                loaded: ctx.state.projectsLoaded,
+                type: 'projects',
+                funcClearDel: 'clearDelProjects',
+                funcLoaded: 'updateProjectsLoaded',
+                funcUpdate: 'updateProjects',
+            }
+            FetchObjects(ctx, setting)
+        },
+
+        async SaveProjects(ctx) {
+            const settings = {
+                forSave: ctx.state.projects,
+                forDelete: ctx.state.delProjects,
+                updateSelected: 'updateSelectedProject',
+                updateLoaded: 'updateProjectsLoaded',
+                type: 'projects',
+                fetch: 'FetchProjects',
+                save: 'SaveProjects',
+                nonFilled: 'Заполните все поля у проекта!'
+            }
+            SaveObjects(ctx, settings)
+        },
+
         async Capabilities(ctx, project) {
-            const exists = ctx.state.capabilities[project._id];
-            if (!exists) {
+            const legend = project.legend
+            if (!legend) {
                 RequestCapabilities(project.map).then(data => {
                     const layers = GetLayers(data);
-                    const PARAMS_LEGEND = 'legend_options=fontName:Times%20New%20Roman;fontAntiAliasing:true;fontColor:0x000033;fontSize:14;bgColor:0xFFFFEE;dpi:180'
-                    const URL_LEGEND = `http://enplus.petyaogurkin.keenetic.pro/qgisserver/${project.map}?&SERVICE=WMS&VERSION=1.3.0&REQUEST=GetLegendGraphic&LAYERS=${layers}&FORMAT=image/png&${PARAMS_LEGEND}`
-                    ctx.commit("updateCapabilities", { id: project._id, legend: URL_LEGEND, layers: layers })
+                    const box = GetBox(data);
+                    const center = CalculateCenter(box);
+                    let params = '';
+                    for (let key in PARAMS_LEGEND) {
+                        params += `${key}=${PARAMS_LEGEND[key]}&`
+                    }
+                    const URL_LEGEND = `http://enplus.petyaogurkin.keenetic.pro/qgisserver/${project.map}?${params}LAYERS=${layers}`
+                    ctx.commit("updateCapabilities", { id: project._id, legend: URL_LEGEND, layers: layers, center })
+                }).catch((e) => {
+                    this.dispatch('DisplayMessage', `Ошибка загрузки карты ${e}`);
                 })
             }
         },
 
-        async FetchProjects(ctx) {
-            if (!ctx.state.projectsLoaded) {
-                ctx.commit("updateProjectsLoaded", true);
-                Get().then((receivedProjects) => {
-                    ctx.commit('updateProjects', receivedProjects);
-                });
-            }
-
-        },
-
         async FetchMaps(ctx) {
-            if (!ctx.state.mapsLoaded) {
-                const user = JSON.parse(localStorage.getItem("YENISEI_AUTH"));
-                GetMaps(user.accessToken).then(maps => {
-                    ctx.commit('updateMapsLoaded', true)
-                    ctx.commit('updateExistingMaps', maps);
-                });
-
+            const user = JSON.parse(localStorage.getItem("YENISEI_AUTH"));
+            const setting = {
+                loaded: ctx.state.mapsLoaded,
+                type: 'maps',
+                token: user.accessToken,
+                funcClearDel: null,
+                funcLoaded: 'updateMapsLoaded',
+                funcUpdate: 'updateExistingMaps',
             }
+            FetchObjects(ctx, setting);
         },
 
         UpdateProjectsToDisplay(ctx, project) {
             ctx.commit("updateProjectsToDisplay", project._id)
-            this.dispatch("Capabilities", project);
+            if (project.visible)
+                this.dispatch("Capabilities", project);
         },
 
         AddProject(ctx) {
@@ -96,58 +147,38 @@ export default {
             ctx.commit('updateSelectedProject', index);
         },
 
-        async SaveProjects(ctx) {
-            const user = JSON.parse(localStorage.getItem("YENISEI_AUTH"));
-            const projects = ctx.state.projects
-            const delProjects = ctx.state.delProjects
-            const filled = FilledArray(projects)
-            const promises = [];
-            if (filled) {
-                ctx.commit('updateSelectedProject', null);
-                ctx.commit("updateProjectsLoaded", false);
-                this.dispatch('DisplayMessage', 'Сохранение...')
-                projects.forEach(p => {
-                    console.log(p)
-                    if (p.action == "add") {
-                        promises.push(
-                            Add(p, user.accessToken).then(res => {
-                                p.action = "done";
-                                return res;
-                            })
-                        );
+        CancelProjects(ctx) {
+            ctx.commit('updateSelectedProject', null);
+            ctx.commit('cancelProjects')
+        },
 
-                    }
-                    if (p.action == "edit") {
-                        promises.push(
-                            Edit(p, user.accessToken).then(res => {
-                                p.action = "done";
-                                return res;
-                            })
-                        );
-                    }
-                })
-
-                if (delProjects.length != 0) {
-                    promises.push(
-                        delProjects.forEach(n => {
-                            Delete(n, user.accessToken)
-                        })
-                    );
+        OpenProject(ctx) {
+            const openedProject = ctx.state.openedProject;
+            if (openedProject) {
+                const collapse = document.getElementById("collapseCatalog" + openedProject.parent);
+                const input = document.getElementById("input-project" + openedProject.id)
+                if (collapse) {
+                    collapse.classList.add("show");
+                    input.dispatchEvent(new Event("change"));
+                    ctx.commit('updateOpenedProject', null);
                 }
-
-                Promise.all(promises).then(() => {
-                    this.dispatch('DisplayMessage', "Готово!");
-                    setTimeout(() => this.dispatch('FetchProjects'), 1000);
-
-                })
-            }
-            else {
-                this.dispatch('DisplayMessage', 'Заполните все поля у проекта!')
             }
         },
+
+        UpdateOpenedProject(ctx, object) {
+            ctx.commit('updateOpenedProject', object);
+        }
     },
 
     mutations: {
+        updateOpenedProject(state, object) {
+            state.openedProject = object
+        },
+
+        clearDelProjects(state) {
+            state.delProjects = [];
+        },
+
         updateProjectsLoaded(state, loaded) {
             state.projectsLoaded = loaded;
         },
@@ -157,19 +188,20 @@ export default {
         },
 
         updateCapabilities(state, data) {
-            Vue.set(state.capabilities, data.id, { layers: data.layers, legend: data.legend });
+            const el = state.projectsToDisplay.findIndex(p => p._id == data.id)
+            Vue.set(state.projectsToDisplay[el], 'legend', data.legend);
+            Vue.set(state.projectsToDisplay[el], 'layers', data.layers);
+            Vue.set(state.projectsToDisplay[el], 'center', data.center);
+        },
+
+        cancelProjects(state) {
+            state.delProjects = [];
+            state.projects = JSON.parse(state.originalProjects)
         },
 
         updateProjectsToDisplay(state, id) {
-            const project = state.projects.find(p => p._id == id)
             const el = state.projectsToDisplay.findIndex(p => p._id == id)
-            if (el == -1) {
-                Vue.set(project, 'visible', true);
-                state.projectsToDisplay.push(project)
-            }
-            else {
-                Vue.set(state.projectsToDisplay[el], 'visible', !state.projectsToDisplay[el].visible);
-            }
+            Vue.set(state.projectsToDisplay[el], 'visible', !state.projectsToDisplay[el].visible);
         },
 
         clearProjectsToDisplay(state) {
@@ -193,7 +225,20 @@ export default {
 
         updateProjects(state, projects) {
             state.originalProjects = JSON.stringify(projects)
-            state.projects = projects
+            state.projects = projects;
+            state.projectsToDisplay = [];
+            projects.forEach(p => {
+                const project = {
+                    title: p.title,
+                    _id: p._id,
+                    map: p.map,
+                    visible: false,
+                    loaded: true,
+                    section: p.section
+                }
+
+                state.projectsToDisplay.push(project)
+            })
         },
 
         deleteProject(state, index) {

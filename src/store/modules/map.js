@@ -1,17 +1,19 @@
+import { transform } from 'ol/proj';
 export default {
     state: {
         show: false,
         information: null,
         currentPanel: "Catalogs",
-        sidebarMapButtons: [{ name: "Каталоги", id: "Catalogs" }, { name: "Подложки", id: "BaseMap" }, { name: "Легенда", id: "Legend" }],
-        baseMaps: [{ name: "Стандарт", url: "https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=NynhVPfsQFS9p8fzpF0c" },
-        { name: "Рельеф", url: "https://api.maptiler.com/maps/topo/{z}/{x}/{y}.png?key=NynhVPfsQFS9p8fzpF0c" },
-        { name: "Спутник", url: "https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=NynhVPfsQFS9p8fzpF0c" }, {
-            name: "Черно-белая", url: "https://api.maptiler.com/maps/toner/{z}/{x}/{y}.png?key=NynhVPfsQFS9p8fzpF0c"
-        }],
+        baseMaps: [
+            { name: "Стандарт", url: "https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=NynhVPfsQFS9p8fzpF0c" },
+            { name: "Рельеф", url: "https://api.maptiler.com/maps/topo/{z}/{x}/{y}.png?key=NynhVPfsQFS9p8fzpF0c" },
+            { name: "Спутник", url: "https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=NynhVPfsQFS9p8fzpF0c" },
+            {
+                name: "Черно-белая", url: "https://api.maptiler.com/maps/toner/{z}/{x}/{y}.png?key=NynhVPfsQFS9p8fzpF0c"
+            }],
         currentBaseMap: 0,
-        zoom: 3,
-        center: [0, 0],
+        zoom: 5,
+        center: [10382902.767976305, 7603254.003900477],
         currentPosition: undefined
 
     },
@@ -26,12 +28,25 @@ export default {
 
         ChangeInformation(ctx, object) {
             if (object.features) {
-                console.log(object)
                 ctx.commit("changeInformation", object);
             }
+        },
+
+        UpdateCenter(ctx, coordinates) {
+            const center = transform([
+                Number(coordinates[0]),
+                Number(coordinates[1]),
+            ], "EPSG:4326", "EPSG:3857")
+            ctx.commit('updateCenter', center);
         }
     },
     mutations: {
+        updateCenter(state, center) {
+            state.center = center
+        },
+        updateZoom(state, zoom) {
+            state.zoom = zoom
+        },
         changeShow(state, show) {
             state.show = show
         },

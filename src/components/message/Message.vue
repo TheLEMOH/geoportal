@@ -17,7 +17,7 @@
       >
         <div class="card-header bg-info">Оповещение</div>
         <div class="card-body">
-          <p class="card-text">{{ message.text }}</p>
+          <p class="card-text text-center">{{ message.text }}</p>
         </div>
       </div>
     </transition-group>
@@ -36,10 +36,11 @@ export default {
 <style>
 .message-wrapper {
   width: auto;
-  z-index: 10;
+  z-index: 1000;
 }
 .message-wrapper .card {
   width: 250px;
+  z-index: 1000;
 }
 
 .list-enter-active,

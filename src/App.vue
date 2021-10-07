@@ -1,14 +1,25 @@
 <template>
   <div id="app">
-    <nav class="navbar main p-2 border">
-      <div class="container-fluid justify-content-start">
-        <img src="./assets/logo.png" class="me-4" height="60px" width="60px" />
-        <h2 class="text-white m-0 p-0">
-          Картографический веб-портал Енисей плюс
-        </h2>
-        <Login />
+    <nav class="navbar main border-bottom">
+      <div class="container-fluid">
+        <div class="p-0">
+          <img src="./assets/logo.png" height="60px" width="60px" />
+        </div>
+        <div class="me-auto p-2 text-white">
+          <router-link
+            class="link-main-nav text-white h2"
+            :to="{ name: 'Home' }"
+            ><label class="navbar-home-name me-2"
+              >Картографический веб-портал Енисей плюс</label
+            >
+
+            <HomeIcon
+          /></router-link>
+        </div>
+        <div class="p-2 bd-highlight"><Login /></div>
       </div>
     </nav>
+    <LoginModal />
     <Message />
     <Nav />
     <transition name="fade" mode="out-in">
@@ -19,10 +30,12 @@
 
 <script>
 import Login from "./components/home/Login.vue";
-import Nav from "./components/home/NavSecond.vue";
+import Nav from "./components/home/Nav.vue";
 import Message from "./components/message/Message.vue";
+import LoginModal from "./components/home/LoginModal.vue";
+import HomeIcon from "./components/icons/HomeIcon.vue";
 export default {
-  components: { Login, Nav, Message },
+  components: { Login, Nav, Message, LoginModal, HomeIcon },
   computed: {
     layout() {
       return this.$route.name;
@@ -31,6 +44,11 @@ export default {
 };
 </script>
 <style>
+@media (max-width: 880px) {
+  .navbar-home-name {
+    display: none;
+  }
+}
 
 .home {
   z-index: 1;
@@ -81,6 +99,15 @@ export default {
   cursor: pointer;
   color: #ff8000 !important;
   background-size: 100% 3px;
+}
+
+.link-main-nav {
+  text-decoration: none !important;
+  transition: all 0.3s;
+}
+.link-main-nav:hover {
+  cursor: pointer;
+  color: #ff8000 !important;
 }
 
 .linkActive {

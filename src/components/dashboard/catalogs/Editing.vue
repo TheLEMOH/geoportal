@@ -27,8 +27,15 @@
         @change="TestIMG"
       />
     </div>
-    <div class="mb-2">
-      <img :src="catalogs[selectedCatalog].img" />
+    <div class="mb-2" v-if="catalogs[selectedCatalog].img">
+      <img
+        :src="catalogs[selectedCatalog].img"
+        v-if="catalogs[selectedCatalog].img.length > 45"
+      />
+      <img
+        v-else
+        :src="`http://enplus.petyaogurkin.keenetic.pro/api/images/sections/${catalogs[selectedCatalog].img}`"
+      />
     </div>
   </div>
 </template>
@@ -44,7 +51,8 @@ export default {
 
 <style>
 .editing-catalog img {
-  max-width: 500px;
-  max-height: 500px;
+  width: 450px;
+  height: 250px;
+  object-fit: cover;
 }
 </style>

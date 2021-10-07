@@ -17,7 +17,7 @@ import Projects from "../components/dashboard/Projects.vue";
 import About from "../components/dashboard/About.vue";
 import Help from "../components/dashboard/Help.vue";
 import Gallery from "../components/dashboard/Gallery.vue";
-
+import Articles from "../components/dashboard/Articles.vue";
 export default {
   components: {
     Sidebar,
@@ -28,17 +28,19 @@ export default {
     About,
     Help,
     Gallery,
+    Articles,
   },
   data() {
     return { currentComponent: null };
   },
   mounted() {
     this.FetchNews();
+    this.FetchCatalogs();
+    this.FetchProjects();
+    this.FetchArticles();
     this.FetchUsers();
     this.FetchAbout();
     this.FetchMaps();
-    this.FetchProjects();
-    this.FetchCatalogs();
     this.FetchGallery();
   },
   methods: {
@@ -50,6 +52,7 @@ export default {
       "FetchMaps",
       "FetchProjects",
       "FetchGallery",
+      "FetchArticles",
     ]),
     SelectComponent(id) {
       this.currentComponent = id;

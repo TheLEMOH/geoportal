@@ -9,6 +9,7 @@ import projects from './modules/projects'
 import message from './modules/message'
 import catalogs from './modules/catalogs'
 import gallery from './modules/gallery'
+import articles from './modules/articles'
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -25,6 +26,7 @@ export default new Vuex.Store({
         projects,
         message,
         catalogs,
-        gallery
+        gallery,
+        articles
     }
 })

@@ -1,20 +1,24 @@
-const URL_ABOUT = "http://enplus.petyaogurkin.keenetic.pro/api/about/"
-const URL_EDIT = "http://enplus.petyaogurkin.keenetic.pro/api/about/edit/"
+import { URL } from "./serverProcedure/URL"
 export default {
     state: {
         about: null,
     },
     actions: {
         async FetchAbout(ctx) {
-            const res = await fetch(URL_ABOUT);
-            const about = await res.json();
-            ctx.commit('updateAbout', about);
+            fetch(URL.about.get).then(res => {
+                res.json().then(about => {
+                    ctx.commit('updateAbout', about);
+                });
+            }).catch(e => {
+                ctx.commit("DisplayMessage", `about ${e}`)
+            });
+
         },
 
         async EditAbout(ctx) {
             const text = ctx.state.about[0].body;
             const user = JSON.parse(localStorage.getItem("YENISEI_AUTH"));
-            const res = await fetch(URL_EDIT, { method: "PUT", body: JSON.stringify({ body: text }), headers: { 'Authorization': `Bearer ${user.accessToken}`, 'Content-Type': 'application/json' } });
+            const res = await fetch(URL.about.edit, { method: "PUT", body: JSON.stringify({ body: text }), headers: { 'Authorization': `Bearer ${user.accessToken}`, 'Content-Type': 'application/json' } });
             const about = await res.json();
             console.log(about)
         }

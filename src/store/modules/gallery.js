@@ -1,38 +1,37 @@
 import { getBase64 } from "./base64/code"
-import { GetStatusText } from "./message/answers"
-
-const URL_GET = `http://enplus.petyaogurkin.keenetic.pro/api/gallery/`
-const URL_ADD = `http://enplus.petyaogurkin.keenetic.pro/api/gallery/add`
-
-async function Get() {
-    const res = await fetch(URL_GET)
-    const receivedGallery = await res.json();
-    return receivedGallery;
-
-}
-
-async function Add(image, token) {
-    const res = await fetch(URL_ADD, { method: 'POST', body: JSON.stringify({ img: image.img }), headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } })
-    return res
-}
-
-
+import { SaveObjects, FetchObjects } from "./serverProcedure/general"
 export default {
     state: {
         showModalAddImage: false,
         images: [],
+        delImages: [],
         imagesLoaded: false,
         imageInBase: null
     },
     actions: {
-
         async FetchGallery(ctx) {
-            if (!ctx.state.imagesLoaded) {
-                Get().then((receivedGallery) => {
-                    ctx.commit('updateImagesLoaded', true);
-                    ctx.commit('updateImages', receivedGallery);
-                });
+            const settings = {
+                loaded: ctx.state.imagesLoaded,
+                type: 'gallery',
+                funcClearDel: 'clearDelImages',
+                funcLoaded: 'updateImagesLoaded',
+                funcUpdate: 'updateImages',
             }
+            FetchObjects(ctx, settings);
+        },
+
+        SaveGallery(ctx) {
+            const settings = {
+                forSave: ctx.state.images,
+                forDelete: ctx.state.delImages,
+                updateSelected: null,
+                updateLoaded: 'updateImagesLoaded',
+                type: 'gallery',
+                fetch: 'FetchGallery',
+                save: 'SaveGallery',
+                nonFilled: 'Выберите картинки'
+            };
+            SaveObjects(ctx, settings);
         },
 
         async TestImgGallery(ctx, e) {
@@ -48,28 +47,11 @@ export default {
         AddImage(ctx, base) {
             const image = {
                 img: base,
-                description: null,
                 action: "add"
             }
             ctx.commit("addImage", image);
-
         },
 
-        SaveImages(ctx) {
-            const user = JSON.parse(localStorage.getItem("YENISEI_AUTH"));
-            const images = ctx.state.images
-            this.dispatch('DisplayMessage', 'Сохранение...')
-            images.forEach(c => {
-                if (c.action == "add") {
-                    c.action = "loading"
-                    Add(c, user.accessToken).then((res) => {
-                        const text = GetStatusText(res.status)
-                        this.dispatch('DisplayMessage', text)
-                        c.action = "done";
-                    });
-                }
-            })
-        },
 
         DeleteImage(ctx, index) {
             ctx.commit('deteleImage', index);
@@ -84,8 +66,17 @@ export default {
         }
     },
     mutations: {
+        clearDelImages(state) {
+            state.delImages = []
+        },
         deteleImage(state, index) {
-            state.images.splice(index, 1);
+            if (state.images[index].action == "add") {
+                state.images.splice(index, 1);
+            }
+            else {
+                state.delImages.push({ _id: state.images[index] });
+                state.images.splice(index, 1);
+            }
         },
         addImage(state, image) {
             state.images.push(image);
@@ -109,6 +100,9 @@ export default {
         },
         imagesToSave(state) {
             return state.imagesToSave
+        },
+        imagesLoaded(state) {
+            return state.imagesLoaded
         }
     },
 }

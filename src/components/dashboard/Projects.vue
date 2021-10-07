@@ -1,29 +1,49 @@
 <template>
   <div class="catalogs-control w-100">
-    <ControlPanel />
+    <ControlPanel
+      :Add="AddProject"
+      :Save="SaveProjects"
+      :Cancel="CancelProjects"
+      :loaded="projectsLoaded"
+    />
     <div class="row">
       <div class="col-lg-auto">
-        <Table />
+        <Table
+          :tableHead="'Название проекта'"
+          :objects="projects"
+          :selected="selectedProject"
+          :SelectFunc="SelectProject"
+          :DeleteFunc="DeleteProject"
+        />
       </div>
       <div class="col-lg" v-if="selectedProject != null">
-        <EditingProjects />
+        <EditingProjects :key="selectedProject" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import ControlPanel from "./projects/Panel.vue";
-import Table from "./projects/Table.vue";
-import EditingProjects from "./projects/Editing.vue";
+import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
+import ControlPanel from "./patterns/Panel.vue";
+import Table from "./patterns/Table.vue";
+import EditingProjects from "./projects/Editing.vue";
+
 export default {
   components: {
     EditingProjects,
     Table,
     ControlPanel,
   },
-  computed: mapGetters(["selectedProject"]),
+  computed: mapGetters(["projects", "selectedProject", "projectsLoaded"]),
+  methods: mapActions([
+    "AddProject",
+    "SaveProjects",
+    "CancelProjects",
+    "SelectProject",
+    "DeleteProject",
+  ]),
 };
 </script>
 

@@ -32,6 +32,7 @@ export default {
           { align: "justify" },
         ],
         [{ color: [] }],
+        ["link"],
         ["clean"],
       ],
     };

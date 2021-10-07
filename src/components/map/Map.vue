@@ -9,7 +9,7 @@
     class="map"
   >
     <vl-view :zoom="zoom" :center="center"></vl-view>
-
+    <!-- Подложка -->
     <vl-layer-tile>
       <vl-source-xyz
         :url="baseMaps[currentBaseMap].url"
@@ -17,7 +17,7 @@
         SameSite="none"
       ></vl-source-xyz>
     </vl-layer-tile>
-
+    <!-- Слои -->
     <vl-layer-image
       v-for="(project, index) in projectsToDisplay"
       :key="index"
@@ -25,13 +25,13 @@
       :visible="project.visible"
     >
       <vl-source-image-wms
-        v-if="capabilities[project._id]"
-        :layers="capabilities[project._id].layers"
+        v-if="project.layers"
+        :layers="project.layers"
         :url="`http://enplus.petyaogurkin.keenetic.pro/qgisserver/${project.map}`"
         :crossOrigin="'anonymous'"
       ></vl-source-image-wms>
     </vl-layer-image>
-
+    <!-- Попап -->
     <vl-overlay
       projection="EPSG:3857"
       :position="currentPosition"
@@ -39,27 +39,27 @@
       v-if="currentPosition"
     >
       <template>
-        <div class="overlay-videoclip position-absolute bg-white m-0 p-0">
+        <div class="overlay-videoclip position-absolute additional m-0 p-0">
           <button
-            class="btn btn-danger position-absolute top-0 end-0"
+            class="btn btn-danger rounded-0 float-end"
             @click="ClosePopup"
           >
             &times;
           </button>
+          <h3 class="text-white m-2">{{ information.features.id }}</h3>
           <ul class="list-group list-group-flush">
             <li
-              class="list-group-item m-0 p-1"
+              class="list-group-item m-0 p-2"
               v-for="(prop, index) in information.features.properties"
               :key="index"
             >
               <div class="me-auto">
                 <div class="fw-bold">{{ index }}</div>
                 <label v-if="index != 'img'">{{ prop }}</label>
-
                 <img
                   class="w-100"
                   v-if="index == 'img' && prop"
-                  :src="`http://enplus.petyaogurkin.keenetic.pro/api/map_images/${information.id}/${prop}`"
+                  :src="`https://enplus.petyaogurkin.keenetic.pro/api/images/maps/${information.id}/${prop}`"
                 />
               </div>
             </li>
@@ -110,7 +110,7 @@ export default {
           const url2 = tmpurl.split("BBOX");
           const bbox = url2[1].split("%2C");
 
-          const rate = 70000000 / Math.pow(2, map.getView().getZoom());
+          const rate = 60000000 / Math.pow(2, map.getView().getZoom());
 
           bbox[0] = +bbox[0].slice(1) - rate;
           bbox[1] = +bbox[1] - rate;
@@ -147,13 +147,12 @@ export default {
 
 .overlay-videoclip {
   opacity: 1;
-  padding: 5px;
-  border-radius: 6px;
+  border-radius: 10px;
   transform: translate(-50%, -100%);
-  width: 300px;
+  width: 350px;
   max-height: 350px;
   word-break: break-all;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .overlay-videoclip button {

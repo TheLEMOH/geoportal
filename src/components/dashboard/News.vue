@@ -1,27 +1,43 @@
 <template>
   <div class="news-control w-100">
-    <ControlPanel />
+    <ControlPanel
+      :Add="AddNews"
+      :Save="SaveNews"
+      :Cancel="Cancel"
+      :loaded="newsLoaded"
+    />
     <div class="row">
       <div class="col-lg-auto">
-        <TableNews />
+        <Table
+          :tableHead="'Название новости'"
+          :objects="news"
+          :selected="selectedNews"
+          :SelectFunc="SelectNews"
+          :DeleteFunc="DeleteNews"
+        />
       </div>
       <div class="col-lg" v-if="selectedNews != null">
         <EditingNews />
-      </div>
-      <div class="col-lg text-white" v-else>
-        <label>Выберите новость</label>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
-import TableNews from "./news/News.vue";
-import ControlPanel from "./news/Panel.vue";
+import Table from "./patterns/Table.vue";
+import ControlPanel from "./patterns/Panel.vue";
 import EditingNews from "./news/Editing.vue";
 export default {
-  components: { TableNews, ControlPanel, EditingNews },
-  computed: mapGetters(["selectedNews"]),
+  components: { Table, ControlPanel, EditingNews },
+  methods: mapActions([
+    "AddNews",
+    "SaveNews",
+    "Cancel",
+    "SelectNews",
+    "DeleteNews",
+  ]),
+  computed: mapGetters(["news", "selectedNews", "newsLoaded"]),
 };
 </script>
 

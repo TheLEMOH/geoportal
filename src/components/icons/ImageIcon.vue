@@ -1,8 +1,8 @@
 <template>
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
+    :width="data.w"
+    :height="data.h"
     fill="currentColor"
     class="bi bi-image-fill"
     viewBox="0 0 16 16"
@@ -14,7 +14,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: ["data"],
+};
 </script>
 
 <style>

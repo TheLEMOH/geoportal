@@ -1,12 +1,18 @@
 <template>
   <div class="recources h-100">
-    <div class="container mt-2">
-      <Loading v-if="catalogsLength == 0" />
+    <div class="container mt-2" v-if="сatalogsLoaded">
       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-        <div class="col mb-4" v-for="(catalog, index) in catalogs" :key="index">
+        <div class="col p-1" v-for="(catalog, index) in catalogs" :key="index">
           <Card :data="catalog" :index="index" />
         </div>
       </div>
+    </div>
+    <div class="container mt-2" v-else>
+      <Loading />
+    </div>
+
+    <div class="container mt-2" v-if="catalogsLength == 0 && сatalogsLoaded">
+      <h1>Каталогов нет</h1>
     </div>
   </div>
 </template>
@@ -21,7 +27,7 @@ export default {
   mounted() {
     this.FetchCatalogs();
   },
-  computed: mapGetters(["catalogs", "catalogsLength"]),
+  computed: mapGetters(["catalogs", "catalogsLength", "сatalogsLoaded"]),
   methods: {
     ...mapActions(["FetchCatalogs"]),
   },

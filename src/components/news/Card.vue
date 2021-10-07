@@ -7,18 +7,18 @@
       <div class="col-xl">
         <div class="card text-white mb-2">
           <div class="card-body additional ql-editor">
-            <h5 class="card-title">{{ data.title }}</h5>
-            <div class="card-body row" v-html="data.body"></div>
+            <h1 class="card-title">{{ data.title }}</h1>
+            <div class="card-body" v-html="data.body"></div>
             <div class="card-img-bottom">
-              <div class="row row-cols-1 row-cols-md-3 justify-content-center">
+              <div class="row row-cols-1 row-cols-md-3">
                 <div
-                  class="col col-md mb-2"
+                  class="col col-md p-1"
                   v-for="(img, index) in data.img"
                   :key="index"
                 >
                   <img
                     :src="
-                      'http://enplus.petyaogurkin.keenetic.pro/api/images/' +
+                      'http://enplus.petyaogurkin.keenetic.pro/api/images/news/' +
                       img
                     "
                     style="width: 100%"
@@ -47,7 +47,8 @@ export default {
 
 .card-body img {
   max-width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
 }
 
 p {
