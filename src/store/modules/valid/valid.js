@@ -3,9 +3,9 @@
 [1] - Исключается
 */
 
-const latin = [/^[A-Za-z]+$/, /[а-я-А-Я-0-9]/g];
-const cyr = [/^[а-я-А-Я]+$/, /[A-Za-z-0-9]/g];
-const pass = [/^[A-Za-z-0-9]+$/, /[а-я-А-Я]/g]
+const latin = [/^[A-Za-z]+$/, /[а-я-А-Я-0-9-.,@#!$%^&*;:{}=\-_`~()/\\]/g];
+const cyr = [/^[а-я-А-Я]+$/, /[A-Za-z-0-9-.,@#!$%^&*;:{}=\-_`~()/\\]/g];
+const pass = [/^[A-Za-z-0-9-@.,#!$%^&*;:{}=\-_`~()/\\]+$/, /[а-я-А-Я]/g]
 const reg = { latin, cyr, pass }
 
 function InputValidation(e, type) {
@@ -23,8 +23,7 @@ function InputValidation(e, type) {
             e.target.value = value;
             return value
         }
-    }
-    else {
+    } else {
         return null;
     }
 }
@@ -40,8 +39,7 @@ function FilledArray(array, isUser = false) {
                 break;
             }
         }
-    }
-    else {
+    } else {
         for (let i = 0; i < l; i++) {
             filled *= Filled(array[i])
             if (!filled) {

@@ -84,7 +84,7 @@ export default {
 
         CopyUrlArticle(ctx, e) {
             this.dispatch('DisplayMessage', "Ссылка скопирована!");
-            const url = `http://localhost:8080/article/${e}`
+            const url = `https://yenisey.sfu-kras.ru/article/${e}`
             navigator.clipboard.writeText(url);
         },
 
@@ -144,8 +144,7 @@ export default {
         deleteArticle(state, index) {
             if (state.articles[index].action == "add") {
                 state.articles.splice(index, 1);
-            }
-            else {
+            } else {
                 state.delArticles.push(state.articles[index]);
                 state.articles.splice(index, 1);
             }

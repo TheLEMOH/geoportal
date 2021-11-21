@@ -16,13 +16,7 @@
                   v-for="(img, index) in data.img"
                   :key="index"
                 >
-                  <img
-                    :src="
-                      'http://enplus.petyaogurkin.keenetic.pro/api/images/news/' +
-                      img
-                    "
-                    style="width: 100%"
-                  />
+                  <img :src="imgURLs.news + img" style="width: 100%" />
                 </div>
               </div>
             </div>
@@ -35,11 +29,17 @@
 
 
 <script>
+import { imgURLs } from "../../store/modules/serverProcedure/URL";
 export default {
   props: ["data"],
+  data() {
+    return {
+      imgURLs: imgURLs,
+    };
+  },
 };
 </script>
-<style lang="css">
+<style >
 .card {
   border: 0;
   overflow: hidden;
@@ -47,7 +47,7 @@ export default {
 
 .card-body img {
   max-width: 100%;
-  height: 100%;
+  height: 200px;
   object-fit: cover;
 }
 

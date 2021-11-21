@@ -14,7 +14,7 @@
       <label class="form-label">Текст статьи</label>
       <VueEditor
         v-model="articles[selectedArticle].body"
-        :editorToolbar="toolbar"
+        :editorToolbar="defaultToolbar"
       />
     </div>
 
@@ -37,7 +37,7 @@
           :key="img"
         >
           <Picture
-            :data="`http://enplus.petyaogurkin.keenetic.pro/api/images/articles/${img}`"
+            :data="imgURLs.articles + img"
             :index="index"
             :type="'url'"
             :Delete="DeleteImageFromArticle"
@@ -65,9 +65,10 @@ import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 import Picture from "../patterns/Picture.vue";
+import { imgURLs } from "../../../store/modules/serverProcedure/URL";
 export default {
   components: { VueEditor, Picture },
-  computed: mapGetters(["articles", "selectedArticle"]),
+  computed: mapGetters(["articles", "selectedArticle", "defaultToolbar"]),
   methods: mapActions([
     "fileChange",
     "AddImageArticle",
@@ -75,26 +76,11 @@ export default {
   ]),
   data() {
     return {
-      toolbar: [
-        [{ header: [false, 1, 2, 3, 4, 5, 6] }],
-        ["bold", "italic", "underline"],
-        [
-          { align: "" },
-          { align: "center" },
-          { align: "right" },
-          { align: "justify" },
-        ],
-        [{ color: [] }],
-        ["clean"],
-      ],
+      imgURLs: imgURLs,
     };
   },
 };
 </script>
 
 <style>
-.editing-articles {
-  min-width: 500px;
-  max-width: 800px;
-}
 </style>

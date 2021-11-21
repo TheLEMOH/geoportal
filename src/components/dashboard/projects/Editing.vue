@@ -11,11 +11,9 @@
     </div>
     <div class="mb-2">
       <label class="form-label">Описание проекта</label>
-      <textarea
-        type="text"
-        class="form-control"
-        placeholder=""
+      <VueEditor
         v-model="projects[selectedProject].description"
+        :editorToolbar="defaultToolbar"
       />
     </div>
     <div class="mb-2">
@@ -39,7 +37,9 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { VueEditor } from "vue2-editor";
 export default {
+  components: { VueEditor },
   data() {
     return {
       maps: null,
@@ -49,7 +49,13 @@ export default {
     this.maps = this.CreateMapList();
   },
   computed: {
-    ...mapGetters(["projects", "selectedProject", "existingMaps", "catalogs"]),
+    ...mapGetters([
+      "projects",
+      "selectedProject",
+      "existingMaps",
+      "catalogs",
+      "defaultToolbar",
+    ]),
   },
   methods: {
     CreateMapList() {

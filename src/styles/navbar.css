@@ -1,0 +1,17 @@
+@media (max-width: 880px) {
+    .navbar-home-name {
+        display: none;
+    }
+    .navbar-home-name-second {
+        display: inline !important;
+    }
+}
+
+.navbar-home-name:hover {
+    cursor: pointer;
+}
+
+.navbar-home-name-second {
+    cursor: pointer;
+    display: none;
+}

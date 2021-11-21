@@ -2,7 +2,7 @@
   <div class="news h-100">
     <div class="container mt-2" v-if="newsLoaded">
       <div class="d-flex flex-column">
-        <Card v-for="(news, index) in news" :key="index" :data="news" />
+        <Card v-for="(news, index) in newsList" :key="index" :data="news" />
       </div>
     </div>
 
@@ -10,7 +10,7 @@
       <Loading />
     </div>
 
-    <div class="container mt-2" v-if="newsLength == 0 && newsLoaded">
+    <div class="container mt-2" v-if="newsList == 0 && newsLoaded">
       <h1>Новостей нет</h1>
     </div>
   </div>
@@ -28,7 +28,26 @@ export default {
   mounted() {
     this.$store.dispatch("FetchNews");
   },
-  computed: mapGetters(["news", "newsLength", "newsLoaded"]),
+  computed: {
+    ...mapGetters(["news", "newsLength", "newsLoaded"]),
+    newsList() {
+      const news = [...this.news];
+      news.sort((a, b) => {
+        const aSplit = a.date.split(".");
+        const bSplit = b.date.split(".");
+        const aDate = new Date(aSplit[2], aSplit[1], aSplit[0]);
+        const bDate = new Date(bSplit[2], bSplit[1], bSplit[0]);
+        if (aDate > bDate) {
+          return 1;
+        }
+        if (aDate < bDate) {
+          return -1;
+        }
+        return 0;
+      });
+      return news.filter((n) => n.action != "add");
+    },
+  },
 };
 </script>
 

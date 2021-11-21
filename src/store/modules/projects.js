@@ -20,7 +20,7 @@ const PARAMS_LEGEND = {
 
 async function RequestCapabilities(map) {
     const parser = new WMSCapabilities();
-    const URL_CAPABILITIES = `http://enplus.petyaogurkin.keenetic.pro/qgisserver/${map}?VERSION=1.3.0&REQUEST=GetCapabilities&SERVICE=WMS`
+    const URL_CAPABILITIES = `https://yenisey.sfu-kras.ru/qgisserver/${map}?VERSION=1.3.0&REQUEST=GetCapabilities&SERVICE=WMS`
     const res = await fetch(URL_CAPABILITIES)
     const text = await res.text();
     const result = parser.read(text);
@@ -98,7 +98,7 @@ export default {
                     for (let key in PARAMS_LEGEND) {
                         params += `${key}=${PARAMS_LEGEND[key]}&`
                     }
-                    const URL_LEGEND = `http://enplus.petyaogurkin.keenetic.pro/qgisserver/${project.map}?${params}LAYERS=${layers}`
+                    const URL_LEGEND = `https://yenisey.sfu-kras.ru/qgisserver/${project.map}?${params}LAYERS=${layers}`
                     ctx.commit("updateCapabilities", { id: project._id, legend: URL_LEGEND, layers: layers, center })
                 }).catch((e) => {
                     this.dispatch('DisplayMessage', `Ошибка загрузки карты ${e}`);
@@ -159,7 +159,8 @@ export default {
                 const input = document.getElementById("input-project" + openedProject.id)
                 if (collapse) {
                     collapse.classList.add("show");
-                    input.dispatchEvent(new Event("change"));
+                    if (!input.checked)
+                        input.dispatchEvent(new Event("change"));
                     ctx.commit('updateOpenedProject', null);
                 }
             }
@@ -244,8 +245,7 @@ export default {
         deleteProject(state, index) {
             if (state.projects[index].action == "add") {
                 state.projects.splice(index, 1);
-            }
-            else {
+            } else {
                 state.delProjects.push(state.projects[index]);
                 state.projects.splice(index, 1);
             }

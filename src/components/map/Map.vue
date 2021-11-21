@@ -27,7 +27,7 @@
       <vl-source-image-wms
         v-if="project.layers"
         :layers="project.layers"
-        :url="`http://enplus.petyaogurkin.keenetic.pro/qgisserver/${project.map}`"
+        :url="`/qgisserver/${project.map}`"
         :crossOrigin="'anonymous'"
       ></vl-source-image-wms>
     </vl-layer-image>
@@ -46,24 +46,15 @@
           >
             &times;
           </button>
-          <h3 class="text-white m-2">{{ information.features.id }}</h3>
-          <ul class="list-group list-group-flush">
-            <li
-              class="list-group-item m-0 p-2"
-              v-for="(prop, index) in information.features.properties"
-              :key="index"
-            >
-              <div class="me-auto">
-                <div class="fw-bold">{{ index }}</div>
-                <label v-if="index != 'img'">{{ prop }}</label>
-                <img
-                  class="w-100"
-                  v-if="index == 'img' && prop"
-                  :src="`https://enplus.petyaogurkin.keenetic.pro/api/images/maps/${information.id}/${prop}`"
-                />
-              </div>
-            </li>
-          </ul>
+
+          <h4 class="text-white w-100 m-2" v-if="nameObject">
+            <a :href="articleObject"> {{ nameObject }} </a>
+          </h4>
+          <h4 class="text-white w-100 m-2" v-else>
+            <a :href="articleObject"> {{ idObject }} </a>
+          </h4>
+
+          <Information :data="information" />
         </div>
       </template>
     </vl-overlay>
@@ -74,7 +65,13 @@
 import { mapGetters } from "vuex";
 import { mapMutations } from "vuex";
 import { mapActions } from "vuex";
+import { imgURLs } from "../../store/modules/serverProcedure/URL";
+import Information from "./Information.vue";
 export default {
+  components: { Information },
+  data() {
+    return { imgURLs: imgURLs };
+  },
   computed: {
     ...mapGetters([
       "zoom",
@@ -86,6 +83,22 @@ export default {
       "capabilities",
       "information",
     ]),
+
+    nameObject() {
+      if (this.information.features.properties.name) {
+        return this.information.features.properties.name;
+      }
+      if (this.information.features.properties.Name) {
+        return this.information.features.properties.Name;
+      }
+      return this.information.features.id;
+    },
+    idObject() {
+      return this.information.features.id;
+    },
+    articleObject() {
+      return this.information.features.properties.article;
+    },
   },
   methods: {
     ...mapMutations(["changeCurrentPosition"]),
@@ -150,9 +163,27 @@ export default {
   border-radius: 10px;
   transform: translate(-50%, -100%);
   width: 350px;
-  max-height: 350px;
-  word-break: break-all;
+  max-height: 500px;
+  word-break: break-word;
   overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.overlay-videoclip a {
+  margin: 0 !important;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0% 100%;
+  background-repeat: no-repeat !important;
+  background-size: 0% 3px;
+  transition: all 0.3s;
+  margin: 0.5rem;
+  color: white;
+}
+
+.overlay-videoclip a:hover {
+  cursor: pointer;
+  color: #e3ba8e !important;
+  background-size: 100% 3px !important;
 }
 
 .overlay-videoclip button {

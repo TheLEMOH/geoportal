@@ -22,14 +22,12 @@ export default {
                 password: ctx.state.newPassword,
                 login: ctx.state.newLogin,
                 role: ctx.state.role,
-                changePassword: false,
                 action: "add"
             }
             const filled = Filled(user);
             if (filled) {
                 ctx.commit('addUser', user)
-            }
-            else {
+            } else {
                 this.dispatch('DisplayMessage', 'Заполните все поля у пользователя!')
             }
         },
@@ -39,8 +37,7 @@ export default {
             const res = ctx.state.users[index]._id == id
             if (res) {
                 this.dispatch('DisplayMessage', "Нельзя удалить себя")
-            }
-            else {
+            } else {
                 ctx.commit('deleteUser', index)
             }
         },
@@ -87,8 +84,7 @@ export default {
         deleteUser(state, index) {
             if (state.users[index].action == "add") {
                 state.users.splice(index, 1);
-            }
-            else {
+            } else {
                 state.delUsers.push(state.users[index]);
                 state.users.splice(index, 1);
             }

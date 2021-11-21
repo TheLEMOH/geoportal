@@ -3,23 +3,22 @@
     <nav class="navbar main border-bottom">
       <div class="container-fluid">
         <div class="p-0">
-          <img src="./assets/logo.png" height="60px" width="60px" />
+          <img src="./assets/logo.svg" height="60px" width="60px" />
         </div>
         <div class="me-auto p-2 text-white">
           <router-link
             class="link-main-nav text-white h2"
             :to="{ name: 'Home' }"
-            ><label class="navbar-home-name me-2"
+          >
+            <label class="navbar-home-name"
               >Картографический веб-портал Енисей плюс</label
             >
-
-            <HomeIcon
-          /></router-link>
+            <label class="navbar-home-name-second">Енисей плюс</label>
+          </router-link>
         </div>
-        <div class="p-2 bd-highlight"><Login /></div>
+        <LoginDropbutton />
       </div>
     </nav>
-    <LoginModal />
     <Message />
     <Nav />
     <transition name="fade" mode="out-in">
@@ -29,26 +28,36 @@
 </template>
 
 <script>
-import Login from "./components/home/Login.vue";
 import Nav from "./components/home/Nav.vue";
 import Message from "./components/message/Message.vue";
-import LoginModal from "./components/home/LoginModal.vue";
-import HomeIcon from "./components/icons/HomeIcon.vue";
+import LoginDropbutton from "./components/home/LoginDropbutton.vue";
+import { mapActions } from "vuex";
 export default {
-  components: { Login, Nav, Message, LoginModal, HomeIcon },
+  components: { Nav, Message, LoginDropbutton, },
+  methods: {
+    ...mapActions(["CheckUser"]),
+  },
   computed: {
     layout() {
       return this.$route.name;
     },
   },
+  mounted() {
+    console.log("Проверка пользователя...");
+    this.CheckUser();
+  },
 };
 </script>
 <style>
-@media (max-width: 880px) {
-  .navbar-home-name {
-    display: none;
-  }
-}
+@import "./styles/article.css";
+@import "./styles/fade.css";
+@import "./styles/gallery.css";
+@import "./styles/link.css";
+@import "./styles/navbar.css";
+@import "./styles/scheme.css";
+@import "./styles/scrollbar.css";
+@import "./styles/hr.css";
+@import "./styles/cards.css";
 
 .home {
   z-index: 1;
@@ -63,91 +72,34 @@ export default {
   overflow-y: hidden;
 }
 
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background-color: #ccdef7;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #ccdef7;
-  background-image: -webkit-linear-gradient(
-    45deg,
-    rgba(255, 255, 255, 0.5) 25%,
-    transparent 25%,
-    transparent 50%,
-    rgba(255, 255, 255, 0.5) 50%,
-    rgba(255, 255, 255, 0.5) 75%,
-    transparent 75%,
-    transparent
-  );
-}
-
-.link {
-  text-decoration: none !important;
-  background-image: linear-gradient(currentColor, currentColor);
-  background-position: 0% 100%;
-  background-repeat: no-repeat;
-  background-size: 0% 3px;
-  transition: all 0.3s;
-  margin: 0.5rem;
-}
-
-.link:hover {
-  cursor: pointer;
-  color: #ff8000 !important;
-  background-size: 100% 3px;
-}
-
-.link-main-nav {
-  text-decoration: none !important;
-  transition: all 0.3s;
-}
-.link-main-nav:hover {
-  cursor: pointer;
-  color: #ff8000 !important;
-}
-
-.linkActive {
-  color: #ff8000 !important;
-  transition: all 0.3s;
-  background-size: 100% 3px;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.2s linear;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.main {
-  background: #012e67;
-}
-
-.additional {
-  background: #012e67 !important;
-}
-
-.selected {
-  color: white !important;
-  background: #012e67 !important;
-  transition: all 0.3s;
-}
-
-.background {
-  background: #ccdef7 !important;
-}
-
-.text-shadow {
-}
-
 .text-black {
   color: black !important;
+}
+
+.ql-editor {
+  min-height: 0px !important;
+}
+
+hr {
+  height: 2px !important;
+  color: #5b828e !important;
+  opacity: 1 !important;
+  margin: 40px !important;
+  margin-top: 20px !important;
+  margin-bottom: 20px !important;
+}
+
+.hrBegin {
+  color: #5b828e !important;
+  margin: 40px !important;
+  margin-top: 30px !important;
+  margin-bottom: 15px !important;
+}
+
+.hrEnd {
+  color: #5b828e !important;
+  margin: 40px !important;
+  margin-top: 15px !important;
+  margin-bottom: 30px !important;
 }
 </style>

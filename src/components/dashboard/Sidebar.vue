@@ -28,6 +28,7 @@ export default {
         { name: "Проекты", id: "Projects", access: [2, 3] },
         { name: "Статьи", id: "Articles", access: [2, 3] },
         { name: "Пользователи", id: "Users", access: [3] },
+        { name: "Главная страница", id: "Carousel", access: [3] },
         { name: "Фотогалерея", id: "Gallery", access: [2, 3] },
         { name: "О проекте", id: "About", access: [2, 3] },
         { name: "Помощь", id: "Help", access: [1, 2, 3] },

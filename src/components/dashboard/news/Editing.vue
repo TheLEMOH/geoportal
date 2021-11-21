@@ -23,7 +23,10 @@
 
     <div class="mb-2">
       <label class="form-label">Текст</label>
-      <VueEditor v-model="news[selectedNews].body" :editorToolbar="toolbar" />
+      <VueEditor
+        v-model="news[selectedNews].body"
+        :editorToolbar="defaultToolbar"
+      />
     </div>
 
     <div class="mb-2">
@@ -45,7 +48,7 @@
           :key="img"
         >
           <Picture
-            :data="`http://enplus.petyaogurkin.keenetic.pro/api/images/news/${img}`"
+            :data="imgURLs.news + img"
             :index="index"
             :type="'url'"
             :Delete="DeleteImageFromNews"
@@ -73,26 +76,20 @@ import { VueEditor } from "vue2-editor";
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
 import Picture from "../patterns/Picture.vue";
+import { imgURLs } from "../../../store/modules/serverProcedure/URL";
 export default {
   data() {
     return {
-      toolbar: [
-        [{ header: [false, 1, 2, 3, 4, 5, 6] }],
-        ["bold", "italic", "underline"],
-        [
-          { align: "" },
-          { align: "center" },
-          { align: "right" },
-          { align: "justify" },
-        ],
-        [{ color: [] }],
-        ["link"],
-        ["clean"],
-      ],
+      imgURLs: imgURLs,
     };
   },
   components: { VueEditor, Picture },
-  computed: mapGetters(["news", "newsLength", "selectedNews"]),
+  computed: mapGetters([
+    "news",
+    "newsLength",
+    "selectedNews",
+    "defaultToolbar",
+  ]),
   methods: mapActions(["fileChange", "TestImgNews", "DeleteImageFromNews"]),
 };
 </script>

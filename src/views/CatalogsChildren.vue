@@ -22,6 +22,9 @@
 </template>
 
 <script>
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.bubble.css";
+import "quill/dist/quill.snow.css";
 import Loading from "./Loading.vue";
 import CardChildren from "../components/catalogs/CardChildren.vue";
 import { mapGetters } from "vuex";

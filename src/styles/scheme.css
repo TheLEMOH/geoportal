@@ -1,0 +1,17 @@
+.main {
+    background: #5b828e;
+}
+
+.additional {
+    background: #5b828e !important;
+}
+
+.background {
+    background: #ccdef7 !important;
+}
+
+.selected {
+    color: white !important;
+    background: #5b828e !important;
+    transition: all 0.3s;
+}

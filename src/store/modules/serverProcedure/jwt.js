@@ -1,7 +1,7 @@
 import jwt_decode from "jwt-decode";
 import router from '../../../router/index'
-const URL_LOGIN = 'http://enplus.petyaogurkin.keenetic.pro/api/auth/login/'
-const URL_REFRESH = 'http://enplus.petyaogurkin.keenetic.pro/api/auth/refresh/'
+const URL_LOGIN = '/api/auth/login/'
+const URL_REFRESH = '/api/auth/refresh/'
 
 async function Login(pair) {
     return fetch(URL_LOGIN, {
@@ -13,8 +13,7 @@ async function Login(pair) {
     }).then(res => {
         if (res.ok) {
             return res.json();
-        }
-        else {
+        } else {
             let error = new Error(res.statusText);
             error.response = res;
             throw error
@@ -45,8 +44,7 @@ async function RefreshToken(ctx) {
                     localStorage.setItem("YENISEI_AUTH", JSON.stringify(user));
                     ctx.commit('updateUser', user)
                 })
-            }
-            else {
+            } else {
                 let error = new Error(res.statusText);
                 error.response = res;
                 throw error

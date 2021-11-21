@@ -34,26 +34,4 @@ export default {
 </script>
 
 <style>
-.gallery-control {
-  height: 82vh;
-  overflow-y: scroll;
-}
-
-.gallery-control .col {
-  width: 500px;
-}
-
-.image-control .image-loading {
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 2;
-}
-
-.image-control img {
-  height: 300px;
-  width: 100%;
-  object-fit: cover;
-  z-index: 1;
-}
 </style>

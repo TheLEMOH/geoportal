@@ -5,15 +5,14 @@ export default {
         information: null,
         currentPanel: "Catalogs",
         baseMaps: [
+            { name: 'OSM', url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png' },
             { name: "Стандарт", url: "https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=NynhVPfsQFS9p8fzpF0c" },
             { name: "Рельеф", url: "https://api.maptiler.com/maps/topo/{z}/{x}/{y}.png?key=NynhVPfsQFS9p8fzpF0c" },
             { name: "Спутник", url: "https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=NynhVPfsQFS9p8fzpF0c" },
-            {
-                name: "Черно-белая", url: "https://api.maptiler.com/maps/toner/{z}/{x}/{y}.png?key=NynhVPfsQFS9p8fzpF0c"
-            }],
+        ],
         currentBaseMap: 0,
-        zoom: 5,
-        center: [10382902.767976305, 7603254.003900477],
+        zoom: 7,
+        center: [10382902.767976305, 7403254.003900477],
         currentPosition: undefined
 
     },

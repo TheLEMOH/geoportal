@@ -1,0 +1,21 @@
+.articles-control {
+    color: black !important;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.editing-articles {
+    min-width: 500px;
+    max-width: 1300px;
+}
+
+.article-wrapper {
+    height: 87vh;
+    overflow-y: scroll;
+}
+
+.article-wrapper img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}

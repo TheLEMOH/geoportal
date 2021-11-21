@@ -6,8 +6,7 @@ async function Get(type, token) {
     if (token) {
         const res = await fetch(URL[type].get, { headers: { 'Authorization': `Bearer ${token}` } });
         return res;
-    }
-    else {
+    } else {
         const res = await fetch(URL[type].get);
         return res;
     }
@@ -70,8 +69,7 @@ function FetchObjectById(ctx, settings) {
                 }
                 ctx.commit(settings.funcUpdate, object);
             });
-        }
-        else {
+        } else {
             let error = new Error(res.statusText);
             error.response = res;
             throw error
@@ -81,7 +79,6 @@ function FetchObjectById(ctx, settings) {
     })
 }
 
-/* Сохранение */
 function Query(object, func, type, token) {
     return new Promise((resolve, reject) => {
         func(object, type, token).then(res => {
@@ -89,8 +86,7 @@ function Query(object, func, type, token) {
                 if (typeof object == "object")
                     object.action = "done";
                 resolve(res)
-            }
-            else {
+            } else {
                 reject(res)
             }
         })
@@ -101,8 +97,7 @@ function Save(objects, delObjects, type, token) {
     const promises = [];
     objects.forEach(object => {
         if (object.action) {
-            promises.push(Query(object, query[object.action], type, token)
-            );
+            promises.push(Query(object, query[object.action], type, token));
             object.action = "loading"
         }
     })
@@ -135,14 +130,12 @@ function SaveObjects(ctx, settings) {
                 RefreshToken().then(() => {
                     ctx.dispatch(settings.save);
                 })
-            }
-            else {
+            } else {
                 ctx.dispatch('DisplayMessage', status.statusText);
                 ctx.dispatch(settings.fetch)
             }
         })
-    }
-    else {
+    } else {
         ctx.dispatch('DisplayMessage', settings.nonFilled);
     }
 }

@@ -53,7 +53,7 @@ export default {
             const news = {
                 title: null,
                 body: null,
-                date: null,
+                date: '00.00.00',
                 imgBase: [],
                 action: 'add',
             }
@@ -108,8 +108,7 @@ export default {
 
             if (state.news[index].action == "add") {
                 state.news.splice(index, 1);
-            }
-            else {
+            } else {
                 state.delNews.push(state.news[index]);
                 state.news.splice(index, 1);
             }
@@ -146,6 +145,19 @@ export default {
             return state.news
         },
         newsLength(state) {
+            /*    news.sort((a, b) => {
+                   const aSplit = a.date.split('.')
+                   const bSplit = b.date.split('.')
+                   const aDate = new Date(aSplit[2], aSplit[1], aSplit[0])
+                   const bDate = new Date(bSplit[2], bSplit[1], bSplit[0])
+                   if (aDate > bDate) {
+                       return 1;
+                   }
+                   if (aDate < bDate) {
+                       return -1;
+                   }
+                   return 0
+               }); */
             return state.news.length
         },
         selectedNews(state) {

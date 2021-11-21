@@ -26,7 +26,7 @@
     />
     <img
       v-else
-      :src="`http://enplus.petyaogurkin.keenetic.pro/api/images/gallery/${data}`"
+      :src="`/api/images/gallery/${data}`"
       class="rounded"
     />
   </div>

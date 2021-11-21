@@ -50,7 +50,7 @@ export default {
         },
 
         async FecthProjectsFromCatalogs(ctx, id) {
-            const URL = `http://enplus.petyaogurkin.keenetic.pro/api/sections/${id}`;
+            const URL = `/api/sections/${id}`;
             const res = await fetch(URL)
             const text = await res.json()
             console.log(text);
@@ -148,8 +148,7 @@ export default {
         deleteCatalog(state, index) {
             if (state.catalogs[index].action == "add") {
                 state.catalogs.splice(index, 1);
-            }
-            else {
+            } else {
                 state.delCatalogs.push(state.catalogs[index]);
                 state.catalogs.splice(index, 1);
             }

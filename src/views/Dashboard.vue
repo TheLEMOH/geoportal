@@ -18,6 +18,7 @@ import About from "../components/dashboard/About.vue";
 import Help from "../components/dashboard/Help.vue";
 import Gallery from "../components/dashboard/Gallery.vue";
 import Articles from "../components/dashboard/Articles.vue";
+import Carousel from "../components/dashboard/Carousel.vue";
 export default {
   components: {
     Sidebar,
@@ -29,6 +30,7 @@ export default {
     Help,
     Gallery,
     Articles,
+    Carousel,
   },
   data() {
     return { currentComponent: null };
@@ -42,6 +44,7 @@ export default {
     this.FetchAbout();
     this.FetchMaps();
     this.FetchGallery();
+    this.FetchCarousel();
   },
   methods: {
     ...mapActions([
@@ -53,6 +56,7 @@ export default {
       "FetchProjects",
       "FetchGallery",
       "FetchArticles",
+      "FetchCarousel",
     ]),
     SelectComponent(id) {
       this.currentComponent = id;

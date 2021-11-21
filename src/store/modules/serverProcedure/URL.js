@@ -1,36 +1,49 @@
-const news = 'http://enplus.petyaogurkin.keenetic.pro/api/news/'
-const newsAdd = 'http://enplus.petyaogurkin.keenetic.pro/api/news/add/'
-const newsEdit = 'http://enplus.petyaogurkin.keenetic.pro/api/news/edit/'
-const newsRemove = 'http://enplus.petyaogurkin.keenetic.pro/api/news/remove/'
+const baseURL = 'https://yenisey.sfu-kras.ru/'
 
-const gallery = `http://enplus.petyaogurkin.keenetic.pro/api/gallery/`
-const galleryAdd = `http://enplus.petyaogurkin.keenetic.pro/api/gallery/add`
-const galleryRemove = `http://enplus.petyaogurkin.keenetic.pro/api/gallery/remove/`
+const news = baseURL + '/api/news/'
+const newsAdd = baseURL + '/api/news/add/'
+const newsEdit = baseURL + '/api/news/edit/'
+const newsRemove = baseURL + '/api/news/remove/'
 
-const projects = `http://enplus.petyaogurkin.keenetic.pro/api/projects/`
-const projectsAdd = 'http://enplus.petyaogurkin.keenetic.pro/api/projects/add'
-const projectsEdit = 'http://enplus.petyaogurkin.keenetic.pro/api/projects/edit/'
-const projectsRemove = 'http://enplus.petyaogurkin.keenetic.pro/api/projects/remove/'
+const gallery = baseURL + `/api/gallery/`
+const galleryAdd = baseURL + `/api/gallery/add`
+const galleryRemove = baseURL + `/api/gallery/remove/`
 
-const sections = `http://enplus.petyaogurkin.keenetic.pro/api/sections/`
-const sectionAdd = 'http://enplus.petyaogurkin.keenetic.pro/api/sections/add'
-const sectionEdit = 'http://enplus.petyaogurkin.keenetic.pro/api/sections/edit/'
-const sectionsRemove = 'http://enplus.petyaogurkin.keenetic.pro/api/sections/remove/'
+const projects = baseURL + `/api/projects/`
+const projectsAdd = baseURL + '/api/projects/add'
+const projectsEdit = baseURL + '/api/projects/edit/'
+const projectsRemove = baseURL + '/api/projects/remove/'
 
-const articles = `http://enplus.petyaogurkin.keenetic.pro/api/articles/`
-const articlesAdd = `http://enplus.petyaogurkin.keenetic.pro/api/articles/add/`
-const articlesEdit = `http://enplus.petyaogurkin.keenetic.pro/api/articles/edit/`
-const articlesRemove = `http://enplus.petyaogurkin.keenetic.pro/api/articles/remove/`
+const sections = baseURL + `/api/sections/`
+const sectionAdd = baseURL + '/api/sections/add'
+const sectionEdit = baseURL + '/api/sections/edit/'
+const sectionsRemove = baseURL + '/api/sections/remove/'
 
-const users = 'http://enplus.petyaogurkin.keenetic.pro/api/users/'
-const usersAdd = 'http://enplus.petyaogurkin.keenetic.pro/api/users/add/'
-const usersEdit = 'http://enplus.petyaogurkin.keenetic.pro/api/users/edit/'
-const usersRemove = 'http://enplus.petyaogurkin.keenetic.pro/api/users/remove/'
+const articles = baseURL + `/api/articles/`
+const articlesAdd = baseURL + `/api/articles/add/`
+const articlesEdit = baseURL + `/api/articles/edit/`
+const articlesRemove = baseURL + `/api/articles/remove/`
 
-const maps = `http://enplus.petyaogurkin.keenetic.pro/api/maps/`
+const users = baseURL + '/api/users/'
+const usersAdd = baseURL + '/api/users/add/'
+const usersEdit = baseURL + '/api/users/edit/'
+const usersRemove = baseURL + '/api/users/remove/'
 
-const about = "http://enplus.petyaogurkin.keenetic.pro/api/about/"
-const aboutEdit = "http://enplus.petyaogurkin.keenetic.pro/api/about/edit/"
+const maps = baseURL + `/api/maps/`
+
+const about = baseURL + "/api/about/"
+const aboutEdit = baseURL + "/api/about/edit/"
+
+const carousel = baseURL + "/api/carousel/"
+const carouselEdit = baseURL + "/api/carousel/edit/"
+
+const imgURLs = {
+    news: baseURL + `/api/images/news/`,
+    gallery: baseURL + `/api/images/gallery/`,
+    catalogs: baseURL + `/api/images/sections/`,
+    articles: baseURL + `/api/images/articles/`,
+    maps: baseURL + `/api/images/maps/`,
+}
 
 const URL = {
     news: { get: news, add: newsAdd, edit: newsEdit, remove: newsRemove, },
@@ -40,8 +53,9 @@ const URL = {
     articles: { get: articles, add: articlesAdd, edit: articlesEdit, remove: articlesRemove, },
     maps: { get: maps },
     users: { get: users, add: usersAdd, edit: usersEdit, remove: usersRemove },
-    about: { get: about, edit: aboutEdit }
+    about: { get: about, edit: aboutEdit },
+    carousel: { get: carousel, edit: carouselEdit }
 }
 
 
-export { URL }
+export { URL, imgURLs }

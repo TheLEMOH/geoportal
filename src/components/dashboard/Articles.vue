@@ -45,9 +45,5 @@ export default {
 </script>
 
 <style>
-.articles-control {
-  color: black !important;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
+
 </style>

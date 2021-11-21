@@ -1,45 +1,74 @@
 <template>
-  <div class="help m-2 text-shadow fs-5">
-    <h2>Добро пожаловать!</h2>
-    <!-- Новости -->
-    <p>
-      В данном разделе описаны шаги по добавлению новостей, проектов, каталогов
-      и пользователей
-    </p>
-    <h4>Заполнение новостей</h4>
-    <p>
-      Чтобы добавить новость нажмите кнопку
-      <button type="button" class="btn btn-success me-1">
-        <AddIcon /></button
-      >. Добавленная новость станет активной. Заполните все поля перед отправкой
-      (Дата новости, название и текст новости).
-    </p>
-    <p>
-      Чтобы сохранить новости нажмите на кнопку
-      <button type="button" class="btn btn-primary me-1">
-        <SaveIcon /></button
-      >. Во время сохранения меню блокируются. Название новости заменится на
-      "Сохранение...". Сверху экрана появится оповещение. Когда сохранение
-      завершится - появится оповещение и меню разблокируется.
-    </p>
-    <p>
-      Чтобы отменить последние действия редактирования новостей нажмите на
-      кнопку
-      <button type="button" class="btn btn-danger me-1">
-        <CancelIcon />
+  <div class="help w-100">
+    <div class="container pt-2">
+      <button
+        class="btn button-collapse"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#help-objects"
+        aria-expanded="false"
+        aria-controls="help-objects"
+      >
+        Редактирование
       </button>
-    </p>
+
+      <div class="collapse" id="help-objects">
+        <Objects />
+      </div>
+
+      <button
+        class="btn button-collapse"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#presentations-links"
+        aria-expanded="false"
+        aria-controls="presentations-links"
+      >
+        Презентации
+      </button>
+
+      <div class="collapse" id="presentations-links">
+        <a href="https://disk.yandex.ru/d/YNCP0t2MaRDTuQ"> Презентации</a>
+      </div>
+
+      <button
+        class="btn button-collapse"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#help-links"
+        aria-expanded="false"
+        aria-controls="help-links"
+      >
+        Ссылки
+      </button>
+
+      <div class="collapse" id="help-links">
+        <Links />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import SaveIcon from "../icons/SaveIcon.vue";
-import CancelIcon from "../icons/CancelIcon.vue";
-import AddIcon from "../icons/AddIcon.vue";
+import Objects from "./help/Objects.vue";
+import Links from "./help/Links.vue";
 export default {
-  components: { SaveIcon, AddIcon, CancelIcon },
+  components: { Objects, Links },
 };
 </script>
 
 <style>
+.help {
+  overflow-y: scroll;
+}
+
+.button-collapse {
+  width: 100%;
+  border: 1px solid silver;
+  background: white;
+}
+
+.button-collapse .collapse {
+  background: silver !important;
+}
 </style>

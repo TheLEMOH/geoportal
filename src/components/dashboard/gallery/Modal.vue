@@ -51,9 +51,5 @@ export default {
 </script>
 
 <style>
-.modal-add-image {
-  height: auto;
-  width: 400px;
-  z-index: 10;
-}
+
 </style>

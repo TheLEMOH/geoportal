@@ -1,102 +1,85 @@
 <template>
-  <div
-    class="home bg-white"
-    style="color: rgb(114, 114, 114); min-height: 1500px"
-  >
-    <div class="container">
-      <div class="gallery-grid">
-        <div class="first-element">
-          <CarouselFirst />
-        </div>
-        <div class="right-element">
-          <CarouselRight />
-        </div>
-        <div class="bottom-first-element position-relative">
-          <div
-            class="
-              position-absolute
-              text-white
-              bottom-0
-              start-50
-              translate-middle-x
-              mb-3
-            "
-          >
-            <h6>ДОСТОПРИМЕЧАТЕЛЬНОСТИ</h6>
-          </div>
-          <img src="../assets/b2.jpg" width="100%" height="100%" />
-        </div>
-        <div class="bottom-second-element position-relative">
-          <div
-            class="
-              position-absolute
-              text-white
-              bottom-0
-              start-50
-              translate-middle-x
-              mb-3
-            "
-          >
-            <h6>ООПТ</h6>
-          </div>
-          <img src="../assets/b1.jpg" width="100%" height="100%" />
-        </div>
-        <div class="bottom-third-element position-relative">
-          <div
-            class="
-              position-absolute
-              text-white
-              bottom-0
-              start-50
-              translate-middle-x
-              mb-3
-            "
-          >
-            <h6>ПЕЩЕРЫ</h6>
-          </div>
-          <img src="../assets/b3.jpg" width="100%" height="100%" />
+  <div class="home bg-white" style="color: rgb(114, 114, 114)">
+    <div class="container-fluid carousel-body">
+      <div class="gallery-grid" v-if="carouselLoaded">
+        <div
+          v-for="(element, index) in elements"
+          :key="index"
+          class="border additional"
+          :class="element"
+        >
+          <Carousel
+            v-if="carousel.length != 0"
+            :id="element"
+            :data="carousel[index].sections"
+          />
         </div>
       </div>
+      <Loading v-else />
     </div>
   </div>
 </template>
 
 <script>
-import CarouselRight from "../components/home/CarouselRight.vue";
-import CarouselFirst from "../components/home/CarouselFirst.vue";
+import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
+import Carousel from "../components/home/Carousel.vue";
+import Loading from "./Loading.vue";
 export default {
-  components: { CarouselRight, CarouselFirst },
+  data() {
+    return {
+      elements: [
+        "first-element",
+        "right-element",
+        "bottom-first-element",
+        "bottom-second-element",
+        "bottom-third-element",
+      ],
+    };
+  },
+  components: { Carousel, Loading },
+  computed: {
+    ...mapGetters(["carousel", "carouselLoaded"]),
+  },
+  mounted() {
+    this.FetchCarousel();
+    this.FetchCatalogs();
+  },
+  methods: {
+    ...mapActions(["FetchCarousel", "FetchCatalogs"]),
+  },
 };
 </script>
 
 <style>
-.gallery-grid {
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: black;
+.carousel-body {
+  padding-right: 8vw;
+  padding-left: 8vw;
+}
+
+.gallery-grid img {
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .gallery-grid {
   transition: all 0.1s ease;
   display: grid;
-  height: 700px;
+  height: 80vh;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
-  gap: 5px 5px;
+  gap: 7px 7px;
   grid-template-areas:
     "first-element first-element first-element right-element right-element"
     "first-element first-element first-element right-element right-element"
     "bottom-first-element bottom-second-element bottom-third-element right-element right-element";
 }
-
-.gallery-grid img {
-  object-fit: cover;
-}
-
-.right-element {
-  grid-area: right-element;
-}
 .first-element {
   grid-area: first-element;
+}
+.right-element {
+  grid-area: right-element;
 }
 .bottom-first-element {
   grid-area: bottom-first-element;
@@ -107,4 +90,5 @@ export default {
 .bottom-third-element {
   grid-area: bottom-third-element;
 }
+
 </style>

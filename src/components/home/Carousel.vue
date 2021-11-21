@@ -1,64 +1,86 @@
 <template>
-  <div class="container-fluid text-shadow">
-    <div class="row">
+  <div :id="id" class="carousel slide h-100" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button
+        :class="[index == 0 ? 'active' : '']"
+        type="button"
+        v-for="(catalog, index) in data"
+        :key="index"
+        :data-bs-target="`#${id}`"
+        :data-bs-slide-to="index"
+        :aria-label="`Slide ${index}`"
+      ></button>
+    </div>
+    <div class="carousel-inner">
       <div
-        class="col carousel-wrap text-white position-relative p-0"
-        v-for="n in 6"
-        :key="n"
+        class="carousel-item"
+        :class="[index == 0 ? 'active' : '']"
+        v-for="(catalog, index) in data"
+        :key="index"
       >
-        <div
-          class="image-text w-100 text-center position-absolute bottom-0 p-3"
+        <router-link
+          :to="{ name: 'Map' }"
+          @click.native="UpdateOpenedCatalogs(catalog._id)"
         >
-          <div>Флора и фауна</div>
-        </div>
-        <img src="../../assets/about.jpg" style="height: 100%; width: 100%" />
+          <img :src="`${imgURLs.catalogs}${catalog.img}`" />
+          <div class="carousel-caption d-none d-md-block">
+            <h3 class="text-shadow">{{ catalog.title }}</h3>
+          </div></router-link
+        >
       </div>
     </div>
+    <button
+      class="carousel-control-prev"
+      type="button"
+      :data-bs-target="`#${id}`"
+      data-bs-slide="prev"
+      v-if="data.length > 1"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      :data-bs-target="`#${id}`"
+      data-bs-slide="next"
+      v-if="data.length > 1"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
   </div>
 </template>
 
 <script>
-export default {};
+import { mapActions } from "vuex";
+import { imgURLs } from "../../store/modules/serverProcedure/URL";
+export default {
+  data() {
+    return {
+      imgURLs: imgURLs,
+    };
+  },
+  props: ["id", "data"],
+  methods: { ...mapActions(["UpdateOpenedCatalogs"]) },
+};
 </script>
 
 <style>
-.carousel-wrap {
-  flex-shrink: 1;
-  z-index: 1;
-  transition: all 0.3s;
+.carousel-inner {
+  height: 100%;
 }
 
-.image-text {
-  font-size: 0.85vw;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s;
+.text-shadow {
+  text-shadow: 2px 2px 1px black;
 }
 
-.image-title {
-  visibility: visible;
-  transition: all 0.3s;
+.carousel img {
+  object-fit: cover;
+  width: 100%;
 }
 
-.carousel-wrap:hover .image-title {
-  opacity: 0;
-  visibility: hidden;
-  z-index: 10;
-  transition: all 0.3s;
-}
-
-.carousel-wrap:hover .image-text {
-  background: rgba(255, 255, 255, 0.1);
-  opacity: 1;
-  visibility: visible;
-  z-index: 10;
-  transition: all 0.3s;
-}
-
-.carousel-wrap:hover {
-  cursor: pointer;
-  z-index: 10;
-  box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s;
+.carousel-item {
+  height: 100%;
 }
 </style>

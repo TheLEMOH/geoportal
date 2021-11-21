@@ -2,7 +2,7 @@
   <div class="catalogs-map">
     <ul class="list-group">
       <li
-        class="p-2"
+        class="p-2 border-bottom"
         v-for="(c, indexC) in ListOfProjectCatalogs"
         :key="indexC"
       >

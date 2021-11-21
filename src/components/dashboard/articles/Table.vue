@@ -80,10 +80,4 @@ tbody td {
   max-width: 130px;
   word-break: break-all;
 }
-
-.table-news {
-  height: 82vh;
-  overflow-x: hidden;
-  overflow-y: scroll;
-}
 </style>

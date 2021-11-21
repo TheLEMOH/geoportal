@@ -4,7 +4,7 @@ import { RefreshToken, Login } from "./serverProcedure/jwt"
 import { Filled } from "./valid/valid"
 
 
-const URL_LOGOUT = 'http://enplus.petyaogurkin.keenetic.pro/api/auth/logout/'
+const URL_LOGOUT = '/api/auth/logout/'
 
 
 export default {
@@ -23,6 +23,7 @@ export default {
             }
             const filled = Filled(pair)
             if (filled) {
+                this.dispatch("DisplayMessage", "Вход...")
                 Login(pair).then((res) => {
                     if (res.error != true) {
                         const decoded = jwt_decode(
@@ -39,8 +40,7 @@ export default {
                         this.dispatch('UpdateShowLoginModal', false)
                         localStorage.setItem("YENISEI_AUTH", JSON.stringify(user));
                         ctx.commit('updateUser', user)
-                    }
-                    else {
+                    } else {
                         this.dispatch("DisplayMessage", res.text)
                     }
                 })
@@ -50,9 +50,11 @@ export default {
         async Logout() {
             const user = JSON.parse(localStorage.getItem("YENISEI_AUTH"));
             fetch(URL_LOGOUT, {
-                method: 'POST', headers: {
+                method: 'POST',
+                headers: {
                     'Authorization': `Bearer ${user.accessToken}`
-                }, body: JSON.stringify(user.refreshToken)
+                },
+                body: JSON.stringify(user.refreshToken)
             })
             localStorage.removeItem("YENISEI_AUTH")
         },

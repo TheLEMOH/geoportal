@@ -11,11 +11,9 @@
     </div>
     <div class="mb-2">
       <label class="form-label">Описание каталога</label>
-      <textarea
-        type="text"
-        class="form-control"
-        placeholder=""
+      <VueEditor
         v-model="catalogs[selectedCatalog].description"
+        :editorToolbar="defaultToolbar"
       />
     </div>
     <div class="mb-2">
@@ -32,10 +30,7 @@
         :src="catalogs[selectedCatalog].img"
         v-if="catalogs[selectedCatalog].img.length > 45"
       />
-      <img
-        v-else
-        :src="`http://enplus.petyaogurkin.keenetic.pro/api/images/sections/${catalogs[selectedCatalog].img}`"
-      />
+      <img v-else :src="imgURLs.catalogs + catalogs[selectedCatalog].img" />
     </div>
   </div>
 </template>
@@ -43,8 +38,14 @@
 <script>
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
+import { imgURLs } from "../../../store/modules/serverProcedure/URL";
+import { VueEditor } from "vue2-editor";
 export default {
-  computed: mapGetters(["catalogs", "selectedCatalog"]),
+  components: { VueEditor },
+  data() {
+    return { imgURLs: imgURLs };
+  },
+  computed: mapGetters(["catalogs", "selectedCatalog", "defaultToolbar"]),
   methods: mapActions(["fileChange", "TestIMG"]),
 };
 </script>

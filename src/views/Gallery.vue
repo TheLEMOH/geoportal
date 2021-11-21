@@ -47,7 +47,7 @@ export default {
     ...mapGetters(["images", "imagesLoaded"]),
     imagesURL() {
       const images = this.images.map((i) => {
-        return `http://enplus.petyaogurkin.keenetic.pro/api/images/gallery/${i}`;
+        return `/api/images/gallery/${i}`;
       });
       return images;
     },

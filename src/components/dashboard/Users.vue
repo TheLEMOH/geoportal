@@ -1,5 +1,5 @@
 <template>
-  <div class="users-control w-100 text-shadow">
+  <div class="users-control w-100">
     <div class="p-2 border-bottom border-dark">
       <div class="mb-2">
         <div class="row">

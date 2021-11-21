@@ -1,0 +1,12 @@
+#app::-webkit-scrollbar {
+    width: 10px;
+}
+
+#app::-webkit-scrollbar-track {
+    background-color: #d2c8bc;
+}
+
+#app::-webkit-scrollbar-thumb {
+    background-color: #d2c8bc;
+    background-image: -webkit-linear-gradient( 45deg, rgba(255, 255, 255, 0.5) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.5) 75%, transparent 75%, transparent);
+}

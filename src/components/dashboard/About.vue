@@ -2,13 +2,17 @@
   <div class="about-control w-100 p-2">
     <VueEditor
       class="bg-light"
-      :editorToolbar="toolbar"
+      :editorToolbar="defaultToolbar"
       v-model="about[0].body"
       v-if="about"
     />
     <div class="text-end">
-      <button class="btn btn-secondary m-2" type="button">Отменить</button>
-      <button class="btn btn-success m-2" type="button" @click="EditAbout">
+      <button
+        class="btn btn-success m-2"
+        type="button"
+        :disabled="!aboutLoaded"
+        @click="EditAbout"
+      >
         Сохранить
       </button>
     </div>
@@ -21,24 +25,10 @@ import { mapActions } from "vuex";
 import { VueEditor } from "vue2-editor";
 export default {
   data() {
-    return {
-      toolbar: [
-        [{ header: [false, 1, 2, 3, 4, 5, 6] }],
-        ["bold", "italic", "underline"],
-        [
-          { align: "" },
-          { align: "center" },
-          { align: "right" },
-          { align: "justify" },
-        ],
-        [{ color: [] }],
-        ["link"],
-        ["clean"],
-      ],
-    };
+    return {};
   },
   components: { VueEditor },
-  computed: mapGetters(["about"]),
+  computed: mapGetters(["about", "aboutLoaded", "defaultToolbar"]),
   methods: mapActions(["EditAbout"]),
 };
 </script>
